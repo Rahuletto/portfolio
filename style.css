@@ -431,11 +431,6 @@ section.list {
   transition: 0.4s cubic-bezier(1, 0.01, 0, 0.86)
 }
 
-.contact a:hover {
-  transform: scale(1.05);
-  font-size: 17px;
-  animation: 5s clrshift infinite;
-}
 
 @keyframes clrshift {
    35% {
