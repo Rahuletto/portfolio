@@ -1,316 +1,487 @@
 <!DOCTYPE html>
-<html>
+<html lang="english">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
+    <!-- OpenGraph Protocol -->
+    <meta
+      name="google-site-verification"
+      content="jzGHrJad6TvF4KahQPhtHM1ZSYNh3vp0DAixgZlAtvA"
+    />
+    <!-- Primary Meta Tags -->
+    <title>Rahuletto.</title>
+    <meta name="title" content="Rahuletto." />
+    <meta
+      name="description"
+      content="Hi, I am Rahul Marban 👋. An idiotic Typescript and
+Javascript developer"
+    />
 
-  <!-- OpenGraph Protocol -->
-  <meta name="google-site-verification" content="jzGHrJad6TvF4KahQPhtHM1ZSYNh3vp0DAixgZlAtvA" />
-  <!-- Primary Meta Tags -->
-<title>Rahuletto.</title>
-<meta name="title" content="Rahuletto.">
-<meta name="description" content="Hi, I am Rahul Marban 👋. An idiotic Typescript and
-Javascript developer">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://metatags.io/" />
+    <meta property="og:title" content="Rahuletto." />
+    <meta
+      property="og:description"
+      content="Hi, I am Rahul Marban 👋. An idiotic Typescript and
+Javascript developer"
+    />
+    <meta
+      property="og:image"
+      content="https://media.discordapp.net/attachments/959490917495087165/1014191509999996978/unknown-36-2.png"
+    />
 
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://metatags.io/">
-<meta property="og:title" content="Rahuletto.">
-<meta property="og:description" content="Hi, I am Rahul Marban 👋. An idiotic Typescript and
-Javascript developer">
-<meta property="og:image" content="https://media.discordapp.net/attachments/959490917495087165/1014191509999996978/unknown-36-2.png">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://metatags.io/" />
+    <meta property="twitter:title" content="Rahuletto." />
+    <meta
+      property="twitter:description"
+      content="Hi, I am Rahul Marban 👋. An idiotic Typescript and
+Javascript developer"
+    />
+    <meta
+      property="twitter:image"
+      content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png"
+    />
 
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://metatags.io/">
-<meta property="twitter:title" content="Rahuletto.">
-<meta property="twitter:description" content="Hi, I am Rahul Marban 👋. An idiotic Typescript and
-Javascript developer">
-<meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
+    <!-- OpenGraph Protocol -->
 
-  <!-- OpenGraph Protocol -->
+    <link rel="icon" type="image/webp" sizes="32x32" href="assets/logo.webp" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="mobile.css" rel="stylesheet" type="text/css" />
 
-  <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <link href="mobile.css" rel="stylesheet" type="text/css" />
-  
-  <!-- Imports -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Imports -->
+    <link
+      media="print"
+      onload="this.onload=null;this.removeAttribute('media');"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css"
+    />
+    <!-- Imports -->
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css" />
-  <script src="https://kit.fontawesome.com/afcb698043.js" crossorigin="anonymous"></script>
-  <!-- Imports -->
-
-  <div class="header">
-    <h3>Rahul<span class="signature-orange">e</span><span class="signature-red">tt</span><span
-      class="signature-blue">o</span><span class="signature-orange">.</span></h3>
-    <div class="head-cnt">
-    <a href="#home">Home</a>
-    <a href="#about">About Me</a>
-    <a href="#contact">Contact</a>
-  </div>
-  </div>
-</head>
-
-<body>
-
-  <div class="lander" id="home">
-    <div class="title">
-      <h1 style="font-family: 'JetBrains Mono';">Rahul<span class="signature-orange">e</span><span class="signature-red">tt</span><span
-          class="signature-blue">o</span><span class="signature-orange">.</span></h1>
-
-      <h3>An idiotic Typescript and<br>Javascript developer</h3>
-      <button id="js-themeSwitcher" class="darky link-like-button">
-        <span class="theme-name">Dark</span> <i id="themeIcon" class="bi bi-moon-stars-fill" aria-hidden="true"></i>
-      </button>
+    <div class="header">
+      <h3>
+        Rahul<span class="signature-orange">e</span
+        ><span class="signature-red">tt</span
+        ><span class="signature-blue">o</span
+        ><span class="signature-orange">.</span>
+      </h3>
+      <div class="head-cnt">
+        <a title="Homepage" href="#home">Home</a>
+        <a title="About me" href="#about">About Me</a>
+        <a title="Lets connect" href="#contact">Contact</a>
+      </div>
     </div>
-    <img class="logo" src="logo.png">
+  </head>
 
-    <span class="halo-1"></span>
-    <span class="halo-2"></span>
-    <span class="halo-3"></span>
-    <div id="particles-js"></div>
+  <body>
+    <div class="lander" id="home">
+      <div class="title">
+        <h1 style="font-family: 'JetBrains Mono'">
+          Rahul<span class="signature-orange">e</span
+          ><span class="signature-red">tt</span
+          ><span class="signature-blue">o</span
+          ><span class="signature-orange">.</span>
+        </h1>
 
-  </div>
+        <h3>An idiotic Typescript and<br />Javascript developer</h3>
+        <button id="js-themeSwitcher" class="darky link-like-button">
+          <span class="theme-name">Dark</span>
+          <i
+            id="themeIcon"
+            class="bi bi-moon-stars-fill"
+            aria-hidden="true"
+          ></i>
+        </button>
+      </div>
+      <img alt="logo" class="logo" src="assets/logo.webp" />
 
-  <div class="crossline">
-    <div class="line"></div>
-  </div>
+      <span class="halo-1"></span>
+      <span class="halo-2"></span>
+      <span class="halo-3"></span>
+      <div id="particles-js"></div>
+    </div>
 
-  <div id="about">
-    <h1>About Me</h1>
-    <h3>Hi There 👋, I am Rahul Marban. An 17 year old self taught developer.</h3>
+    <div class="crossline">
+      <div class="line"></div>
+    </div>
 
-    <span class="halo-1 abt-1"></span>
-    <span class="halo-2 abt-2"></span>
-    <span class="halo-3 abt-3"></span>
-    
-    <div class="about-me">
-      <div class="details">
-        <lord-icon class="ic"  src="https://cdn.lordicon.com/mxzuvjjs.json"
-        trigger="loop"
-        delay="1500"
-        colors="primary:#e1591f"
-        state="intro" stroke="70" >
-        </lord-icon>
-        <div>
-          <h2>Full Stack Developer</h2>
-          <h3>Developed some full stack applications like CodeBoard and striving to make more in the future</h3>
+    <div id="about">
+      <h1>About Me</h1>
+      <h3>
+        Hi There 👋, I am Rahul Marban. An 17 year old self taught developer.
+      </h3>
+
+      <span class="halo-1 abt-1"></span>
+      <span class="halo-2 abt-2"></span>
+      <span class="halo-3 abt-3"></span>
+
+      <div class="about-me">
+        <div class="details">
+          <lord-icon
+            class="ic"
+            src="https://cdn.lordicon.com/mxzuvjjs.json"
+            trigger="loop"
+            delay="1500"
+            colors="primary:#e1591f"
+            state="intro"
+            stroke="70"
+          >
+          </lord-icon>
+          <div>
+            <h2>Full Stack Developer</h2>
+            <h3>
+              Developed some full stack applications like CodeBoard and striving
+              to make more in the future
+            </h3>
+          </div>
         </div>
-      </div>
 
-      <div class="top-2">
-      <div class="details">
-        <lord-icon class="ic" src="https://cdn.lordicon.com/wloilxuq.json" trigger="loop" delay="1000"
-          colors="primary:#206da2,secondary:#185f8f" state="hover-1">
-        </lord-icon>
-        <div>
-          <h2>UI Designer /Developer</h2>
-          <h3>Full stack developer but fell in love with front end very much</h3>
+        <div class="top-2">
+          <div class="details">
+            <lord-icon
+              class="ic"
+              src="https://cdn.lordicon.com/wloilxuq.json"
+              trigger="loop"
+              delay="1000"
+              colors="primary:#206da2,secondary:#185f8f"
+              state="hover-1"
+            >
+            </lord-icon>
+            <div>
+              <h2>UI Designer /Developer</h2>
+              <h3>
+                Full stack developer but fell in love with front end very much
+              </h3>
+            </div>
+          </div>
+
+          <div class="details">
+            <lord-icon
+              class="ic"
+              src="https://cdn.lordicon.com/kipaqhoz.json"
+              trigger="loop"
+              delay="1000"
+              colors="primary:#d21e1e,secondary:#d21e1e"
+              state="morph"
+              stroke="70"
+              style="width: 100px; height: 100px"
+            >
+            </lord-icon>
+            <div>
+              <h2>Student</h2>
+              <h3>
+                Yes, I am an undergrad student with the passion and creativity
+              </h3>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="details">
-        <lord-icon class="ic" src="https://cdn.lordicon.com/kipaqhoz.json" trigger="loop" delay="1000"
-          colors="primary:#d21e1e,secondary:#d21e1e" state="morph" stroke="70" style="width:100px;height:100px">
-        </lord-icon>
-        <div>
-          <h2>Student</h2>
-          <h3>Yes, I am an undergrad student with the passion and creativity</h3>
-        </div>
-      </div>
-      </div>
-
-      
-
-      <div class="github">
+        <div class="github">
           <span class="halo-2 crd-1"></span>
           <span class="halo-3 crd-2"></span>
-        <img src="https://avatars.githubusercontent.com/u/71836991?v=4" style="border-radius: 100%;  height: 100px; border: 4px solid var(--body-background-darker);">
-        <h1>@Rahuletto</h1>
+          <img
+            alt="profile-picture"
+            src="https://avatars.githubusercontent.com/u/71836991?v=4"
+            style="
+              border-radius: 100%;
+              height: 100px;
+              border: 4px solid var(--body-background-darker);
+            "
+          />
+          <h1>@Rahuletto</h1>
 
-        <div class="github-element" style="display: flex; align-items: center; justify-content: center;">
-          <iframe src="https://github.com/sponsors/Rahuletto/button" title="Sponsor Rahuletto" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
-        </div>
-        <div class="github-element" style="display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-map-marker-alt"></i>
-            <div style="width: 10px;"></div>
+          <div
+            class="github-element"
+            style="display: flex; align-items: center; justify-content: center"
+          >
+            <iframe
+              src="https://github.com/sponsors/Rahuletto/button"
+              title="Sponsor Rahuletto"
+              height="32"
+              width="114"
+              style="border: 0; border-radius: 6px"
+            ></iframe>
+          </div>
+          <div
+            class="github-element"
+            style="display: flex; align-items: center; justify-content: center"
+          >
+            <i class="bi bi-geo-alt-fill"></i>
+            <div style="width: 10px"></div>
             <h4>India</h4>
-            <div style="width: 20px;"></div>
-            <i class="fas fa-calendar-alt"></i>
-            <div style="width: 10px;"></div>
+            <div style="width: 20px"></div>
+            <i class="bi bi-calendar3"></i>
+            <div style="width: 10px"></div>
             <h4>Joined Sept 24, 2020</h4>
+          </div>
+
+          <div class="cards">
+            <a
+              title="Languages i used"
+              href="https://github.com/Rahuletto?tab=repositories"
+            >
+              <img
+                alt="languages i used"
+                src="https://github-readme-stats.vercel.app/api/top-langs/?username=rahuletto&bg_color=14151a&theme=dark&title_color=206DA2&text_color=FFFFFF&layout=compact&show_icons=true&border_color=206DA2&icon_color=206DA2&include_all_commits=true&border_radius=15&card_width=369"
+              />
+            </a>
+
+            <a title="Github Stats" href="https://github.com/Rahuletto">
+              <img
+                alt="my github stats"
+                src="https://github-readme-stats.vercel.app/api?username=Rahuletto&show_icons=true&bg_color=14151a&title_color=E1591F&text_color=FFFFFF&border_color=E1591F&icon_color=E1591F&include_all_commits=true&layout=compact&border_radius=15"
+              />
+            </a>
+          </div>
         </div>
 
-        <div class="cards">
-          <a href="https://github.com/Rahuletto?tab=repositories">
-            <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=rahuletto&bg_color=14151a&theme=dark&title_color=206DA2&text_color=FFFFFF&layout=compact&show_icons=true&border_color=206DA2&icon_color=206DA2&include_all_commits=true&border_radius=15&card_width=369">
-          </a>
+        <div class="projects">
+          <h1>Projects</h1>
+          <h3>Here's some of the top-rated projects i worked on.</h3>
 
-          <a href="https://github.com/Rahuletto">
-            <img src="https://github-readme-stats.vercel.app/api?username=Rahuletto&show_icons=true&bg_color=14151a&title_color=E1591F&text_color=FFFFFF&border_color=E1591F&icon_color=E1591F&include_all_commits=true&layout=compact&border_radius=15">
-          </a>
+          <section class="list">
+            <a title="Unixdots project" href="https://unixporn-dots.github.io"
+              ><img
+                alt="Unix dots"
+                class="project-img"
+                loading="lazy"
+                src="assets/unix.webp"
+              />
+              <h3>Unix Dots</h3></a
+            >
+            <a title="SimplyDJS project" href="https://simplyd.js.org"
+              ><img
+                alt="Simply DJS"
+                class="project-img"
+                loading="lazy"
+                src="assets/simplydjs.webp"
+              />
+              <h3>simply-djs</h3></a
+            >
+            <a title="Codeboard project" href="https://codeboard.tech"
+              ><img
+                alt="codeboard"
+                class="project-img"
+                loading="lazy"
+                src="assets/image.webp"
+              />
+              <h3>Codeboard</h3></a
+            >
+            <a title="SimplyXP project" href="https://simplyxp.js.org"
+              ><img
+                alt="simply xp"
+                class="project-img"
+                loading="lazy"
+                src="assets/simplyxp.webp"
+              />
+              <h3>simply-xp</h3></a
+            >
+            <a
+              title="Binnium project"
+              href="https://github.com/Rahuletto/binnium"
+              ><img
+                alt="binnium"
+                class="project-img"
+                loading="lazy"
+                src="assets/binnium.webp"
+              />
+              <h3>binnium</h3></a
+            >
+            <a
+              title="Chatbot project"
+              href="https://github.com/Rahuletto/chatbot"
+              ><img
+                alt="chatbot"
+                class="project-img"
+                loading="lazy"
+                src="assets/chatbot.webp"
+              />
+              <h3>chatbot</h3></a
+            >
+          </section>
+        </div>
 
-          
-      </div>
-      </div>
+        <div class="contact" id="contact">
+          <h1>Contact</h1>
+          <h3>Don't hesitate to contact me. Let's get in touch *wink*</h3>
+          <a
+            title="email"
+            style="
+              text-decoration: none;
+              color: var(--signature-orange);
+              font-weight: 500;
+            "
+            href="mailto:rahulmarban@gmail.com"
+            >rahulmarban@gmail.com</a
+          >
 
-      <div class="projects">
-        <h1>Projects</h1>
-        <h3>Here's some of the top-rated projects i worked on.</h3>
-
-        <section class="list">
-          <a href="https://unixporn-dots.github.io"><img class="project-img" src="unix.png"><h3>Unix Dots</h3></a>
-          <a href="https://simplyd.js.org"><img class="project-img" src="simplydjs.png"><h3>simply-djs</h3></a>
-          <a href="https://codeboard.tech"><img class="project-img" src="image.png"><h3>Codeboard</h3></a>
-          <a href="https://simplyxp.js.org"><img class="project-img" src="simplyxp.png"><h3>simply-xp</h3></a>
-          <a href="https://github.com/Rahuletto/binnium"><img class="project-img" src="binnium.png"><h3>binnium</h3></a>
-          <a href="https://github.com/Rahuletto/chatbot"><img class="project-img" src="chatbot.png"><h3>chatbot</h3></a>
-        </section>
-      </div>
-
-      <div class="contact" id="contact">
-        <h1>Contact</h1>
-        <h3>Don't hesitate to contact me. Let's get in touch *wink*</h3>
-        <a style="text-decoration: none; color: var(--signature-orange); font-weight: 500;" href="mailto:rahulmarban@gmail.com">rahulmarban@gmail.com</a>
-
-        <div class="contct">
-    <a href="https://discord.gg/3JzDV9T5Fn" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> <span style="font-size: 18px">Discord</span></a>
-    <a href="https://github.com/Rahuletto" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> <span style="font-size: 18px">Github</span></a>
-    <a href="https://www.linkedin.com/in/rahul-marban" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> <span style="font-size: 18px">Linkedin</span></a>
+          <div class="contct">
+            <a
+              title="Discord"
+              href="https://discord.gg/3JzDV9T5Fn"
+              target="_blank"
+              rel="noopener"
+              ><i class="bi bi-discord"></i>
+              <span style="font-size: 18px">Discord</span></a
+            >
+            <a
+              title="Github"
+              href="https://github.com/Rahuletto"
+              target="_blank"
+              rel="noopener"
+              ><i class="bi bi-github"></i>
+              <span style="font-size: 18px">Github</span></a
+            >
+            <a
+              title="Linkedin"
+              href="https://www.linkedin.com/in/rahul-marban"
+              target="_blank"
+              rel="noopener"
+              ><i class="bi bi-linkedin"></i>
+              <span style="font-size: 18px">Linkedin</span></a
+            >
+          </div>
         </div>
       </div>
-
-      
     </div>
 
-    
-  </div>
+    <script src="script.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
+    ></script>
+    <script
+      rel="preconnect"
+      async
+      src="https://cdn.lordicon.com/bhenfmcm.js"
+    ></script>
 
-  <script src="script.js"></script>
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
-  
-<script>
-  particlesJS("particles-js", {
-    "particles": {
-      "number": {
-        "value": 70,
-        "density": {
-          "enable": true,
-          "value_area": 789.1476416322727
-        }
-      },
-      "color": {
-        "value": ["#D21E1E", "#E1591F", "#206DA2"]
-      },
-      "shape": {
-        "type": "circle",
-        "stroke": {
-          "width": 0,
-          "color": "#000000"
+    <script type="module">
+      particlesJS("particles-js", {
+        particles: {
+          number: {
+            value: 70,
+            density: {
+              enable: true,
+              value_area: 789.1476416322727,
+            },
+          },
+          color: {
+            value: ["#D21E1E", "#E1591F", "#206DA2"],
+          },
+          shape: {
+            type: "circle",
+            stroke: {
+              width: 0,
+              color: "#000000",
+            },
+            polygon: {
+              nb_sides: 5,
+            },
+            image: {
+              src: "img/github.svg",
+              width: 100,
+              height: 100,
+            },
+          },
+          opacity: {
+            value: 0.3,
+            random: true,
+            anim: {
+              enable: true,
+              speed: 0.2,
+              opacity_min: 0,
+              sync: false,
+            },
+          },
+          size: {
+            value: 5,
+            random: true,
+            anim: {
+              enable: true,
+              speed: 5,
+              size_min: 6,
+              sync: false,
+            },
+          },
+          line_linked: {
+            enable: false,
+            distance: 150,
+            color: "#ffffff",
+            opacity: 0.4,
+            width: 1,
+          },
+          move: {
+            enable: true,
+            speed: 0.2,
+            direction: "none",
+            random: true,
+            straight: false,
+            out_mode: "out",
+            bounce: true,
+            attract: {
+              enable: false,
+              rotateX: 600,
+              rotateY: 1200,
+            },
+          },
         },
-        "polygon": {
-          "nb_sides": 5
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: {
+              enable: true,
+              mode: "bubble",
+            },
+            onclick: {
+              enable: false,
+              mode: "push",
+            },
+            resize: false,
+          },
+          modes: {
+            grab: {
+              distance: 400,
+              line_linked: {
+                opacity: 1,
+              },
+            },
+            bubble: {
+              distance: 83.91608391608392,
+              size: 1,
+              duration: 3,
+              opacity: 1,
+              speed: 3,
+            },
+            repulse: {
+              distance: 200,
+              duration: 0.4,
+            },
+            push: {
+              particles_nb: 4,
+            },
+            remove: {
+              particles_nb: 2,
+            },
+          },
         },
-        "image": {
-          "src": "img/github.svg",
-          "width": 100,
-          "height": 100
-        }
-      },
-      "opacity": {
-        "value": 0.3,
-        "random": true,
-        "anim": {
-          "enable": true,
-          "speed": 0.2,
-          "opacity_min": 0,
-          "sync": false
-        }
-      },
-      "size": {
-        "value": 5,
-        "random": true,
-        "anim": {
-          "enable": true,
-          "speed": 5,
-          "size_min": 6,
-          "sync": false
-        }
-      },
-      "line_linked": {
-        "enable": false,
-        "distance": 150,
-        "color": "#ffffff",
-        "opacity": 0.4,
-        "width": 1
-      },
-      "move": {
-        "enable": true,
-        "speed": 0.2,
-        "direction": "none",
-        "random": true,
-        "straight": false,
-        "out_mode": "out",
-        "bounce": true,
-        "attract": {
-          "enable": false,
-          "rotateX": 600,
-          "rotateY": 1200
-        }
-      }
-    },
-    "interactivity": {
-      "detect_on": "canvas",
-      "events": {
-        "onhover": {
-          "enable": true,
-          "mode": "bubble"
-        },
-        "onclick": {
-          "enable": false,
-          "mode": "push"
-        },
-        "resize": false
-      },
-      "modes": {
-        "grab": {
-          "distance": 400,
-          "line_linked": {
-            "opacity": 1
-          }
-        },
-        "bubble": {
-          "distance": 83.91608391608392,
-          "size": 1,
-          "duration": 3,
-          "opacity": 1,
-          "speed": 3
-        },
-        "repulse": {
-          "distance": 200,
-          "duration": 0.4
-        },
-        "push": {
-          "particles_nb": 4
-        },
-        "remove": {
-          "particles_nb": 2
-        }
-      }
-    },
-    "retina_detect": true
-  });
-</script>
-</body>
+        retina_detect: true,
+      });
+    </script>
+  </body>
 
   <footer>
-    <h3>Made by Rahul<span class="signature-orange">e</span><span class="signature-red">tt</span><span
-          class="signature-blue">o</span></h3>
+    <h3>
+      Made by Rahul<span class="signature-orange">e</span
+      ><span class="signature-red">tt</span
+      ><span class="signature-blue">o</span>
+    </h3>
   </footer>
-
 </html>
