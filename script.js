@@ -52,6 +52,8 @@ function setDark() {
   document.documentElement.style.setProperty("--body-background-darker", "#14151a");
 
   setCookie('theme', 'dark', 365);
+  document.documentElement.setAttribute('data-theme', 'dark');
+
 }
 
 function setLight() {
@@ -63,12 +65,13 @@ function setLight() {
   btn.classList.add('lighty')
 
   themetxt.innerHTML = "Light"
-  document.documentElement.style.setProperty("--body-background", "#G1G1G1");
+  document.documentElement.style.setProperty("--body-background", "#e4e7f6");
   document.documentElement.style.setProperty("--font-color", "#16171E");
   document.documentElement.style.setProperty("--body-background-lighter", "#fff");
   document.documentElement.style.setProperty("--body-background-darker", "#DADADC");
 
   setCookie('theme', 'light', 365);
+  document.documentElement.setAttribute('data-theme', 'light');
 }
 
 function setSavedTheme() {
