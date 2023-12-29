@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500&family=Urbanist:wght@500;600;700;800&display=swap");
+
+:root {
+  --purple-light: #8959cf;
+  --purple: #8a5ad1;
+  --purple-dark: #56318e;
+  --background: #09080a;
+  --background-right: #08050a;
+  --color: #e4e4e4;
+}
+
+html {
+  text-rendering: geometricPrecision !important;
+  overflow-x: hidden;
+  color: var(--text-color);
+  font-family: "Space Grotesk", "Urbanist", sans-serif;
+  background: linear-gradient(
+    135deg,
+    var(--background) 0%,
+    var(--background-right) 100%
+  );
+  scroll-behavior: smooth;
+  -webkit-transition: 0.2s cubic-bezier(0.21, 0.67, 0.31, 0.92);
+  -o-transition: 0.2s cubic-bezier(0.21, 0.67, 0.31, 0.92);
+  transition: 0.2s cubic-bezier(0.21, 0.67, 0.31, 0.92);
+  -moz-transition: 0.2s cubic-bezier(0.21, 0.67, 0.31, 0.92);
+  -ms-transition: 0.2s cubic-bezier(0.21, 0.67, 0.31, 0.92);
+}
+
+body {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 800 !important;
+  font-family: "Urbanist" !important;
+}
+* {
+  text-rendering: geometricPrecision !important;
+  font-family: "Space Grotesk";
+  font-weight: 500;
+  cursor: none;
+  color: var(--color)
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+header {
+  padding: 18px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+}
+
+header img {
+  width: 32px;
+  height: 32px;
+}
+
+header .header-buttons {
+  display: flex;
+  gap: 18px;
+}
+
+header .header-buttons a {
+  font-family: "Urbanist" !important;
+  font-weight: 600;
+  padding: 6px 16px;
+  color: var(--purple-light);
+  text-decoration: none !important;
+  font-size: 18px;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  -webkit-border-radius: 14px;
+  -moz-border-radius: 14px;
+  -ms-border-radius: 14px;
+  -o-border-radius: 14px;
+
+  transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+  -webkit-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+  -moz-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+  -ms-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+  -o-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+}
+header .header-buttons a:active,
+header .header-buttons a.active {
+  color: var(--background);
+  background-color: var(--purple-light);
+}
+
+header .header-buttons a:hover {
+  border: 2px solid var(--purple-dark);
+}
+
+body .cursor {
+  pointer-events: none;
+}
+body .cursor__ball {
+  position: fixed;
+  top: 0;
+  left: 0;
+  mix-blend-mode: difference;
+  z-index: 1000;
+}
+body .cursor__ball circle {
+  fill: var(--purple);
+}

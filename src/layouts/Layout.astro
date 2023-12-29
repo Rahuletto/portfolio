@@ -1,0 +1,91 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+
+import "./styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"
+      integrity="sha512-EZI2cBcGPnmR89wTgVnN3602Yyi7muWo8y1B3a8WmIv1J9tYG+udH4LvmYjLiGp37yHB7FfaPBo8ly178m9g4Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"></script>
+    <meta
+      name="description"
+      content="Building the future, pixel by pixel using a blend of code and imagination to design exceptional user experiences"
+    />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="cursor">
+      <div class="cursor__ball cursor__ball--big">
+        <svg height="30" width="30">
+          <circle cx="15" cy="15" r="12" stroke-width="0"></circle>
+        </svg>
+      </div>
+
+      <div class="cursor__ball cursor__ball--small">
+        <svg height="10" width="10">
+          <circle cx="5" cy="5" r="4" stroke-width="0"></circle>
+        </svg>
+      </div>
+    </div>
+
+    <script>
+      const $bigBall = document.querySelector(".cursor__ball--big");
+      const $smallBall = document.querySelector(".cursor__ball--small");
+      const $hoverables = document.querySelectorAll("a");
+
+      // Listeners
+      document.body.addEventListener("mousemove", onMouseMove);
+      for (let i = 0; i < $hoverables.length; i++) {
+        $hoverables[i].addEventListener("mouseenter", onMouseHover);
+        $hoverables[i].addEventListener("mouseleave", onMouseHoverOut);
+      }
+
+      // Move the cursor
+      function onMouseMove(e: { pageX: number; pageY: number; }) {
+        TweenMax.to($bigBall, 0.4, {
+          x: e.pageX - 15,
+          y: e.pageY - 15,
+        });
+        TweenMax.to($smallBall, 0.1, {
+          x: e.pageX - 5,
+          y: e.pageY - 7,
+        });
+      }
+
+      // Hover an element
+      function onMouseHover() {
+        TweenMax.to($bigBall, 0.3, {
+          scale: 3,
+          filter: "drop-shadow(0px 0px 2px #8959cf)"
+        });
+        TweenMax.to($smallBall, 0.3, {
+          scale: 0
+        }) 
+      }
+      function onMouseHoverOut() {
+        TweenMax.to($bigBall, 0.3, {
+          scale: 1,
+          filter: "none"
+        });
+        TweenMax.to($smallBall, 0.3, {
+          scale: 1
+        }) 
+      }
+    </script>
+
+    <slot />
+  </body>
+</html>
