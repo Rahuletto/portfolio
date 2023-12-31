@@ -1,7 +1,5 @@
 ---
-import { TbError404 } from "react-icons/tb";
-
-import "./styles/global.css";
+import "../../styles/global.css";
 
 import "@fontsource-variable/outfit";
 import "@fontsource-variable/space-grotesk";
@@ -13,7 +11,7 @@ import Cursor from "../components/Cursor.astro";
   <Cursor />
   <div class="container">
     <h1>
-      <TbError404 />
+      404
     </h1>
     <h3>uh oh.</h3>
     <p>You are lost in this infinite space. Get back</p>
@@ -95,24 +93,22 @@ import Cursor from "../components/Cursor.astro";
   }
 
   @media only screen and (max-width: 540px) {
-  .container {
-    width: 95vw;
-    height: 95vh;
+    .container {
+      width: 95vw;
+      height: 95vh;
+    }
   }
-}
 
-
-@media only screen and (max-width: 460px) {
-  main {
-    margin: 12px;
+  @media only screen and (max-width: 460px) {
+    main {
+      margin: 12px;
+    }
+    .container {
+      padding: 24px;
+      height: 86vh;
+    }
+    .container p {
+      font-size: 16px;
+    }
   }
-  .container {
-    padding: 24px;
-    height: 86vh;
-
-  }
-  .container p {
-    font-size: 16px;
-  }
-}
 </style>

@@ -2,7 +2,7 @@
 import { GoSidebarCollapse } from "react-icons/go";
 ---
 
-<a href={"/projects"} title={"More Projects"} target="_blank" rel="noreferrer">
+<a href={"/projects"} title={"More Projects"}>
   <div class="projectCard card hoverable">
     <div class="img-placeholder"><GoSidebarCollapse /></div>
     <div class="card-content">
@@ -14,7 +14,7 @@ import { GoSidebarCollapse } from "react-icons/go";
         <p class="projects-pill">/projects</p>
 
         <div class="props">
-          <p>18+ More</p>
+          <p>12+ More</p>
         </div>
       </div>
     </div>
@@ -39,6 +39,7 @@ import { GoSidebarCollapse } from "react-icons/go";
 
   .img-placeholder svg {
     font-size: 58px;
+    aspect-ratio: 16/9;
     fill: #e3e3e3;
   }
   .card {

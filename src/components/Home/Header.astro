@@ -11,7 +11,7 @@ import { FaArrowCircleDown } from "react-icons/fa";
     <a class="h-button active" href="#home">Home</a>
     <a class="h-button" href="#about">About</a>
     <a class="h-button" href="#projects">Projects</a>
-    <a class="h-button" href="#blog">Blog</a>
+    <a class="h-button" href="#blogs">Blog</a>
     <a class="h-button" href="#connect">Connect</a>
   </div>
 </header>
@@ -64,7 +64,7 @@ import { FaArrowCircleDown } from "react-icons/fa";
   );
 
   const ham = document.getElementById("ham");
-  ham?.addEventListener("click", (e) => {
+  ham?.addEventListener("click", () => {
     const btns = document.querySelector(".header-buttons");
     btns?.classList.toggle("expand");
 

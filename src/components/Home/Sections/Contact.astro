@@ -1,0 +1,197 @@
+---
+import { GoCodeOfConduct, GoMail } from "react-icons/go";
+---
+
+<section id="connect">
+  <div class="title">
+    <i
+      class="icon"
+      id="branch"
+      style="position: absolute; transform: rotate(-21deg);"
+      ><GoCodeOfConduct client:idle /></i
+    ><h2>Connect</h2>
+  </div>
+  <div class="tag">
+    <div>
+      <h3 class="tagtitle">Let's make something amazing together</h3>
+      <span class="tagline"
+        >Don't hesitate to contact me. Let's get in touch *wink*</span
+      >
+    </div>
+    <a class="mailme" href="mailto:rahulmarban@gmail.com"
+      ><GoMail /> rahulmarban@gmail.com</a
+    >
+  </div>
+
+  <div class="links">
+    <a href="https://discord.gg/3JzDV9T5Fn">Discord</a>
+    <a href="https://twitter.com/rahuletto">Twitter</a>
+    <a href="https://instagram.com/rahul_marban">Instagram</a>
+    <a href="https://github.com/Rahuletto">Github</a>
+    <a href="https://www.linkedin.com/in/rahul-marban">Linkedin</a>
+  </div>
+</section>
+<style>
+  #connect {
+    min-height: 70vh;
+    display: flex;
+    padding: 2rem 4rem;
+    padding-top: 78px;
+    flex-direction: column;
+  }
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    margin-left: -18px;
+  }
+
+  .title svg {
+    font-size: 26px;
+  }
+
+  .title h2 {
+    width: -webkit-fill-available;
+    margin-left: 38px;
+    font-size: 36px;
+    background: linear-gradient(105deg, #8a5ad1 3.41%, #56318e 61.25%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .mailme {
+    background: var(--purple-light);
+    border-radius: 18px;
+    display: block;
+    color: var(--background);
+    width: fit-content;
+    padding: 12px 16px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mailme svg {
+    fill: var(--background);
+    font-size: 22px;
+  }
+  .tag div {
+    margin-left: 8px;
+    width: fit-content;
+  }
+  .tag {
+    margin-top: 0px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    position: relative;
+    background: var(--box);
+    border-radius: 32px;
+    border: 1px var(--border) solid;
+    margin: 24px auto;
+    width: -webkit-fill-available;
+    max-width: 88vw;
+    padding: 22px;
+    transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+    -webkit-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+    -moz-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+    -ms-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+    -o-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+  }
+
+  .tagtitle {
+    font-size: 32px;
+    margin: 0;
+    margin-bottom: 14px;
+  }
+
+  .tag p {
+    font-size: 18px;
+    margin: 0;
+    max-width: 900px;
+  }
+  .highlight {
+    color: #8a5ad0;
+    font-family: "Outfit Variable";
+    font-weight: 700;
+    word-wrap: break-word;
+  }
+  .tagline {
+    color: var(--color);
+    font-family: "Space Grotesk Variable";
+    font-weight: 400;
+    word-wrap: break-word;
+  }
+
+  .links {
+    background: #151317;
+    border-radius: 14px;
+    display: flex;
+    justify-content: space-between;
+    padding: 4px;
+    gap: 6px;
+  }
+
+  .links a {
+    padding: 16px 0px;
+    border-radius: 12px;
+    width: -webkit-fill-available;
+    text-align: center;
+  }
+
+  .links a:hover {
+    background: var(--purple-light);
+    color: var(--background);
+    font-weight: 800;
+  }
+
+  @media only screen and (max-width: 790px) {
+    .links {
+      flex-direction: column;
+      border-radius: 20px;
+    }
+
+    .links a {
+      padding: 16px 26px;
+      border-radius: 16px;
+      width: -webkit-fill-available;
+      text-align: left;
+    }
+  }
+  @media only screen and (max-width: 696px) {
+    #connect {
+      padding: 1rem 2rem;
+      gap: 32px;
+    }
+
+    .tag {
+        margin: 0px !important;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    .tag {
+      width: auto;
+      margin: 24px;
+    }
+
+    .tag p {
+      font-size: 16px;
+    }
+  }
+
+  @media only screen and (max-width: 400px) {
+    #connect {
+      padding: 1rem 1rem;
+    }
+    .title {
+      margin-left: 0px;
+    }
+  }
+</style>

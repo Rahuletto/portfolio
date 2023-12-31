@@ -67,7 +67,7 @@ const { url } = Astro.props;
   );
 
   const ham = document.getElementById("ham");
-  ham?.addEventListener("click", (e) => {
+  ham?.addEventListener("click", () => {
     const btns = document.querySelector(".header-buttons");
     btns?.classList.toggle("expand");
 

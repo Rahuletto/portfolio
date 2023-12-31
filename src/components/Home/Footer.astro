@@ -1,0 +1,71 @@
+---
+
+---
+
+<footer>
+  <div>
+    <div class="logo">
+      <img src="/ghost-icon.svg" alt="icon" />
+      <h3>Rahuletto</h3>
+    </div>
+    <p style="color: #dedede; font-weight: 600 !important;">
+      Building the future, pixel by pixel.
+    </p>
+  </div>
+  <p style="color: #919191; font-weight: 600 !important;">© 2024 Rahuletto</p>
+</footer>
+
+<style>
+  footer {
+    background: #131113;
+    height: 40vh;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  footer p {
+    font-size: 22px;
+  }
+
+  .logo {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .logo img {
+    width: 48px;
+  }
+  .logo h3 {
+    font-size: 48px;
+    background: linear-gradient(105deg, #8a5ad1 3.41%, #7041b5 61.25%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: normal;
+    font-weight: 600;
+    margin: 0;
+    user-select: none;
+  }
+
+  @media only screen and (max-width: 600px) {
+    footer {
+      padding: 2rem;
+    }
+  }
+
+  @media only screen and (max-width: 450px) {
+    .logo img {
+      width: 38px;
+    }
+    .logo h3 {
+      font-size: 38px;
+    }
+
+    footer p {
+    font-size: 18px;
+  }
+  }
+</style>

@@ -12,6 +12,11 @@ import rehypeToc from "rehype-toc";
 import { remarkReadingTime } from './plugins/read.mjs';
 
 export default defineConfig({
+  vite: {
+    ssr: {
+      noExternal: ["react-icons"],
+    },
+  },
   site: "https://marban.is-a.dev",
   integrations: [mdx({ gfm: true }), sitemap(), react()],
   markdown: {

@@ -1,6 +1,6 @@
 ---
 title: "Happy new year"
-description: "New year, New me ✨. Rebranding everything to streamline with my design language"
+description: "New year, New me ✨. Rebranding everything..."
 pubDate: "Dec 31 2023"
 heroImage: "/blogs/new-year.png"
 tags:
