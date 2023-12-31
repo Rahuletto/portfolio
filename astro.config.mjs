@@ -3,17 +3,18 @@ import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 
 import sitemap from "@astrojs/sitemap";
-import vercel from '@astrojs/vercel/serverless'
+import vercel from "@astrojs/vercel/serverless";
+
+// Remark
 import remarkToc from "remark-toc";
 import { rehypeAccessibleEmojis } from "rehype-accessible-emojis";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeToc from "rehype-toc";
-import { remarkReadingTime } from './plugins/read.mjs';
 
 export default defineConfig({
-  output: 'server',
-    adapter: vercel(),
+  output: "server",
+  adapter: vercel(),
   vite: {
     ssr: {
       noExternal: ["react-icons"],
@@ -23,12 +24,12 @@ export default defineConfig({
   integrations: [mdx({ gfm: true }), sitemap(), react()],
   markdown: {
     syntaxHighlight: "shiki",
-    remarkPlugins: [[remarkToc, { heading: "contents" }], remarkReadingTime],
+    remarkPlugins: [[remarkToc, { heading: "contents" }]],
     rehypePlugins: [
       rehypeSlug,
       [rehypeAutolinkHeadings, { behavior: "append" }],
       [rehypeToc, { headings: ["h2", "h3"] }],
-      rehypeAccessibleEmojis
+      rehypeAccessibleEmojis,
     ],
 
     shikiConfig: {
