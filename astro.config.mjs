@@ -3,7 +3,7 @@ import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 
 import sitemap from "@astrojs/sitemap";
-
+import vercel from '@astrojs/vercel/serverless'
 import remarkToc from "remark-toc";
 import { rehypeAccessibleEmojis } from "rehype-accessible-emojis";
 import rehypeSlug from "rehype-slug";
@@ -12,6 +12,8 @@ import rehypeToc from "rehype-toc";
 import { remarkReadingTime } from './plugins/read.mjs';
 
 export default defineConfig({
+  output: 'server',
+    adapter: vercel(),
   vite: {
     ssr: {
       noExternal: ["react-icons"],
