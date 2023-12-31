@@ -4,6 +4,7 @@ import mdx from "@astrojs/mdx";
 
 import sitemap from "@astrojs/sitemap";
 // import vercel from "@astrojs/vercel/serverless";
+import cloudflare from '@astrojs/cloudflare';
 
 // Remark
 import remarkToc from "remark-toc";
@@ -13,8 +14,8 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeToc from "rehype-toc";
 
 export default defineConfig({
-  // output: "server",
-  // adapter: vercel(),
+  output: 'server',
+  adapter: cloudflare(),
   vite: {
     ssr: {
       noExternal: ["react-icons"],
