@@ -3,7 +3,7 @@ import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 
 import sitemap from "@astrojs/sitemap";
-import vercel from "@astrojs/vercel/serverless";
+// import vercel from "@astrojs/vercel/serverless";
 
 // Remark
 import remarkToc from "remark-toc";
@@ -13,8 +13,8 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeToc from "rehype-toc";
 
 export default defineConfig({
-  output: "server",
-  adapter: vercel(),
+  // output: "server",
+  // adapter: vercel(),
   vite: {
     ssr: {
       noExternal: ["react-icons"],
