@@ -1,141 +1,21 @@
 ---
+import Header from "../components/Home/Header.astro";
+
+import Home from "../components/Home/Sections/Home.astro";
+import Tagline from "../components/Tagline.astro";
+import About from "../components/Home/Sections/About.astro";
+import Projects from "../components/Home/Sections/Projects.astro";
+
 import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
 ---
 
 <Layout title="Rahuletto.">
-  <header id="header">
-    <img src="/ghost-icon.svg" />
-    <div class="header-buttons">
-      <a class="h-button active" href="#home">Home</a>
-      <a class="h-button" href="#projects">Projects</a>
-      <a class="h-button" href="#blog">Blog</a>
-      <a class="h-button" href="#connect">Connect</a>
-    </div>
-  </header>
+  <Header />
   <main>
-    <section id="home">
-      <div class="left">
-        <div class="hero">
-          <span class="glow"></span>
-          <h3>Hi, I am</h3>
-          <h1>Rahul<br />Marban</h1>
-          <h3 style="color: #DEDEDE; font-weight: 600 !important;">
-            Building the future, pixel by pixel.
-          </h3>
-        </div>
-        <p>
-          I use a blend of code and imagination to design exceptional user
-          experiences
-        </p>
-      </div>
-      <div class="right">
-        <img src="/face.svg" />
-      </div>
-    </section>
+    <Home />
+    <Tagline />
+    <About />
+    <Projects />
+
   </main>
 </Layout>
-
-<script>
-  document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-      const sections = document.querySelectorAll("section");
-      const menu_links = document.querySelectorAll(".h-button");
-
-      const makeActive = (link: number) =>
-        menu_links[link].classList.add("active");
-      const removeActive = (link: number) =>
-        menu_links[link].classList.remove("active");
-      const removeAllActive = () =>
-        [...Array(sections.length).keys()].forEach((link) =>
-          removeActive(link)
-        );
-
-      const sectionMargin = 200;
-
-      let currentActive = 0;
-
-      window.addEventListener("scroll", () => {
-        const current =
-          sections.length -
-          [...sections]
-            .reverse()
-            .findIndex(
-              (section) => window.scrollY >= section.offsetTop - sectionMargin
-            ) -
-          1;
-
-        if (current !== currentActive) {
-          removeAllActive();
-          currentActive = current;
-          makeActive(current);
-        }
-      });
-    },
-    false
-  );
-</script>
-
-<style>
-  .glow {
-    box-shadow: 0px 0px 120px 35px var(--purple);
-    position: absolute;
-    top: 261px;
-    left: 156px;
-    width: 1px;
-    height: 1px;
-    border-radius: 20px;
-  }
-
-  #home {
-    min-height: 70vh;
-    display: flex;
-    padding: 2rem 4rem;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .left {
-	max-width: 500px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-  .right {
-    width: 250px;
-  }
-  .left p {
-    color: #a2a2a2;
-
-    font-family: Space Grotesk;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-  }
-
-  .hero {
-    gap: 14px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .hero * {
-    margin: 0;
-  }
-
-  .hero h1 {
-    font-size: 75px;
-    background: linear-gradient(105deg, #8a5ad1 3.41%, #56318e 61.25%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-style: normal;
-    font-weight: 700;
-  }
-
-  .hero h3 {
-    font-size: 24px;
-    font-weight: 700;
-  }
-</style>

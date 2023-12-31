@@ -1,0 +1,142 @@
+.post > * {
+  margin-bottom: 2.5rem;
+}
+
+.prose abbr {
+  color: var(--purple);
+  text-decoration-color: var(--purple);
+  font-size: 1.125rem;
+  line-height: 1.75em;
+  -moz-text-decoration-color: var(--purple);
+}
+
+.prose li,
+.prose ul,
+.prose h4,
+.prose sub,
+.prose sup,
+.prose kbd,
+.prose p {
+  font-size: 1.125rem;
+  margin-top: 6px;
+  line-height: 1.75em;
+  font-weight: 400;
+  color: #bfc1c9;
+}
+
+.prose kbd kbd {
+  display: inline-block;
+  transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.014);
+  border-radius: 6px;
+  padding: 0px 8px;
+  margin: 0px 3px;
+  font-family:  "JetBrains Mono Variable";
+  font-size: 16px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  border-bottom-width: 3px;
+}
+
+.prose kbd kbd:active {
+  border-bottom-width: 1px !important;
+
+   transform: scale(0.9);
+   -webkit-transform: scale(0.9);
+   -moz-transform: scale(0.9);
+   -ms-transform: scale(0.9);
+   -o-transform: scale(0.9);
+}
+
+.prose img {
+  border-radius: 18px;
+  -webkit-border-radius: 18px;
+  -moz-border-radius: 18px;
+  -ms-border-radius: 18px;
+  -o-border-radius: 18px;
+}
+
+nav.toc {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 12px 4px;
+  border-radius: 18px;
+  -webkit-border-radius: 18px;
+  -moz-border-radius: 18px;
+  -ms-border-radius: 18px;
+  -o-border-radius: 18px;
+}
+
+nav.toc li a, .prose a {
+  color: var(--purple-light);
+  text-decoration: underline 2px var(--purple-dark) !important;
+  font-family: "Outfit Variable";
+  font-weight: 600;
+}
+
+nav.toc li::marker {
+  color: #9c9c9c;
+}
+
+header {
+  position: static;
+}
+
+.toc-level {
+  padding-left: 54px;
+}
+nav.toc:before {
+  content: "TABLE OF CONTENTS";
+  font-family: "Outfit Variable";
+  font-weight: 700;
+  opacity: 0.6;
+  user-select: none;
+  padding: 12px 24px;
+}
+
+code,
+pre,
+code *,
+pre * {
+  font-family: "JetBrains Mono Variable" !important;
+}
+
+h1,
+h2 {
+  background: linear-gradient(105deg, #8a5ad1 3.41%, #56318e 61.25%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-style: normal;
+  font-weight: 600;
+}
+
+pre {
+  padding: 12px 24px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+}
+
+h2 {
+  font-size: 32px;
+  margin-bottom: 18px !important;
+}
+
+.prose blockquote {
+  border-left: 2px solid var(--purple);
+  background: #8a5ad10f;
+  padding: 4px 26px;
+  border-radius: 12px;
+  margin-left: 0;
+}
+
+.prose h3 {
+  font-weight: 600;
+  margin-bottom: 18px !important;
+}
+.prose h4 {
+  font-weight: 500;
+  margin-bottom: 0px !important;
+}

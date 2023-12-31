@@ -1,0 +1,76 @@
+---
+import { GoZap, GoPencil, GoBook } from "react-icons/go";
+
+interface Props {
+  title: string;
+  content: string;
+  icon: number;
+}
+
+const { title, content, icon } = Astro.props;
+---
+
+<div class="card">
+  <i
+    class="icon subhead"
+    id={icon == 1 ? "zap" : icon == 2 ? "pencil" : "book"}
+  >
+    {icon == 1 ? <GoZap /> : icon == 2 ? <GoPencil /> : <GoBook />}
+  </i>
+  <div class="card-content">
+    <h3>{title}</h3>
+    <p>
+      {content}
+    </p>
+  </div>
+</div>
+
+<style>
+  .subhead svg {
+    font-size: 98px;
+  }
+
+  .card {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 0.1fr 1fr;
+    align-items: center;
+    justify-items: start;
+    gap: 48px;
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card-content p {
+    margin: 0;
+    color: var(--content);
+    font-size: 18px;
+    max-width: 900px;
+  }
+
+  .card-content h3 {
+    font-size: 28px;
+    font-weight: 600 !important;
+    margin: 0;
+  }
+
+  @media only screen and (max-width: 640px) {
+    .card {
+      grid-auto-flow: row;
+      grid-auto-columns: 1fr;
+      grid-auto-rows: 0.2fr 1fr;
+    }
+  }
+
+  @media only screen and (max-width: 450px) {
+    .card-content h3 {
+      font-size: 22px !important;
+    }
+    .card-content p {
+      font-size: 16px !important;
+    }
+  }
+</style>

@@ -1,0 +1,157 @@
+<div class="cursor">
+  <div class="cursor cursor-big">
+    <svg height="30" width="30">
+      <circle cx="15" cy="15" r="12" stroke-width="0"></circle>
+    </svg>
+  </div>
+
+  <div class="cursor cursor-small">
+    <svg height="10" width="10">
+      <circle cx="5" cy="5" r="4" stroke-width="0"></circle>
+    </svg>
+  </div>
+</div>
+<script lang="javascript" type="module">
+  const $bigBall = document.querySelector(".cursor-big");
+  const $smallBall = document.querySelector(".cursor-small");
+
+  // Listeners
+  document.body.addEventListener("mousemove", onMouseMove);
+
+  document.body.addEventListener("mousedown", onClick);
+  document.body.addEventListener("mouseup", outClick);
+
+  function onMouseMove(e) {
+    const bigX = e.clientX - $bigBall.offsetWidth / 2,
+      bigY = e.clientY - $bigBall.offsetHeight / 2,
+      smallX = e.clientX - $smallBall.offsetWidth / 2,
+      smallY = e.clientY - $smallBall.offsetHeight / 2;
+
+    $bigBall.animate(
+      e.target.closest(".hoverable")
+        ? {
+            transform: `translate(${bigX}px, ${bigY}px) scale(${1.5})`,
+            fill: "none",
+            strokeWidth: "1px",
+            stroke: "var(--purple)",
+          }
+        : {
+            transform: `translate(${bigX}px, ${bigY}px) scale(${
+              e.target.closest("a")
+                ? 2.5
+                : e.target.closest("i")
+                  ? 2
+                  : e.target.closest(".face") || e.target.closest(".blog-img")
+                    ? 0.4
+                    : 1
+            })`,
+            fill: "var(--purple)",
+            strokeWidth: "0px",
+          },
+      {
+        duration:
+          e.target.closest(".hoverable") ||
+          e.target.closest(".face") ||
+          e.target.closest(".blog-img") ||
+          e.target.closest("i") ||
+          e.target.closest("a")
+            ? 100
+            : 500,
+        fill: "forwards",
+        easing: "cubic-bezier(0.35, 0.76, 0.4, 0.92)",
+      }
+    );
+
+    $smallBall.animate(
+      e.target.closest(".hoverable") ||
+        e.target.closest(".face") ||
+        e.target.closest(".blog-img") ||
+        e.target.closest("i") ||
+        e.target.closest("a")
+        ? {
+            transform: `translate(${smallX}px, ${smallY}px) scale(${0})`,
+          }
+        : {
+            transform: `translate(${smallX}px, ${smallY}px) scale(${1})`,
+            fill: "var(--purple)",
+            strokeWidth: "0px",
+          },
+      {
+        duration: 10,
+        fill: "forwards",
+        easing: "cubic-bezier(0.35, 0.76, 0.4, 0.92)",
+      }
+    );
+  }
+
+  let before = 1;
+  let smallBefore = 1;
+
+  function onClick(e) {
+    const bigX = e.clientX - $bigBall.offsetWidth / 2,
+      bigY = e.clientY - $bigBall.offsetHeight / 2,
+      smallX = e.clientX - $smallBall.offsetWidth / 2,
+      smallY = e.clientY - $smallBall.offsetHeight / 2;
+
+    var sty = window.getComputedStyle($bigBall);
+    var matrix = new WebKitCSSMatrix(sty.transform);
+
+    before = Math.round(matrix.m22);
+
+    var ssty = window.getComputedStyle($smallBall);
+    var smatrix = new WebKitCSSMatrix(ssty.transform);
+
+    smallBefore = Math.round(smatrix.m22);
+
+    $bigBall.animate(
+      {
+        transform: `translate(${bigX}px, ${bigY}px) scale(${0.8})`,
+      },
+      {
+        duration: 200,
+        fill: "forwards",
+        easing: "cubic-bezier(0.35, 0.76, 0.4, 0.92)",
+      }
+    );
+
+    $smallBall.animate(
+      {
+        transform: `translate(${smallX}px, ${smallY}px) scale(${0})`,
+      },
+      {
+        duration: 100,
+        fill: "forwards",
+        easing: "cubic-bezier(0.35, 0.76, 0.4, 0.92)",
+      }
+    );
+  }
+
+  function outClick(e) {
+    const bigX = e.clientX - $bigBall.offsetWidth / 2,
+      bigY = e.clientY - $bigBall.offsetHeight / 2,
+      smallX = e.clientX - $smallBall.offsetWidth / 2,
+      smallY = e.clientY - $smallBall.offsetHeight / 2;
+
+    $bigBall.animate(
+      {
+        transform: `translate(${bigX}px, ${bigY}px) scale(${before})`,
+      },
+      {
+        duration: 100,
+        fill: "forwards",
+        easing: "cubic-bezier(0.35, 0.76, 0.4, 0.92)",
+      }
+    );
+
+    $smallBall.animate(
+      {
+        transform: `translate(${smallX}px, ${smallY}px) scale(${smallBefore})`,
+      },
+      {
+        duration: 10,
+        fill: "forwards",
+        easing: "cubic-bezier(0.35, 0.76, 0.4, 0.92)",
+      }
+    );
+  }
+</script>

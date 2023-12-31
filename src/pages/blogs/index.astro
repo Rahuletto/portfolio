@@ -1,0 +1,124 @@
+---
+import { getCollection } from "astro:content";
+import BaseHeader from "../../components/BaseHeader.astro";
+
+const posts = (await getCollection("blogs")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+import Layout from "../../layouts/Layout.astro";
+import { GoTrophy } from "react-icons/go";
+
+import "./styles/blog.css";
+import BlogCard from "../../components/subcomponents/BlogCard.astro";
+---
+
+<Layout title="Rahuletto - Blogs">
+  <BaseHeader url="blog" />
+  <main>
+    <section>
+      <div class="title">
+        <i
+          class="icon"
+          id="branch"
+          style="position: absolute; transform: rotate(-21deg); top: 12px;"
+          ><GoTrophy client:idle /></i
+        ><h2>Blogs</h2>
+      </div>
+
+      <div class="grid">
+        {posts.map((post) => <BlogCard post={post} />)}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    margin-left: -20px;
+  }
+
+  .title svg {
+    font-size: 48px;
+  }
+
+  .title h2 {
+    width: -webkit-fill-available;
+    margin-left: 64px;
+    font-size: 52px;
+    margin-top: 0px;
+    background: linear-gradient(105deg, #8a5ad1 3.41%, #56318e 61.25%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  section {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: auto;
+    padding: 2rem 4rem;
+  }
+
+  .grid {
+    display: -ms-grid;
+    display: grid;
+    grid-gap: 2em;
+    gap: 2em;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    grid-template-rows: -webkit-min-content;
+    -ms-grid-rows: -webkit-min-content;
+    -ms-grid-rows: min-content;
+    grid-template-rows: min-content;
+    padding: 18px;
+    min-height: 70vh;
+    background: var(--background-darker);
+    border-radius: 30px;
+  }
+
+  @media only screen and (max-width: 1016px) {
+    .grid {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      padding: 0px;
+    }
+  }
+
+  @media only screen and (max-width: 700px) {
+    section {
+      padding: 1rem 1rem;
+    }
+
+    .title {
+      margin-left: 0px;
+    }
+
+    .title h2 {
+      font-size: 38px !important;
+      margin-left: 36px;
+    }
+
+    .title svg {
+      font-size: 26px !important;
+    }
+  }
+
+  @media only screen and (max-width: 696px) {
+    section {
+      padding: 1rem 2rem;
+      gap: 32px;
+    }
+  }
+</style>

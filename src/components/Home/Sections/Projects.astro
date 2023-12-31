@@ -1,0 +1,106 @@
+---
+import { GoRepo } from "react-icons/go";
+import ProjectCard from "../../subcomponents/ProjectCard.astro";
+import MoreProjects from "../../subcomponents/MoreProjects.astro";
+---
+
+<section id="projects">
+  <div class="title">
+    <i
+      class="icon"
+      id="branch"
+      style="position: absolute; transform: rotate(-21deg);"
+      ><GoRepo client:idle /></i
+    ><h2>Projects</h2>
+  </div>
+  <div class="grid">
+    <ProjectCard
+      href="https://github.com/unixporn-dots/unixporn-dots.github.io"
+      title="Unixporn-dots"
+      description="A collection of dotfiles and icons from the r/unixporn community"
+      language="Javascript"
+      fork={14}
+      stars={97}
+      image="/assets/unix.webp"
+    />
+
+    <ProjectCard
+      href="https://github.com/Rahuletto/simply-djs"
+      title="simply-djs"
+      description="The easiest way to build sophisticated systems in your Discord bots."
+      language="Typescript"
+      fork={38}
+      stars={71}
+      image="/assets/simplyd.webp"
+    />
+
+    <ProjectCard
+      href="https://github.com/Rahuletto/Codeboard"
+      title="Codeboard"
+      description="CodeBoard is a community-driven code sharing platform built by developers, for developers."
+      language="Typescript"
+      fork={0}
+      stars={4}
+      image="/assets/codeboard.webp"
+    />
+    <MoreProjects />
+  </div>
+</section>
+<style>
+  #projects {
+    min-height: 70vh;
+    display: flex;
+    padding: 2rem 4rem;
+    padding-top: 78px;
+    flex-direction: column;
+  }
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    margin-left: -18px;
+  }
+
+  .title svg {
+    font-size: 26px;
+    margin-top: 12px;
+  }
+
+  .title h2 {
+    width: -webkit-fill-available;
+    margin-left: 38px;
+    font-size: 36px;
+    background: linear-gradient(105deg, #8a5ad1 3.41%, #56318e 61.25%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .grid {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    margin: 26px;
+    margin-bottom: 64px;
+  }
+
+  @media only screen and (max-width: 696px) {
+    #projects {
+      padding: 1rem 2rem;
+      gap: 32px;
+    }
+  }
+
+  @media only screen and (max-width: 400px) {
+    #projects {
+      padding: 1rem 1rem;
+    }
+    .title {
+      margin-left: 0px;
+    }
+  }
+</style>

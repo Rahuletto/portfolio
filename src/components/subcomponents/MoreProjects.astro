@@ -1,0 +1,137 @@
+---
+import { GoSidebarCollapse } from "react-icons/go";
+---
+
+<a href={"/projects"} title={"More Projects"} target="_blank" rel="noreferrer">
+  <div class="projectCard card hoverable">
+    <div class="img-placeholder"><GoSidebarCollapse /></div>
+    <div class="card-content">
+      <div class="card-text">
+        <h3>Show more</h3>
+        <p>We got alot of projects here.</p>
+      </div>
+      <div class="card-props">
+        <p class="projects-pill">/projects</p>
+
+        <div class="props">
+          <p>18+ More</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>
+<style>
+  .card .img-placeholder {
+    width: 250px;
+    background-color: #232224;
+    border-radius: 18px;
+    height: -webkit-fill-available;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 250px;
+    min-height: 120px;
+  }
+
+  .card:active {
+    transform: scale(0.99);
+  }
+
+  .img-placeholder svg {
+    font-size: 58px;
+    fill: #e3e3e3;
+  }
+  .card {
+    margin: -18px;
+    margin-top: 8px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 0.1fr 1fr;
+    align-items: center;
+    justify-items: start;
+    gap: 48px;
+
+    position: relative;
+    background: var(--box);
+    border-radius: 32px;
+    padding: 14px;
+    border: 1px var(--border) solid;
+    transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+    -webkit-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+    -moz-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+    -ms-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+    -o-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+  }
+
+  .card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card-text p {
+    margin: 0;
+    color: var(--content);
+    font-size: 18px;
+    max-width: 900px;
+  }
+
+  .card-text h3 {
+    font-size: 26px;
+    font-weight: 600 !important;
+    margin: 0;
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .card-props {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .card-props .props {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .projects-pill {
+    margin: 0;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 800;
+    background: #232124;
+    color: #d0d0d0;
+  }
+
+  .props p {
+    margin: 0;
+    color: #b7b7b7;
+  }
+
+  @media only screen and (max-width: 777px) {
+    .card {
+      grid-auto-flow: row;
+      grid-auto-columns: 1fr;
+      grid-auto-rows: 0.2fr 1fr;
+      gap: 22px;
+    }
+
+    .img-placeholder {
+      width: -webkit-fill-available !important;
+    }
+  }
+
+  @media only screen and (max-width: 450px) {
+    .card-text h3 {
+        font-size: 22px !important;
+    }
+    .card-text p {
+        font-size: 16px !important;
+    }
+  }
+</style>
