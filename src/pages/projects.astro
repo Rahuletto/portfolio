@@ -38,7 +38,11 @@ const response = await fetch("https://api.github.com/graphql", {
       `,
   }),
 });
-const { data } = await response.json();
+
+const d = await response.json();
+const data = d.data
+
+console.log(d)
 
 const reps = data.user.repositories.edges;
 const formatted = reps.sort((a: any, b: any) => {
