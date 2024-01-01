@@ -20,8 +20,7 @@ export default defineConfig({
     ssr: {
       noExternal: ["react-icons"],
     },
-  },
-  site: "https://marban.is-a.dev",
+  }, 
   integrations: [mdx({ gfm: true }), sitemap(), react()],
   markdown: {
     syntaxHighlight: "shiki",
