@@ -3,7 +3,7 @@ import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 
 import sitemap from "@astrojs/sitemap";
-// import vercel from "@astrojs/vercel/serverless";
+
 import cloudflare from '@astrojs/cloudflare';
 
 // Remark
@@ -14,7 +14,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeToc from "rehype-toc";
 
 export default defineConfig({
-  output: 'server',
+  output: 'hybrid',
   adapter: cloudflare(),
   vite: {
     ssr: {

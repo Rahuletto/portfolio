@@ -4,14 +4,19 @@ import BaseHeader from "../components/BaseHeader.astro";
 import Layout from "../layouts/Layout.astro";
 import ProjectCard from "../components/subcomponents/ProjectCard.astro";
 
-const response = await fetch("https://api.github.com/graphql", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `bearer ${import.meta.env.GTOKEN}`,
-  },
-  body: JSON.stringify({
-    query: `
+let res;
+if (Astro.cookies.has("res")) {
+  const cookie = Astro.cookies.get("res");
+  res = cookie?.json();
+} else {
+  const response = await fetch("https://api.github.com/graphql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `bearer ${import.meta.env.GTOKEN}`,
+    },
+    body: JSON.stringify({
+      query: `
       query {
   user(login: "rahuletto") {
     repositories(first: 30) {
@@ -36,15 +41,14 @@ const response = await fetch("https://api.github.com/graphql", {
   }
 }
       `,
-  }),
-});
+    }),
+  });
 
-const d = await response.json();
-const data = d.data
+  res = await response.json();
+  Astro.cookies.set("res", res);
+}
 
-console.log(d)
-
-const reps = data.user.repositories.edges;
+const reps = res.data.user.repositories.edges;
 const formatted = reps.sort((a: any, b: any) => {
   return b.node.stargazerCount - a.node.stargazerCount;
 });
@@ -153,4 +157,4 @@ const formatted = reps.sort((a: any, b: any) => {
       gap: 32px;
     }
   }
-</style> 
+</style>
