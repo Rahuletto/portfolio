@@ -16,7 +16,7 @@ if (Astro.cookies.has("res")) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `bearer ${(runtime ? runtime : import.meta).env.GTOKEN}`,
+      Authorization: `bearer ${runtime.env.GTOKEN}`,
     },
     body: JSON.stringify({
       query: `
