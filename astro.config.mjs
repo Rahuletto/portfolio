@@ -30,6 +30,9 @@ export default defineConfig({
     },
   }),
   vite: {
+    define: {
+      'process.env.GTOKEN': JSON.stringify(process.env.GTOKEN)
+    },
     ssr: {
       noExternal: ["react-icons"],
     },
