@@ -9,11 +9,14 @@ if (Astro.cookies.has("res")) {
   const cookie = Astro.cookies.get("res");
   res = cookie?.json();
 } else {
+  //@ts-expect-error
+  const runtime = Astro.locals.runtime;
+
   const response = await fetch("https://api.github.com/graphql", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `bearer ${import.meta.env.GTOKEN}`,
+      Authorization: `bearer ${(runtime ? runtime : import.meta).env.GTOKEN}`,
     },
     body: JSON.stringify({
       query: `

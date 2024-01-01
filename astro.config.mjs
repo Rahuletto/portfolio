@@ -4,7 +4,7 @@ import mdx from "@astrojs/mdx";
 
 import sitemap from "@astrojs/sitemap";
 
-import cloudflare from '@astrojs/cloudflare';
+import cloudflare from "@astrojs/cloudflare";
 
 // Remark
 import remarkToc from "remark-toc";
@@ -14,13 +14,26 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeToc from "rehype-toc";
 
 export default defineConfig({
-  output: 'hybrid',
-  adapter: cloudflare(),
+  site: "https://marban.pages.dev",
+  output: "hybrid",
+  adapter: cloudflare({
+    imageService: "cloudflare",
+    runtime: {
+      mode: "local",
+      type: "pages",
+      bindings: {
+        "GTOKEN": {
+          type: "var",
+          value: process.env.GTOKEN
+        }
+      }
+    },
+  }),
   vite: {
     ssr: {
       noExternal: ["react-icons"],
     },
-  }, 
+  },
   integrations: [mdx({ gfm: true }), sitemap(), react()],
   markdown: {
     syntaxHighlight: "shiki",
