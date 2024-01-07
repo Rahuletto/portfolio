@@ -1,7 +1,6 @@
 ---
 import AboutCard from "../../subcomponents/AboutCard.astro";
-
-import { GoGitBranch } from "react-icons/go";
+import { GoGitBranch, GoLightBulb } from "react-icons/go";
 ---
 
 <section id="about">
@@ -31,6 +30,27 @@ import { GoGitBranch } from "react-icons/go";
       content="Classroom or coding, I'm a student passionate about blending design finesse with tech savvy in digital creations."
       icon={3}
     />
+  </div>
+  <div class="prof">
+    <div class="title">
+      <i
+        class="icon"
+        id="branch"
+        style="position: absolute; transform: rotate(-21deg); margin-top: 6px"
+        ><GoLightBulb client:idle /></i
+      ><h2>Proficiencies</h2>
+    </div>
+    <h3 class="subtitle">Languages</h3>
+    <p>TypeScript - JavaScript - HTML & CSS - Python - C</p>
+
+    <h3 class="subtitle">Tools</h3>
+    <p>Express - FastAPI - React - Next.js - Astro - DiscordJS - Tailwind - Bootstrap </p>
+
+    <h3 class="subtitle">Technologies</h3>
+    <p>NodeJS - Git - REST APIs - GraphQL</p>
+
+    <h3 class="subtitle">Databases</h3>
+    <p>SQL - MongoDB - Supabase - PostgreSQL</p>
   </div>
 </section>
 <style>
@@ -64,6 +84,27 @@ import { GoGitBranch } from "react-icons/go";
     -webkit-text-fill-color: transparent;
     font-style: normal;
     font-weight: 700;
+  }
+
+  h3.subtitle {
+    font-size: 26px;
+  }
+  .subtitle {
+    margin-bottom: 8px;
+    width: -webkit-fill-available;
+
+    background: linear-gradient(105deg, #8a5ad1 3.41%, #56318e 61.25%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .prof p {
+    margin: 0;
+    color: var(--content);
+    font-size: 18px;
   }
 
   .grid {
