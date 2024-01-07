@@ -32,7 +32,7 @@
   border-radius: 6px;
   padding: 0px 8px;
   margin: 0px 3px;
-  font-family:  "JetBrains Mono Variable";
+  font-family: "JetBrains Mono Variable";
   font-size: 16px;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -44,11 +44,11 @@
 .prose kbd kbd:active {
   border-bottom-width: 1px !important;
 
-   transform: scale(0.9);
-   -webkit-transform: scale(0.9);
-   -moz-transform: scale(0.9);
-   -ms-transform: scale(0.9);
-   -o-transform: scale(0.9);
+  transform: scale(0.9);
+  -webkit-transform: scale(0.9);
+  -moz-transform: scale(0.9);
+  -ms-transform: scale(0.9);
+  -o-transform: scale(0.9);
 }
 
 .prose img {
@@ -69,7 +69,8 @@ nav.toc {
   -o-border-radius: 18px;
 }
 
-nav.toc li a, .prose a {
+nav.toc li a,
+.prose a {
   color: var(--purple-light);
   text-decoration: underline 2px var(--purple-dark) !important;
   font-family: "Outfit Variable";
@@ -103,6 +104,23 @@ pre * {
   font-family: "JetBrains Mono Variable" !important;
 }
 
+.prose code {
+  padding: 2px 4px;
+  border: var(--border) 1px solid;
+  border-radius: 6px;
+  font-size: 16px;
+  background: #27252c45;
+}
+
+pre code {
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-size: 16px !important;
+  background: transparent !important;
+  -webkit-border-radius: inherit !important;
+}
+
 h1,
 h2 {
   background: linear-gradient(105deg, #8a5ad1 3.41%, #56318e 61.25%);
@@ -132,9 +150,79 @@ h2 {
   margin-left: 0;
 }
 
+.prose blockquote p {
+  margin-bottom: 6px;
+}
+
+.prose blockquote[type="warn"] {
+  border-left: 2px solid var(--orange);
+  background: #ff980e0f;
+  padding: 4px 26px;
+  border-radius: 12px;
+  margin-left: 0;
+  padding-top: 12px;
+}
+.prose blockquote[type="warn"] p {
+  color: #feab3cd9;
+  font-weight: 500;
+}
+
+.prose blockquote[type="warn"]::before {
+  content: "Warning";
+  color: var(--orange);
+  font-weight: 800;
+  font-size: 22px;
+}
+
+.prose blockquote[type="danger"] {
+  border-left: 2px solid var(--red);
+  background: #d3212c0f;
+  padding: 4px 26px;
+  border-radius: 12px;
+  margin-left: 0;
+  padding-top: 12px;
+}
+
+.prose blockquote[type="danger"] p {
+  color: #ff5862e6;
+  font-weight: 500;
+}
+
+.prose blockquote[type="danger"]::before {
+  content: "Danger";
+  color: var(--red);
+  font-weight: 800;
+  font-size: 22px;
+}
+
+.prose blockquote[type="tip"] {
+  border-left: 2px solid var(--green);
+  background: #069c560f;
+  padding: 4px 26px;
+  border-radius: 12px;
+  margin-left: 0;
+  padding-top: 12px;
+}
+
+.prose blockquote[type="tip"] p {
+  color: #1f9960d9 !important;
+  font-weight: 500;
+}
+
+.prose blockquote[type="tip"]::before {
+  content: "Tip";
+  color: var(--green);
+  font-weight: 800;
+  font-size: 22px;
+}
+
 .prose h3 {
   font-weight: 600;
   margin-bottom: 18px !important;
+  text-decoration: underline;
+  text-decoration-color: var(--purple-dark);
+  -moz-text-decoration-color: var(--purple-dark);
+  text-decoration-thickness: 2px;
 }
 .prose h4 {
   font-weight: 500;

@@ -1,7 +1,6 @@
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
-
 import sitemap from "@astrojs/sitemap";
 
 import cloudflare from "@astrojs/cloudflare";
@@ -22,22 +21,36 @@ export default defineConfig({
       mode: "local",
       type: "pages",
       bindings: {
-        "GTOKEN": {
+        GTOKEN: {
           type: "var",
-          value: process.env.GTOKEN
-        }
-      }
+          value: process.env.GTOKEN,
+        },
+      },
     },
   }),
   vite: {
     define: {
-      'process.env.GTOKEN': JSON.stringify(process.env.GTOKEN)
+      "process.env.GTOKEN": JSON.stringify(process.env.GTOKEN),
     },
     ssr: {
       noExternal: ["react-icons"],
     },
   },
-  integrations: [mdx({ gfm: true }), sitemap(), react()],
+  integrations: [
+    mdx({
+      gfm: true,
+      optimize: true,
+      remarkPlugins: [[remarkToc, { heading: "contents" }]],
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypeAutolinkHeadings, { behavior: "append" }],
+        [rehypeToc, { headings: ["h2", "h3"] }],
+        rehypeAccessibleEmojis,
+      ],
+    }),
+    sitemap(),
+    react(),
+  ],
   markdown: {
     syntaxHighlight: "shiki",
     remarkPlugins: [[remarkToc, { heading: "contents" }]],

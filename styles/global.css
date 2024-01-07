@@ -8,6 +8,10 @@
   --box: rgba(7.74, 6.98, 8.5, 0.5);
   --border: #27252c;
   --content: #cbcbcb;
+
+  --orange: #FF980E;
+  --red: #D3212C;
+  --green: #069C56;
 }
 
 html {

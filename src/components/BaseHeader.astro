@@ -22,7 +22,7 @@ const { url } = Astro.props;
       class:list={["h-button", url == "projects" ? "active" : ""]}
       href="/projects">Projects</a
     >
-    <a class:list={["h-button", url == "blog" ? "active" : ""]} href="/blog"
+    <a class:list={["h-button", url == "blog" ? "active" : ""]} href="/blogs"
       >Blog</a
     >
   </div>
@@ -55,7 +55,7 @@ const { url } = Astro.props;
   }
 
   document.addEventListener(
-    "DOMContentLoaded",
+    "astro:page-load",
     function () {
       scrollMoment();
 
