@@ -9,9 +9,9 @@
   --border: #27252c;
   --content: #cbcbcb;
 
-  --orange: #FF980E;
-  --red: #D3212C;
-  --green: #069C56;
+  --orange: #ff980e;
+  --red: #d3212c;
+  --green: #069c56;
 }
 
 html {
@@ -23,8 +23,9 @@ html {
       135deg,
       var(--background) 0%,
       var(--background-right) 100%
-    )
-    fixed;
+    ) no-repeat center center fixed;
+  background-size: cover;
+
   scroll-behavior: smooth;
   -webkit-transition: 0.2s cubic-bezier(0.21, 0.67, 0.31, 0.92);
   -o-transition: 0.2s cubic-bezier(0.21, 0.67, 0.31, 0.92);
@@ -49,7 +50,7 @@ h4 {
   text-rendering: geometricPrecision !important;
   font-family: "Space Grotesk Variable";
   font-weight: 500;
-  /* cursor: none; */
+  cursor: none;
   color: var(--color);
 
   transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
@@ -115,6 +116,18 @@ header {
 
 a {
   text-decoration: none !important;
+  transition: 0.1s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+  -webkit-transition: 0.1s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+  -moz-transition: 0.1s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+  -ms-transition: 0.1s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+  -o-transition: 0.1s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+}
+a:active {
+  transform: scale(0.92);
+  -webkit-transform: scale(0.92);
+  -moz-transform: scale(0.92);
+  -ms-transform: scale(0.92);
+  -o-transform: scale(0.92);
 }
 
 .scroll,

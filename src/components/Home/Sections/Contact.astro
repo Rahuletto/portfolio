@@ -1,5 +1,6 @@
 ---
 import { GoCodeOfConduct, GoMail } from "react-icons/go";
+import { FaDownload } from "react-icons/fa6";
 ---
 
 <section id="connect">
@@ -18,17 +19,20 @@ import { GoCodeOfConduct, GoMail } from "react-icons/go";
         >Don't hesitate to contact me. Let's get in touch *wink*</span
       >
     </div>
-    <a class="mailme" href="mailto:rahulmarban@gmail.com"
-      ><GoMail /> rahulmarban@gmail.com</a
-    >
+    <div class="btns">
+      <a class="mailme" href="mailto:rahulmarban@gmail.com"
+        ><GoMail /> rahulmarban@gmail.com</a
+      >
+      <a class="resume" href="/Resume-White.pdf" target="_blank"><FaDownload /> Resume</a>
+    </div>
   </div>
 
   <div class="links">
-    <a href="https://discord.gg/3JzDV9T5Fn">Discord</a>
-    <a href="https://twitter.com/rahuletto">Twitter</a>
-    <a href="https://instagram.com/rahul_marban">Instagram</a>
-    <a href="https://github.com/Rahuletto">Github</a>
-    <a href="https://www.linkedin.com/in/rahul-marban">Linkedin</a>
+    <a href="https://discord.gg/3JzDV9T5Fn" target="_blank">Discord</a>
+    <a href="https://twitter.com/rahuletto" target="_blank">Twitter</a>
+    <a href="https://instagram.com/rahul_marban" target="_blank">Instagram</a>
+    <a href="https://github.com/Rahuletto" target="_blank">Github</a>
+    <a href="https://www.linkedin.com/in/rahul-marban" target="_blank">Linkedin</a>
   </div>
 </section>
 <style>
@@ -64,9 +68,32 @@ import { GoCodeOfConduct, GoMail } from "react-icons/go";
     font-weight: 700;
   }
 
+  .btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .resume {
+    background: #151317;
+    border-radius: 14px;
+    display: block;
+    color: var(--color);
+    width: fit-content;
+    padding: 12px 16px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .resume svg {
+    fill: var(--color);
+    font-size: 22px;
+  }
+
   .mailme {
     background: var(--purple-light);
-    border-radius: 18px;
+    border-radius: 14px;
     display: block;
     color: var(--background);
     width: fit-content;
@@ -171,7 +198,7 @@ import { GoCodeOfConduct, GoMail } from "react-icons/go";
     }
 
     .tag {
-        margin: 0px !important;
+      margin: 0px !important;
     }
   }
 

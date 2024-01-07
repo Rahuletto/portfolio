@@ -11,6 +11,7 @@ import "@fontsource-variable/jetbrains-mono";
 
 import BaseHeader from "../components/BaseHeader.astro";
 import { ViewTransitions } from "astro:transitions";
+import Footer from "../components/Footer.astro";
 
 type Props = CollectionEntry<"blog">["data"];
 
@@ -159,4 +160,5 @@ const { title, description, pubDate, tags, heroImage } = Astro.props;
       }
     }
   </style>
+  <Footer />
 </html>
