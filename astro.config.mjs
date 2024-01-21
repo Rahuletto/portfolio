@@ -44,12 +44,12 @@ export default defineConfig({
     },
   },
   integrations: [
-    // compress(),
+    compress(),
     preload(),
     sitemap(),
     react(),
     metaTags(),
-    // purgecss(),
+    purgecss(),
     mdx({
       gfm: true,
       optimize: true,
