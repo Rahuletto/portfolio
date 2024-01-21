@@ -13,7 +13,6 @@ import rehypeToc from "rehype-toc";
 
 // Extensions
 import compress from "astro-compress";
-import preload from "astro-preload";
 import metaTags from "astro-meta-tags";
 
 import purgecss from "astro-purgecss";
@@ -45,7 +44,6 @@ export default defineConfig({
   },
   integrations: [
     compress(),
-    preload(),
     sitemap(),
     react(),
     metaTags(),
