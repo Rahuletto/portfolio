@@ -4,7 +4,32 @@ import BaseHeader from "../components/BaseHeader.astro";
 import Layout from "../layouts/Layout.astro";
 import ProjectCard from "../components/subcomponents/ProjectCard.astro";
 
-let res;
+export type Project = {
+  node: {
+    homepageUrl: string | null;
+    url: string;
+    name: string;
+    description: string;
+    primaryLanguage: string;
+    forkCount: number;
+    stargazerCount: number;
+    openGraphImageUrl: string;
+    isArchived: boolean;
+    owner: { login: string };
+  };
+};
+
+export type GraphQLData = {
+  data: {
+    user: {
+      repositories: {
+        edges: Project[];
+      };
+    };
+  };
+};
+
+let res: GraphQLData;
 if (Astro.cookies.has("res")) {
   const cookie = Astro.cookies.get("res");
   res = cookie?.json();
@@ -16,7 +41,11 @@ if (Astro.cookies.has("res")) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `bearer ${(process.env.GTOKEN ? process.env.GTOKEN : (runtime?.env?.GTOKEN ? runtime : import.meta).env?.GTOKEN)}`,
+      Authorization: `bearer ${
+        process.env.GTOKEN
+          ? process.env.GTOKEN
+          : (runtime?.env?.GTOKEN ? runtime : import.meta).env?.GTOKEN
+      }`,
     },
     body: JSON.stringify({
       query: `
@@ -25,6 +54,7 @@ if (Astro.cookies.has("res")) {
     repositories(first: 30) {
       edges {
         node {
+          homepageUrl
           url
           name
           description
@@ -78,7 +108,7 @@ const formatted = reps.sort((a: any, b: any) => {
               !proj.node.isArchived &&
               proj.node.owner.login === "Rahuletto" && (
                 <ProjectCard
-                  href={proj.node.url}
+                  href={proj.node.homepageUrl ?? proj.node.url}
                   title={proj.node.name}
                   description={proj.node.description}
                   language={proj.node.primaryLanguage?.name}
@@ -108,25 +138,6 @@ const formatted = reps.sort((a: any, b: any) => {
     align-items: center;
     position: relative;
     margin-left: -20px;
-    animation: scroll-title linear forwards;
-    animation-timeline: view();
-    animation-range: 30px 200px;
-    opacity: 0;
-    width: fit-content;
-    left: -100px;
-  }
-
-  @keyframes scroll-title {
-    from {
-      scale: 0.8;
-      left: -100px;
-      opacity: 0;
-    }
-    to {
-      scale: 1;
-      left: 0px;
-      opacity: 1;
-    }
   }
 
   .title svg {
