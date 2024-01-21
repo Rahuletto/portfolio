@@ -23,7 +23,9 @@ import { FaDownload } from "react-icons/fa6";
       <a class="mailme" href="mailto:rahulmarban@gmail.com"
         ><GoMail /> rahulmarban@gmail.com</a
       >
-      <a class="resume" href="/Resume-White.pdf" target="_blank"><FaDownload /> Resume</a>
+      <a class="resume" href="/Resume-White.pdf" target="_blank"
+        ><FaDownload /> Resume</a
+      >
     </div>
   </div>
 
@@ -32,7 +34,9 @@ import { FaDownload } from "react-icons/fa6";
     <a href="https://twitter.com/rahuletto" target="_blank">Twitter</a>
     <a href="https://instagram.com/rahul_marban" target="_blank">Instagram</a>
     <a href="https://github.com/Rahuletto" target="_blank">Github</a>
-    <a href="https://www.linkedin.com/in/rahul-marban" target="_blank">Linkedin</a>
+    <a href="https://www.linkedin.com/in/rahul-marban" target="_blank"
+      >Linkedin</a
+    >
   </div>
 </section>
 <style>
@@ -50,6 +54,25 @@ import { FaDownload } from "react-icons/fa6";
     align-items: center;
     position: relative;
     margin-left: -18px;
+    animation: scroll-title linear forwards;
+    animation-timeline: view();
+    animation-range: 30px 200px;
+    opacity: 0;
+    width: fit-content;
+    left: -100px;
+  }
+
+  @keyframes scroll-title {
+    from {
+      scale: 0.8;
+      left: -100px;
+      opacity: 0;
+    }
+    to {
+      scale: 1;
+      left: 0px;
+      opacity: 1;
+    }
   }
 
   .title svg {
@@ -130,6 +153,21 @@ import { FaDownload } from "react-icons/fa6";
     -moz-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
     -ms-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
     -o-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+    animation: fade-in linear forwards;
+    animation-timeline: view();
+    animation-range: 30px 200px;
+    opacity: 0;
+  }
+
+  @keyframes fade-in {
+    from {
+      scale: 0.8;
+      opacity: 0;
+    }
+    to {
+      scale: 1;
+      opacity: 1;
+    }
   }
 
   .tagtitle {

@@ -124,6 +124,15 @@ const { length } = Astro.props;
     padding: 8px;
     display: flex;
     flex-direction: column;
+    animation: fade-in linear forwards;
+    animation-timeline: view();
+    animation-range: 30px 200px;
+    opacity: 0;
+  }
+
+  @keyframes fade-in {
+    from { scale: .8; opacity: 0; }
+    to { scale: 1; opacity: 1; }
   }
 
   @media only screen and (max-width: 1016px) {

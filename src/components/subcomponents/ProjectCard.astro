@@ -54,6 +54,21 @@ const { title, description, language, fork, stars, image, href } = Astro.props;
     align-items: center;
     justify-items: start;
     gap: 48px;
+    animation: fade-in linear forwards;
+    animation-timeline: view();
+    animation-range: 30px 200px;
+    opacity: 0;
+  }
+
+  @keyframes fade-in {
+    from {
+      scale: 0.8;
+      opacity: 0;
+    }
+    to {
+      scale: 1;
+      opacity: 1;
+    }
   }
 
   .card:active {

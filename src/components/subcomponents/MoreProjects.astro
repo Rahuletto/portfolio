@@ -62,6 +62,15 @@ import { GoSidebarCollapse } from "react-icons/go";
     -moz-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
     -ms-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
     -o-transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
+    animation: fade-in linear forwards;
+    animation-timeline: view();
+    animation-range: 30px 200px;
+    opacity: 0;
+  }
+
+  @keyframes fade-in {
+    from { scale: .8; opacity: 0; }
+    to { scale: 1; opacity: 1; }
   }
 
   .card-text {

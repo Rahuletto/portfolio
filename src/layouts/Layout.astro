@@ -12,23 +12,72 @@ import "../../styles/global.css";
 import "@fontsource-variable/outfit";
 import "@fontsource-variable/space-grotesk";
 import Footer from "../components/Footer.astro";
+import { SEO } from "astro-seo";
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+  <meta
+    name="google-site-verification"
+    content="GLDYXiwtxDT7gHrDrVSF3MR8J6gi0CovrIDqbNVYCWY"
+  />
 
-    <meta
-      name="description"
-      content="Building the future, pixel by pixel using a blend of code and imagination to design exceptional user experiences"
-    />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <ViewTransitions />
-  </head>
+  <SEO
+    title={title}
+    description="Building the future, pixel by pixel using a blend of code and imagination to design exceptional user experiences"
+    openGraph={{
+      basic: {
+        title: title,
+        type: "website",
+        image:
+          "https://repository-images.githubusercontent.com/530738693/5314ee8d-c83c-4840-b504-6de0f1d25fae",
+      },
+    }}
+    twitter={{
+      creator: "@rahuletto",
+    }}
+    extend={{
+      link: [{ rel: "icon", href: "/favicon.svg" }],
+      meta: [
+        {
+          name: "twitter:image",
+          content: undefined,
+        },
+        { name: "twitter:title", content: title },
+        {
+          name: "twitter:description",
+          content:
+            "Building the future, pixel by pixel using a blend of code and imagination to design exceptional user experiences",
+        },
+      ],
+    }}
+  />
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="description"
+    content="Building the future, pixel by pixel using a blend of code and imagination to design exceptional user experiences"
+  />
+  <meta name="viewport" content="width=device-width" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="generator" content={Astro.generator} />
+  <title>{title}</title>
+  <ViewTransitions />
+
+  <script
+    is:inline
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-CDWNP8CKSX"></script>
+  <script lang="js">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-CDWNP8CKSX");
+  </script>
   <body>
     <Cursor />
     <slot />

@@ -23,7 +23,8 @@ html {
       135deg,
       var(--background) 0%,
       var(--background-right) 100%
-    ) no-repeat center center fixed;
+    )
+    no-repeat center center fixed;
   background-size: cover;
 
   scroll-behavior: smooth;
@@ -50,7 +51,6 @@ h4 {
   text-rendering: geometricPrecision !important;
   font-family: "Space Grotesk Variable";
   font-weight: 500;
-  cursor: none;
   color: var(--color);
 
   transition: 0.3s cubic-bezier(0.35, 0.76, 0.4, 0.92);
@@ -94,6 +94,17 @@ h4 {
 }
 .icon.dark svg {
   fill: var(--purple-dark) !important;
+}
+
+@keyframes fade-in {
+  from {
+    scale: 0.8;
+    opacity: 0;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
 }
 
 header {

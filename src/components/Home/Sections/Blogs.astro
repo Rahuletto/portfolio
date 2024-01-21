@@ -38,6 +38,25 @@ const posts = (await getCollection("blog")).sort(
     align-items: center;
     position: relative;
     margin-left: -18px;
+    animation: scroll-title linear forwards;
+    animation-timeline: view();
+    animation-range: 30px 200px;
+    opacity: 0;
+    width: fit-content;
+    left: -100px;
+  }
+
+  @keyframes scroll-title {
+    from {
+      scale: 0.8;
+      left: -100px;
+      opacity: 0;
+    }
+    to {
+      scale: 1;
+      left: 0px;
+      opacity: 1;
+    }
   }
 
   .title svg {

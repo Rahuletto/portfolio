@@ -40,17 +40,26 @@ import { GoGitBranch, GoLightBulb } from "react-icons/go";
         ><GoLightBulb client:idle /></i
       ><h2>Proficiencies</h2>
     </div>
-    <h3 class="subtitle">Languages</h3>
-    <p>TypeScript - JavaScript - HTML & CSS - Python - C</p>
+    <div class="contents">
+      <h3 class="subtitle">Languages</h3>
+      <p>TypeScript - JavaScript - HTML & CSS - Python - C</p>
+    </div>
+    <div class="contents">
+      <h3 class="subtitle">Tools</h3>
+      <p>
+        Express - FastAPI - React - Next.js - Astro - DiscordJS - Tailwind -
+        Bootstrap
+      </p>
+    </div>
 
-    <h3 class="subtitle">Tools</h3>
-    <p>Express - FastAPI - React - Next.js - Astro - DiscordJS - Tailwind - Bootstrap </p>
-
-    <h3 class="subtitle">Technologies</h3>
-    <p>NodeJS - Git - REST APIs - GraphQL</p>
-
-    <h3 class="subtitle">Databases</h3>
-    <p>SQL - MongoDB - Supabase - PostgreSQL</p>
+    <div class="contents">
+      <h3 class="subtitle">Technologies</h3>
+      <p>NodeJS - Git - REST APIs - GraphQL</p>
+    </div>
+    <div class="contents">
+      <h3 class="subtitle">Databases</h3>
+      <p>SQL - MongoDB - Supabase - PostgreSQL</p>
+    </div>
   </div>
 </section>
 <style>
@@ -68,6 +77,25 @@ import { GoGitBranch, GoLightBulb } from "react-icons/go";
     align-items: center;
     position: relative;
     margin-left: -18px;
+    animation: scroll-title linear forwards;
+    animation-timeline: view();
+    animation-range: 30px 200px;
+    opacity: 0;
+    width: fit-content;
+    left: -100px;
+  }
+
+  @keyframes scroll-title {
+    from {
+      scale: 0.8;
+      left: -100px;
+      opacity: 0;
+    }
+    to {
+      scale: 1;
+      left: -100px;
+      opacity: 1;
+    }
   }
 
   .title svg {
@@ -99,6 +127,24 @@ import { GoGitBranch, GoLightBulb } from "react-icons/go";
     -webkit-text-fill-color: transparent;
     font-style: normal;
     font-weight: 700;
+  }
+
+  .contents {
+    animation: fade-in linear forwards;
+    animation-timeline: view();
+    animation-range: 30px 200px;
+    opacity: 0;
+  }
+
+  @keyframes fade-in {
+    from {
+      scale: 0.8;
+      opacity: 0;
+    }
+    to {
+      scale: 1;
+      opacity: 1;
+    }
   }
 
   .prof p {
