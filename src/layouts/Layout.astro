@@ -17,10 +17,7 @@ import { SEO } from "astro-seo";
 
 <!doctype html>
 <html lang="en">
-  <meta
-    name="google-site-verification"
-    content="GLDYXiwtxDT7gHrDrVSF3MR8J6gi0CovrIDqbNVYCWY"
-  />
+  <meta name="google-site-verification" content="GLDYXiwtxDT7gHrDrVSF3MR8J6gi0CovrIDqbNVYCWY" />
 
   <SEO
     title={title}
@@ -65,19 +62,6 @@ import { SEO } from "astro-seo";
   <title>{title}</title>
   <ViewTransitions />
 
-  <script
-    is:inline
-    async
-    src="https://www.googletagmanager.com/gtag/js?id=G-CDWNP8CKSX"></script>
-  <script lang="js">
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-
-    gtag("config", "G-CDWNP8CKSX");
-  </script>
   <body>
     <Cursor />
     <slot />
