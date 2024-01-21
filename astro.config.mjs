@@ -15,7 +15,7 @@ import rehypeToc from "rehype-toc";
 import compress from "astro-compress";
 import metaTags from "astro-meta-tags";
 
-import purgecss from "astro-purgecss";
+// import purgecss from "astro-purgecss";
 
 // https://astro.build/config
 export default defineConfig({
@@ -47,7 +47,7 @@ export default defineConfig({
     sitemap(),
     react(),
     metaTags(),
-    purgecss(),
+    // purgecss(),
     mdx({
       gfm: true,
       optimize: true,
