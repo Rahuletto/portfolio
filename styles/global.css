@@ -214,7 +214,7 @@ header .header-buttons a {
 }
 header .header-buttons a:active,
 header .header-buttons a.active {
-  color: var(--background);
+  color: black;
   background-color: var(--purple-light);
 }
 

@@ -2,6 +2,9 @@
 import type { CollectionEntry } from "astro:content";
 import { SEO } from "astro-seo";
 
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
 import Cursor from "../components/Cursor.astro";
 import "../../styles/global.css";
 import "../../styles/blog.css";
@@ -17,6 +20,15 @@ import Footer from "../components/Footer.astro";
 type Props = CollectionEntry<"blog">["data"];
 
 const { title, description, pubDate, tags, heroImage } = Astro.props;
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/blogs/*.{jpeg,jpg,png,gif,svg}"
+);
+if (heroImage && !images["/src/assets" + heroImage])
+  throw new Error(
+    `"${
+      "/src/assets" + heroImage
+    }" does not exist in glob: "src/assets/*.{jpeg,jpg,png,gif}"`
+  );
 ---
 
 <!doctype html>
@@ -72,14 +84,28 @@ const { title, description, pubDate, tags, heroImage } = Astro.props;
       <div class="scroll-watcher"></div>
       <article>
         <div class="hero-image">
-          {heroImage && <img class="blog-img" src={heroImage} alt="" />}
+          {
+            heroImage && (
+              <Image
+                loading="lazy"
+                class="blog-img"
+                src={images["/src/assets" + heroImage]()}
+                alt={title}
+              />
+            )
+          }
         </div>
         <div class="prose">
           <div class="title">
             <h1>{title}</h1>
             <p>
-              By <img
+              By <Image
+                class={"pfp"}
+                loading="lazy"
                 src="https://avatars.githubusercontent.com/u/71836991?v=4"
+                alt="profile-picture"
+                width="32"
+                height="32"
               /> Rahuletto
             </p>
             <p>
@@ -151,8 +177,8 @@ const { title, description, pubDate, tags, heroImage } = Astro.props;
         justify-content: center;
         gap: 8px;
       }
-      .title p img {
-        width: 32px;
+      .pfp {
+        width: 32px !important;
         border-radius: 20px;
         border: 1px solid var(--border);
       }
@@ -161,10 +187,12 @@ const { title, description, pubDate, tags, heroImage } = Astro.props;
         display: flex;
         justify-content: center;
       }
-      article img {
+      .blog-img {
         border: 1px solid var(--border);
         width: -webkit-fill-available;
-        max-width: 700px;
+        max-width: 700px !important;
+        aspect-ratio: 16/9;
+        height: auto;
         border-radius: 18px;
         -webkit-border-radius: 18px;
         -moz-border-radius: 18px;

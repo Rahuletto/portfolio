@@ -1,10 +1,11 @@
 ---
 import { GoPencil } from "react-icons/go";
 const { post } = Astro.props;
+
 ---
 
 <a class="card hoverable" href={`/blogs/${post.slug}/`}>
-  <img src={post.data.heroImage} alt="" />
+  <img loading="lazy" src={'/src/assets' + post.data.heroImage} alt={post.data.title} />
   <div class="card-content">
     <div class="card-text">
       <h3>{post.data.title}</h3>

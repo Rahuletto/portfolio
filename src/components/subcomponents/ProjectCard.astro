@@ -16,7 +16,11 @@ const { title, description, language, fork, stars, image, href } = Astro.props;
 
 <a href={href} title={title} target="_blank" rel="noreferrer">
   <div class="projectCard card hoverable" data-url={href}>
-    <img src={image} />
+    <img
+      loading="lazy"
+      src={image.startsWith("http") ? image : "/src" + image}
+      alt={title}
+    />
     <div class="card-content">
       <div class="card-text">
         <h3>{title}</h3>

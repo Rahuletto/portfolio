@@ -15,8 +15,6 @@ import rehypeToc from "rehype-toc";
 import compress from "astro-compress";
 import metaTags from "astro-meta-tags";
 
-// import purgecss from "astro-purgecss";
-
 // https://astro.build/config
 export default defineConfig({
   site: "https://marban.is-a.dev",
@@ -43,11 +41,9 @@ export default defineConfig({
     },
   },
   integrations: [
-    compress(),
     sitemap(),
     react(),
     metaTags(),
-    // purgecss(),
     mdx({
       gfm: true,
       optimize: true,
@@ -76,6 +72,8 @@ export default defineConfig({
         rehypeAccessibleEmojis,
       ],
     }),
+    compress(),
+
   ],
   markdown: {
     syntaxHighlight: "shiki",

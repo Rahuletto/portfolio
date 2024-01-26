@@ -1,5 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import { GoRepo, GoHeartFill } from "react-icons/go";
+
+import type { ImageMetadata } from 'astro';
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/*.{jpeg,jpg,png,gif,svg}');
 ---
 
 <section id="home">
@@ -25,9 +29,9 @@ import { GoRepo, GoHeartFill } from "react-icons/go";
         Rahul<br />
          Marban
       </h1>
-      <h3 style="color: #dedede; font-weight: 600 !important;">
+      <h4 style="color: #dedede; font-weight: 600 !important; font-size: 24px;">
         Building the future, pixel by pixel.
-      </h3>
+      </h4>
     </div>
     <p>
       I use a blend of code and imagination to design exceptional user
@@ -35,8 +39,8 @@ import { GoRepo, GoHeartFill } from "react-icons/go";
     </p>
   </div>
   <div class="right">
-    <img class="face" src="/face.svg" />
-    <img class="face-h" src="/face-h.svg" />
+    <Image loading="lazy" class="face" src={images['/src/assets/face.svg']()} alt="My face" />
+    <Image loading="lazy" class="face-h" src={images['/src/assets/face-h.svg']()} alt="My face" />
   </div>
 </section>
 
