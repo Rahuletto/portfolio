@@ -2,7 +2,7 @@
 title: "Happy new year"
 description: "New year, New me ✨. Rebranding everything..."
 pubDate: "Dec 31 2023"
-heroImage: "/assets/blogs/new-year.png"
+heroImage: "/assets/blogs/new-year.webp"
 tags:
   [
     "new-year",
