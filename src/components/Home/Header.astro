@@ -75,7 +75,7 @@ import { FaArrowCircleDown } from "react-icons/fa";
 
   const home = document.querySelector(".h-button[href='#home']");
   home?.addEventListener('click', (e) => {
-    e.preventDefault()
-    window.scroll(0,0)
+    // e.preventDefault()
+    setTimeout(() => window.scroll(0,0), 20)
   })
 </script>
