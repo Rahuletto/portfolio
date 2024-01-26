@@ -2,7 +2,7 @@
 title: "Build your identity"
 description: "Build your identity. Because it shows who and what you are. ✨"
 pubDate: "Aug 08 2023"
-heroImage: "/src/assets/blogs/identity.png"
+heroImage: "/assets/blogs/identity.png"
 tags:
   [
     "branding",

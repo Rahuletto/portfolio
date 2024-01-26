@@ -2,7 +2,7 @@
 title: "The Secure Coding Playbook"
 description: "In an era of cyber attacks, securing your applications is non-negotiable."
 pubDate: "Jan 07 2024"
-heroImage: "/src/assets/blogs/security.png"
+heroImage: "/assets/blogs/security.png"
 tags: ["security", "cybersecurity", "software", "xss", "validation", "tips"]
 ---
 

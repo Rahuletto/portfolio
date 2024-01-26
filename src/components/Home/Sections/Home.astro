@@ -1,9 +1,5 @@
 ---
-import { Image } from "astro:assets";
 import { GoRepo, GoHeartFill } from "react-icons/go";
-
-import face from '/src/assets/face.svg'
-import faceH from '/src/assets/face-h.svg'
 
 ---
 
@@ -40,8 +36,8 @@ import faceH from '/src/assets/face-h.svg'
     </p>
   </div>
   <div class="right">
-    <Image loading="lazy" class="face" src={face} alt="My face" />
-    <Image loading="lazy" class="face-h" src={faceH} alt="My face" />
+    <img loading="lazy" class="face" src={'/assets/face.svg'} alt="My face" />
+    <img loading="lazy" class="face-h" src={'/assets/face-h.svg'} alt="My face" />
   </div>
 </section>
 
