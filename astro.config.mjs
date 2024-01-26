@@ -20,7 +20,7 @@ export default defineConfig({
   site: "https://marban.is-a.dev",
   output: "hybrid",
   adapter: cloudflare({
-    imageService: "cloudflare",
+    imageService: "passthrough",
     runtime: {
       mode: "local",
       type: "pages",
