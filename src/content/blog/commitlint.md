@@ -2,7 +2,7 @@
 title: "Better Collaborate"
 description: "Collaborate on a larger scale with a standardized commit messages"
 pubDate: "Jan 21 2024"
-heroImage: "/blogs/commitlint.png"
+heroImage: "/src/assets/blogs/commitlint.png"
 tags:
   ["git", "commit", "collaborate", "commitlint", "dx", "development", "github"]
 ---

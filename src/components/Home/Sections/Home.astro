@@ -2,8 +2,9 @@
 import { Image } from "astro:assets";
 import { GoRepo, GoHeartFill } from "react-icons/go";
 
-import type { ImageMetadata } from 'astro';
-const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/*.{jpeg,jpg,png,gif,svg}');
+import face from '/src/assets/face.svg'
+import faceH from '/src/assets/face-h.svg'
+
 ---
 
 <section id="home">
@@ -39,8 +40,8 @@ const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/*.{jpeg
     </p>
   </div>
   <div class="right">
-    <Image loading="lazy" class="face" src={images['/src/assets/face.svg']()} alt="My face" />
-    <Image loading="lazy" class="face-h" src={images['/src/assets/face-h.svg']()} alt="My face" />
+    <Image loading="lazy" class="face" src={face} alt="My face" />
+    <Image loading="lazy" class="face-h" src={faceH} alt="My face" />
   </div>
 </section>
 
@@ -78,7 +79,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/*.{jpeg
   .left p {
     color: #a2a2a2;
 
-    font-family: Space Grotesk Variable;
+    font-family: "Space Grotesk Variable", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 400;

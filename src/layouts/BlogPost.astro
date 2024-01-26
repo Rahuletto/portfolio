@@ -23,10 +23,10 @@ const { title, description, pubDate, tags, heroImage } = Astro.props;
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/blogs/*.{jpeg,jpg,png,gif,svg}"
 );
-if (heroImage && !images["/src/assets" + heroImage])
+if (heroImage && !images[heroImage])
   throw new Error(
     `"${
-      "/src/assets" + heroImage
+      heroImage
     }" does not exist in glob: "src/assets/*.{jpeg,jpg,png,gif}"`
   );
 ---
@@ -89,7 +89,7 @@ if (heroImage && !images["/src/assets" + heroImage])
               <Image
                 loading="lazy"
                 class="blog-img"
-                src={images["/src/assets" + heroImage]()}
+                src={images[heroImage]()}
                 alt={title}
               />
             )

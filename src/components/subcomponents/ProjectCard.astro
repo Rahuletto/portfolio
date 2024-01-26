@@ -18,7 +18,7 @@ const { title, description, language, fork, stars, image, href } = Astro.props;
   <div class="projectCard card hoverable" data-url={href}>
     <img
       loading="lazy"
-      src={image.startsWith("http") ? image : "/src" + image}
+      src={image}
       alt={title}
     />
     <div class="card-content">
