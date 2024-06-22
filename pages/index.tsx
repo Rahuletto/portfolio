@@ -6,6 +6,7 @@ import Hero from "@/components/slides/Hero";
 import Journey from "@/components/slides/Journey";
 import Work from "@/components/slides/Work";
 import Head from "next/head";
+
 import { useEffect } from "react";
 
 export default function Home() {

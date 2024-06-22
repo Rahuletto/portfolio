@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const config = {
+  output: 'export',
   poweredByHeader: false,
   swcMinify: true,
   reactStrictMode: true,
