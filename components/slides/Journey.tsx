@@ -3,10 +3,20 @@ import { motion } from "framer-motion";
 import { CSSProperties, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 
-const Sticker = dynamic(() => import("@/misc/Sticker").then(a => a.default), { ssr: false });
-const JourneyPath = dynamic(() => import("@/misc/Path").then(a => a.default), { ssr: false });
-const Subhead = dynamic(() => import("@/misc/Subhead").then(a => a.default), { ssr: false });
-const Slides = dynamic(() => import("@/components/Slides").then(a => a.default), { ssr: true });
+const Sticker = dynamic(() => import("@/misc/Sticker").then((a) => a.default), {
+  ssr: false,
+});
+const JourneyPath = dynamic(
+  () => import("@/misc/Path").then((a) => a.default),
+  { ssr: true }
+);
+const Subhead = dynamic(() => import("@/misc/Subhead").then((a) => a.default), {
+  ssr: false,
+});
+const Slides = dynamic(
+  () => import("@/components/Slides").then((a) => a.default),
+  { ssr: true }
+);
 
 export default function Journey() {
   const device = useDevice();
@@ -28,20 +38,24 @@ export default function Journey() {
 
   return (
     <Slides id="journey">
-      {device != 'desktop' ? <Sticker
-        id={7}
-        delay={4.5}
-        mobile
-        style={{ bottom: "7%", right: "69px" }}
-        className="absolute z-20"
-        scale={1.3}
-      /> : <Sticker
-      id={7}
-      delay={4.5}
-      style={{ top: "39%", right: "69px" }}
-      className="absolute z-20"
-      scale={1.3}
-    /> }
+      {device != "desktop" ? (
+        <Sticker
+          id={7}
+          delay={4.5}
+          mobile
+          style={{ bottom: "7%", right: "69px" }}
+          className="absolute z-20"
+          scale={1.3}
+        />
+      ) : (
+        <Sticker
+          id={7}
+          delay={4.5}
+          style={{ top: "39%", right: "69px" }}
+          className="absolute z-20"
+          scale={1.3}
+        />
+      )}
 
       <div className="lg:p-6 p-3">
         <Subhead text="Journey" />
