@@ -5,18 +5,20 @@ import Connect from "@/components/slides/Connect";
 import Hero from "@/components/slides/Hero";
 import Journey from "@/components/slides/Journey";
 import Work from "@/components/slides/Work";
+import { useDevice } from "@/provider/DeviceProvider";
 import Head from "next/head";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Home() {
+  const device = useDevice();
+  const firstSectionRef = useRef<HTMLDivElement>(null);
+  const lastSectionRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const sections = document.querySelectorAll("section");
     const menu_links = document.querySelectorAll("#scrollLink");
-
     const container = document.querySelector("#container");
-
-    container?.scrollTo({ top: 11, behavior: "instant" });
 
     const makeActive = (link: string) => {
       const active = Array.from(menu_links).find((a) =>
@@ -48,20 +50,6 @@ export default function Home() {
           ) -
         1;
 
-      if (pos >= 5) {
-        if (newScroll >= sections[sections.length - 1].offsetTop + 5) {
-          container.scrollTo({
-            behavior: "instant",
-            top: 10,
-          });
-        }
-      } else if (pos == 0 && newScroll < 10) {
-        container.scrollTo({
-          behavior: "instant",
-          top: sections[sections.length - 1].offsetTop - 100,
-        });
-      }
-
       const current = sections[pos]?.id;
 
       if (current !== currentActive) {
@@ -81,32 +69,74 @@ export default function Home() {
       }
     }
 
-    container?.addEventListener("scroll", navActive);
-    window.addEventListener("keydown", movePages);
-
     window.location.hash = "#me";
 
+    const firstSection = firstSectionRef.current;
+    const lastSection = lastSectionRef.current;
+
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (entry.target === lastSection) {
+            container?.scrollTo({
+              top: firstSection?.offsetTop || 0 + 100,
+              behavior: "instant",
+            });
+          } else if (entry.target === firstSection && device !== "mobile") {
+            container?.scrollTo({
+              top: lastSection?.offsetTop || 0 - 100,
+              behavior: "instant",
+            });
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, {
+      root: container,
+      threshold: 0.1,
+    });
+
+    if (firstSection && lastSection) {
+      observer.observe(firstSection);
+      observer.observe(lastSection);
+    }
+
+    container?.addEventListener("scroll", navActive, { passive: true });
+    window.addEventListener("keydown", movePages);
     return () => {
       container?.removeEventListener("scroll", navActive);
       window.removeEventListener("keydown", movePages);
+      observer.disconnect();
     };
   }, []);
+
   return (
-    <main className="h-screen flex flex-col items-center justify-center p-4 pb-12">
+    <main
+      onClick={() => {
+        if (device === "mobile") {
+          document.documentElement.requestFullscreen();
+        }
+      }}
+      className="h-screen flex flex-col items-center justify-center lg:p-4 pb-12 p-2"
+    >
       <Head>
         <title>Marban.</title>
-        <meta name="description" content="I am Rahul Marban, currently pursuing CSE with AIML at SRMIST. While I am passionate about AI, my true love lies in designing interfaces that combine aesthetic appeal with strong user experiences." />
+        <meta
+          name="description"
+          content="I am Rahul Marban, currently pursuing CSE with AIML at SRMIST. While I am passionate about AI, my true love lies in designing interfaces that combine aesthetic appeal with strong user experiences."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Scroller>
-        <div className="py-3" />
+        <div className="py-3" ref={firstSectionRef} />
         <Hero />
         <About />
         <Journey />
         <Work />
         <Connect />
         <Hero noanim />
-        <div className="py-3" />
+        <div className="py-3" ref={lastSectionRef} />
       </Scroller>
       <Navbar />
     </main>

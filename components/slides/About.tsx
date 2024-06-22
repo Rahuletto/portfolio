@@ -23,14 +23,14 @@ export default function About() {
 
   return (
     <Slides id="me">
-      <p className="lg:text-4xl text-2xl pt-8 py-4 leading-relaxed px-4 font-medium text-color lg:px-16 lg:py-6 lg:pt-24 max-w-[1200px]">
+      <p className="lg:text-4xl md:text-2xl text-xl pt-8 py-4 leading-relaxed px-4 font-medium text-color lg:px-16 lg:py-6 lg:pt-24 max-w-[1200px]">
       <WipeWord
           once={true}
           delay={0.05}
           text="I am Rahul Marban, currently pursuing"
         />{" "}
         <WipeIcon once={true} delay={0.7}>
-          <LuLaptop className="text-4xl inline-block pb-1 text-copper-dark" />
+          <LuLaptop className="md:text-4xl text-2xl inline-block pb-1 text-copper-dark" />
         </WipeIcon>{" "}
         <WipeWord
           once={true}
@@ -38,24 +38,24 @@ export default function About() {
           text="CSE with AIML at SRMIST. While I am passionate about AI, my true love"
         />
         <br />
-        <WipeWord once={true} delay={1.5} text="lies in" />
-        <WipeIcon once={true} delay={2.1}>
-          <HiOutlinePaintBrush className="text-4xl inline-block pb-1 text-copper-dark" />
+        <WipeWord once={true} delay={1.9} text="lies in" />
+        <WipeIcon once={true} delay={2.4}>
+          <HiOutlinePaintBrush className="md:text-4xl text-2xl inline-block pb-1 text-copper-dark" />
         </WipeIcon>{" "}
         <WipeWord
           once={true}
-          delay={2}
+          delay={2.5}
           text="designing interfaces that combine aesthetic appeal with"
         />
-        <WipeIcon once={true} delay={2.9}>
-          <LiaDumbbellSolid className="text-4xl inline-block pb-1 text-copper-dark" />
+        <WipeIcon once={true} delay={3.3}>
+          <LiaDumbbellSolid className="md:text-4xl text-2xl inline-block pb-1 text-copper-dark" />
         </WipeIcon>{" "}
-        <WipeWord once={true} delay={2.9} text="strong user experiences." />
+        <WipeWord once={true} delay={3.5} text="strong user experiences." />
         <br />
       </p>
 
       <motion.p
-        className="lg:text-4xl text-2xl py-4 px-4 pb-24 font-medium text-color lg:px-16 lg:py-6 lg:pb-48 max-w-[1200px]"
+        className="lg:text-4xl md:text-2xl text-xl py-4 px-4 pb-24 font-medium text-color lg:px-16 lg:py-6 lg:pb-48 max-w-[1200px]"
         initial={{ opacity: 0, y: 30 }}
         viewport={{ once: true }}
         style={{lineHeight: 1.3}}
@@ -63,12 +63,12 @@ export default function About() {
         transition={{ duration: 0.8, type: "spring", bounce: 0.1, delay: 3.4 }}
       >
         Taught myself to{" "}
-        <IoConstruct className="text-4xl inline-block pb-1 text-copper-dark" />{" "}
+        <IoConstruct className="md:text-4xl text-2xl inline-block pb-1 text-copper-dark" />{" "}
         build everything from the visible parts of websites to the
         behind-the-scenes{" "}
-        <FaWandMagicSparkles className="text-4xl inline-block pb-1 text-copper-dark" />{" "}
+        <FaWandMagicSparkles className="md:text-4xl text-2xl inline-block pb-1 text-copper-dark" />{" "}
         magic, making tech accessible and user-friendly{" "}
-        <FaUniversalAccess className="text-4xl inline-block pb-1 text-copper-dark" />
+        <FaUniversalAccess className="md:text-4xl text-2xl inline-block pb-1 text-copper-dark" />
       </motion.p>
 
       {device === "desktop" && (

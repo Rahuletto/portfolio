@@ -1,3 +1,4 @@
+import { WipeText } from "@/misc/WipeText";
 import { useDevice } from "@/provider/DeviceProvider";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
@@ -14,7 +15,7 @@ const Slides = dynamic(
 );
 const Project = dynamic(
   () => import("@/components/Projects").then((a) => a.default),
-  { ssr: false }
+  { ssr: true }
 );
 
 export default function Work() {
@@ -122,7 +123,7 @@ export default function Work() {
                 border: "2px solid transparent",
               }}
               transition={{
-                duration: 0.5,
+                duration: 0.6,
                 delay: 0,
                 type: "spring",
                 bounce: 0.2,
@@ -133,13 +134,19 @@ export default function Work() {
                 background: "rgba(0,0,0,0.01)",
                 color: "var(--copper)",
               }}
-              href="https://github.com/Rahuletto?tab=repositories"
+              href="https://github.com/Rahuletto"
               target="_blank"
               className="text-4xl font-medium underline col-span-2 aspect-video h-full w-full p-6 text-deep bg-copper-dark rounded-[2.5rem] flex justify-center items-center snap-center"
             >
               See more.
             </motion.a>
           </motion.div>
+
+          {device == "mobile" && (
+            <p className="opacity-70 italic font-medium pl-3 absolute bottom-12 text-lg pr-2">
+              <WipeText text={"Scroll through the projects"} delay={2} once />
+            </p>
+          )}
         </div>
       </div>
     </Slides>

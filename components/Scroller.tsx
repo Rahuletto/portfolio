@@ -1,16 +1,21 @@
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { useDevice } from "@/provider/DeviceProvider";
 
 interface ScrollerProps {
   children: ReactNode;
 }
 
 export default function Scroller({ children }: ScrollerProps) {
+  const device = useDevice();
   return (
     <div
       id="container"
-      style={{ width: "calc(100vw - 42px)", height: "calc(100vh - 72px)" }}
-      className="outline-none border-2 border-border rounded-3xl flex fixed top-5 left-5 flex-col overflow-y-scroll snap-y snap-mandatory bg-container"
+      style={{
+        width: device === "mobile" ? "calc(100% - 16px)" : "calc(100% - 32px)",
+        height: "calc(100% - 72px)",
+      }}
+      className="outline-none border-2 border-border rounded-3xl flex touch-manipulation fixed md:top-5 md:left-5 md:w-[calc(100% - 32px)] top-2 left-2 w-[calc(100% - 16px)] flex-col overflow-y-scroll snap-y snap-mandatory bg-container"
     >
       {
         <motion.div

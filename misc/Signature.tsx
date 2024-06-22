@@ -1,7 +1,9 @@
+import { useDevice } from "@/provider/DeviceProvider";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 export default function Signature() {
+  const device = useDevice();
   const ref = useRef<SVGPathElement>(null);
   const [isInView, setInView] = useState(false);
 
@@ -36,7 +38,7 @@ export default function Signature() {
     <svg
       role="banner"
       className="absolute w-screen flex justify-center"
-      style={{ bottom: "48px", left: 0, right: 0, width: "100%" }}
+      style={{ bottom: (device == 'mobile' ? "22px" : "48px"), left: 0, right: 0, width: (device == 'mobile' ? '90%' : '100%'), marginLeft: 'auto', marginRight: 'auto', height: (device == 'mobile' ? '15%' : 'any'), scale: (device == 'mobile' ? '0.85' : '1') }}
       width={721}
       height={220}
       viewBox="0 0 721 220"

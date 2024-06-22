@@ -1,3 +1,4 @@
+import { useDevice } from "@/provider/DeviceProvider";
 import { ReactNode } from "react";
 
 interface SlidesProps {
@@ -6,11 +7,12 @@ interface SlidesProps {
 }
 
 export default function Scroller({ children, id }: SlidesProps) {
+
   return (
     <section
       id={id}
-      className="outline-none relative snap-center p-6 rounded-xl overflow-hidden"
-      style={{ height: "calc(100vh - 64px)", maxWidth: "calc(100vw - 42px)" }}
+      className="outline-none relative snap-center md:p-6 p-3 rounded-xl overflow-hidden"
+      style={{ height: "calc(100vh - 60px)"}}
     >
       {children}
     </section>

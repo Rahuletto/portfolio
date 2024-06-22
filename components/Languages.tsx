@@ -1,3 +1,4 @@
+import { useDevice } from "@/provider/DeviceProvider";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 
@@ -79,6 +80,7 @@ const slides = [
 ];
 
 const LanguageSlider = () => {
+  const device = useDevice()
   const duplicatedSlides = [...slides, ...slides];
 
   return (
@@ -88,7 +90,7 @@ const LanguageSlider = () => {
       <motion.div
         className="flex gap-0"
         animate={{
-          x: ["-150%", "0%"],
+          x: [(device == 'mobile' ? "-350%" : "-150%"), "0%"],
           transition: {
             ease: "linear",
             duration: 30,
@@ -103,7 +105,7 @@ const LanguageSlider = () => {
               key={index}
               className="flex-shrink-0 flex items-center justify-center h-full py-4 opacity-70"
               id="icon"
-              style={{ width: `${150 / slides.length}%` }}
+              style={{ width: `${(device == 'mobile' ? 350 : 150) / slides.length}%` }}
             >
               {Icon}
             </div>

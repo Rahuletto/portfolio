@@ -1,29 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 
 import { motion } from "framer-motion";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-
-const normalizeSrc = (src: string) => {
-  return src.startsWith("/") ? src.slice(1) : src;
-};
-
-const cloudflareLoader = ({
-  src,
-  width,
-  quality,
-}: {
-  src: string;
-  width: number;
-  quality?: number;
-}) => {
-  const params = [`width=${width}`];
-  if (quality) {
-    params.push(`quality=${quality}`);
-  }
-
-  return `/${normalizeSrc(src)}`;
-};
+import { useDevice } from "@/provider/DeviceProvider";
 
 const BsArrowUpRightCircle = dynamic(
   () => import("react-icons/bs").then((a) => a.BsArrowUpRightCircle),
@@ -38,10 +19,11 @@ interface ProjectProps {
 }
 
 export default function Project({ title, link, image, left }: ProjectProps) {
+  const device = useDevice();
   return (
     <motion.div
-      initial={{ x: 10 }}
-      exit={{ x: 10 }}
+      initial={device == "mobile" ? {} : { x: 10 }}
+      exit={{ x: device == "mobile" ? 0 : 10 }}
       viewport={{ once: true }}
       whileInView={{
         x: 0,
@@ -63,12 +45,10 @@ export default function Project({ title, link, image, left }: ProjectProps) {
           <BsArrowUpRightCircle className="text-color" />
         </div>
 
-        <Image
-          loader={cloudflareLoader}
-          fill
+        <img
           src={image}
           alt={title}
-          className={`rounded-[3.4rem] ${
+          className={`rounded-[3.4rem] w-full lg:aspect-video h-full ${
             left ? "object-left-top object-cover" : "object-cover"
           }`}
         />

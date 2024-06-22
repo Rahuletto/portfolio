@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { useDevice } from "@/provider/DeviceProvider";
 import { getRandomRotation } from "@/utils/random";
 import { motion } from "framer-motion";
 import { CSSProperties } from "react";
@@ -24,6 +25,9 @@ const Sticker = ({
   mobile,
   noanim,
 }: StickerProps) => {
+  const device = useDevice()
+  if(!mobile && device == 'mobile') mobile = true;
+
   const stickers = [
     {
       id: 1,
@@ -95,7 +99,7 @@ const Sticker = ({
         }}
         whileInView={{
           opacity: 1,
-          scale: scale || 1,
+          scale: scale ? scale - (mobile ? 0.1 : 0) : 1,
           rotateZ: 0,
           transition: { delay: delay || 0.5 },
         }}

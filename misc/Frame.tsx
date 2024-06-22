@@ -14,7 +14,7 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
   const sty =
     device === "mobile"
       ? {
-          left: "-32vw",
+          left: "-22vw",
           width: "100vw",
           maxWidth: "100vw",
         }
@@ -37,7 +37,7 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
       <motion.img
         transition={{ duration: 0.8, delay: 0.7, type: "spring" }}
         viewport={{ once: true }}
-        initial={{ opacity: (noanim ? 1 : 0) }}
+        initial={{ opacity: noanim ? 1 : 0 }}
         animate={{ opacity: 1 }}
         style={{
           marginLeft: "-24px",
@@ -50,11 +50,12 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
         src="/frame.svg"
         alt="rahul marban"
       />
+
       <motion.img
         src="/myself.png"
         initial={{
           scale: device == "mobile" ? 1.15 : 0.9,
-          opacity: (noanim ? 1 : 0) ,
+          opacity: noanim ? 1 : 0,
           filter: "saturate(0)",
         }}
         animate={{

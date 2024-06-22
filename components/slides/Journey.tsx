@@ -57,26 +57,26 @@ export default function Journey() {
         />
       )}
 
-      <div className="lg:p-6 p-3">
+      <div className="lg:p-6 p-0">
         <Subhead text="Journey" />
-        <div className="lg:my-20 my-12 relative w-[89vw] h-[72vh] px-3 lg:px-0">
+        <div className="lg:my-20 my-12 relative w-[89vw] h-[72vh] px-2 lg:px-0">
           <JourneyPath />
           <div
             ref={grid}
             style={device == "desktop" ? { height: "auto !important" } : {}}
-            className="lg:pt-12 lg:grid lg:border-0 border-l-2 border-copper-dark lg:grid-cols-8 h-max gap-4 lg:grid-rows-3 lg:h-full lg:ml-16 flex flex-col ml-3 pl-3 lg:pl-0"
+            className="lg:pt-12 lg:grid lg:border-0 border-l-2 border-copper-dark lg:grid-cols-8 h-max md:gap-4 gap-2 lg:grid-rows-3 lg:h-full lg:ml-16 flex flex-col ml-3 pl-3 lg:pl-0"
           >
             {device == "desktop" && (
-              <div className="relative h-full lg:p-6 p-3 col-span-2"></div>
+              <div className="relative h-full lg:p-6 p-2 col-span-2"></div>
             )}
-            <div className="relative h-full lg:p-6 p-3 col-span-2">
+            <div className="relative h-full lg:p-6 p-2 col-span-2">
               <JourneyText
                 delay={0.1}
                 head="First steps"
                 text={`Started to learn coding and made a Discord bot called Simply Dumb`}
               />
             </div>
-            <div className="relative h-full lg:p-6 p-3 col-span-2">
+            <div className="relative h-full lg:p-6 p-2 col-span-2">
               <JourneyText
                 delay={0.4}
                 head="Publish"
@@ -84,7 +84,7 @@ export default function Journey() {
               />
             </div>
             {device == "desktop" && (
-              <div className="relative h-full lg:p-6 p-3 col-span-2 pr-10">
+              <div className="relative h-full lg:p-6 p-2 col-span-2 pr-10">
                 <JourneyText
                   delay={0.7}
                   head="Typescript"
@@ -94,7 +94,7 @@ export default function Journey() {
             )}
             {device == "desktop" && <div className="h-full"></div>}
             {/* Empty */}
-            <div className="relative h-full lg:p-6 p-3 col-span-2">
+            <div className="relative h-full lg:p-6 p-2 col-span-2">
               <JourneyText
                 delay={device == "desktop" ? 1.9 : 0.9}
                 head="Stacked"
@@ -102,7 +102,7 @@ export default function Journey() {
               />
             </div>
             {device == "desktop" && (
-              <div className="relative h-full lg:p-6 p-3 col-span-2">
+              <div className="relative h-full lg:p-6 p-2 col-span-2">
                 <JourneyText
                   delay={1.5}
                   head="Simply Develop"
@@ -110,7 +110,7 @@ export default function Journey() {
                 />
               </div>
             )}
-            <div className="relative h-full lg:p-6 p-3 col-span-2">
+            <div className="relative h-full lg:p-6 p-2 col-span-2">
               <JourneyText
                 delay={1.1}
                 head="Milestone"
@@ -120,7 +120,7 @@ export default function Journey() {
             {device == "desktop" && <div className="h-full"></div>}
             {/* Empty */}
             {device == "desktop" && (
-              <div className="relative h-full lg:p-6 p-3 col-span-2 lg:pt-10">
+              <div className="relative h-full lg:p-6 p-2 col-span-2 lg:pt-10">
                 <JourneyText
                   delay={2}
                   head="University"
@@ -128,14 +128,14 @@ export default function Journey() {
                 />
               </div>
             )}
-            <div className="relative h-full lg:p-6 p-3 col-span-2 lg:pt-10">
+            <div className="relative h-full lg:p-6 p-2 col-span-2 lg:pt-10">
               <JourneyText
                 delay={device == "desktop" ? 2.4 : 1.4}
                 head="Remake"
                 text={`Made some wrapper sites of our university services`}
               />
             </div>
-            <div className="relative h-full lg:p-6 p-3 col-span-2 lg:pt-10">
+            <div className="relative h-full lg:p-6 p-2 col-span-2 lg:pt-10">
               <JourneyText
                 delay={device == "desktop" ? 2.8 : 1.8}
                 head="Blowup"
@@ -190,8 +190,8 @@ function JourneyText({
         bounce: 0.2,
       }}
     >
-      <h2 className="text-2xl font-medium text-color">{head}</h2>
-      <p className="text-md font-regular text-color opacity-75 lg:max-w-[200px]">
+      <h2 className="md:text-2xl text-xl font-medium text-color">{head}</h2>
+      <p className="md:text-md font-regular text-color opacity-75 lg:max-w-[200px]">
         {text}
       </p>
     </motion.div>

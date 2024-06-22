@@ -41,7 +41,7 @@ export default function Subhead({ text }: SubheadProps) {
           strokeLinecap="round"
         />
       </motion.svg>
-      <h2 className="text-4xl text-copper">
+      <h2 className="lg:text-4xl text-3xl text-copper">
         <WipeText text={text} delay={0.8} />
       </h2>
       <motion.svg

@@ -1,33 +1,15 @@
 <svg width="956" height="319" viewBox="0 0 956 319" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_22_36794)">
-<path d="M0 0H797.5C885.589 0 957 71.4106 957 159.5C957 247.589 885.589 319 797.5 319H0V0Z" fill="url(#paint0_linear_22_36794)" style=""/>
-<path d="M20 0L20 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M85 0L85 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M150 0L150 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M215 0L215 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M280 0L280 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M345 0L345 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M410 0L410 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M475 0L475 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M540 0L540 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M605 0L605 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M670 0L670 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M735 0L735 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M800 0L800 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M865 0L865 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M930 0L930 319" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M991 62L-2.14577e-05 62" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M991 127L-2.14577e-05 127" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M991 192L-2.14577e-05 192" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-<path d="M991 257L-2.14577e-05 257" stroke="black" stroke-opacity="0.09" style="stroke:black;stroke-opacity:0.09;" stroke-width="3" stroke-linecap="square"/>
-</g>
-<defs>
-<linearGradient id="paint0_linear_22_36794" x1="216" y1="11.5" x2="1088.5" y2="369.5" gradientUnits="userSpaceOnUse">
-<stop stop-color="#D6BFB2" style="stop-color:#D6BFB2;stop-color:color(display-p3 0.8378 0.7493 0.6963);stop-opacity:1;"/>
-<stop offset="1" stop-color="#C0AA9D" style="stop-color:#C0AA9D;stop-color:color(display-p3 0.7540 0.6675 0.6157);stop-opacity:1;"/>
-</linearGradient>
-<clipPath id="clip0_22_36794">
-<path d="M0 0H796.5C884.589 0 956 71.4106 956 159.5C956 247.589 884.589 319 796.5 319H0V0Z" fill="white" style="fill:white;fill-opacity:1;"/>
-</clipPath>
-</defs>
+  <g clip-path="url(#a)">
+    <path d="M0 0h797.5C885.589 0 957 71.41 957 159.5c0 88.089-71.411 159.5-159.5 159.5H0z" fill="url(#b)"/>
+    <path d="M20 0v319M85 0v319M150 0v319M215 0v319M280 0v319M345 0v319M410 0v319M475 0v319M540 0v319M605 0v319M670 0v319M735 0v319M800 0v319M865 0v319M930 0v319m61-257H0m991 65H0m991 65H0m991 65H0" stroke="#000" stroke-opacity=".09" style="stroke:#000;stroke-opacity:.09" stroke-width="3" stroke-linecap="square"/>
+  </g>
+  <defs>
+    <linearGradient id="b" x1="216" y1="11.5" x2="1088.5" y2="369.5" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D6BFB2" style="stop-color:#d6bfb2;stop-color:color(display-p3 .8378 .7493 .6963);stop-opacity:1"/>
+      <stop offset="1" stop-color="#C0AA9D" style="stop-color:#c0aa9d;stop-color:color(display-p3 .754 .6675 .6157);stop-opacity:1"/>
+    </linearGradient>
+    <clipPath id="a">
+      <path d="M0 0h796.5C884.589 0 956 71.41 956 159.5c0 88.089-71.411 159.5-159.5 159.5H0z" fill="#fff" style="fill:#fff;fill-opacity:1"/>
+    </clipPath>
+  </defs>
 </svg>

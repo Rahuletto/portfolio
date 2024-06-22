@@ -5,7 +5,7 @@ import Link from "next/link";
 
 
 const Slides = dynamic(() => import("@/components/Slides").then(a => a.default), { ssr: true });
-const Frame = dynamic(() => import("@/misc/Frame").then(a => a.default), { ssr: false });
+const Frame = dynamic(() => import("@/misc/Frame").then(a => a.default), { ssr: true });
 const Line = dynamic(() => import("@/misc/Line").then(a => a.default), { ssr: false });
 const WipeText = dynamic(() => import("@/misc/WipeText").then(a => a.WipeText), { ssr: true });
 
@@ -15,10 +15,10 @@ export default function Hero({ noanim }: { noanim?: boolean }) {
 
   return (
     <Slides id="me">
-      <div className="lg:px-12 lg:py-16 px-6 py-8 max-h-[265px]">
+      <div className="lg:px-12 lg:py-16 px-4 py-6 max-h-[265px]">
         <motion.h1
           viewport={{ once: true }}
-          animate={{
+          animate={device == 'mobile' ? {} : {
             letterSpacing: ["0px", "-8px", "-8px", "-8px", "0px"],
             transition: {
               ease: "linear",
@@ -31,7 +31,7 @@ export default function Hero({ noanim }: { noanim?: boolean }) {
           whileHover={{ letterSpacing: "-6px" }}
           transition={{ opacity: { duration: 0.5, type: "spring" } }}
           id="stroke"
-          className="m-0 lg:m-0 inline-block lg:text-8xl font-bold text-transparent transition-all md:text-6xl sm:text-5xl text-4xl duration-500"
+          className="m-0 lg:m-0 inline-block lg:text-8xl font-semibold md:normal-case capitalize text-transparent transition-all md:text-6xl sm:text-5xl text-4xl duration-500"
         >
           <Link href="https://www.linkedin.com/in/rahul-marban" target="_blank">
             {noanim ? (
@@ -43,7 +43,7 @@ export default function Hero({ noanim }: { noanim?: boolean }) {
         </motion.h1>
         <RevealText noanim={noanim} />
       </div>
-      <div className="flex lg:mt-12 gap-8 mt-32 flex-col lg:flex-row items-start lg:justify-stretch lg:items-stretch">
+      <div className="flex lg:mt-12 md:gap-8 gap-3 mt-24 flex-col lg:flex-row items-start lg:justify-stretch lg:items-stretch">
         <Frame noanim={noanim} />
         <motion.a
         href="/resume"
@@ -57,7 +57,7 @@ export default function Hero({ noanim }: { noanim?: boolean }) {
             opacity: 1,
             transition: {
               delay: 2 + 0.5,
-              duration: 1,
+              duration: 1.2,
               type: "spring",
               bounce: 0.2,
             },
@@ -76,7 +76,7 @@ export default function Hero({ noanim }: { noanim?: boolean }) {
         </motion.a>
       </div>
 
-      <p className="opacity-70 italic font-medium pl-3 absolute bottom-12 text-lg">
+      <p className="opacity-70 italic font-medium pl-3 absolute md:bottom-12 bottom-24 text-lg pr-2">
         {noanim ? (
           device === "desktop" ? (
             "Tip: Try to hover on things"
