@@ -82,7 +82,7 @@ export default function Home() {
               top: firstSection?.offsetTop || 0 + 100,
               behavior: "instant",
             });
-          } else if (entry.target === firstSection && device !== "mobile") {
+          } else if (entry.target === firstSection) {
             container?.scrollTo({
               top: lastSection?.offsetTop || 0 - 100,
               behavior: "instant",
