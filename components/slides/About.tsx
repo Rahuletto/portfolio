@@ -24,29 +24,23 @@ export default function About() {
   return (
     <Slides id="me">
       <p className="lg:text-4xl text-2xl pt-8 py-4 leading-relaxed px-4 font-medium text-color lg:px-16 lg:py-6 lg:pt-24 max-w-[1200px]">
-        <WipeWord
+      <WipeWord
           once={true}
           delay={0.05}
           text="I am Rahul Marban, currently pursuing"
         />{" "}
         <WipeIcon once={true} delay={0.7}>
-          <LuLaptop
-            className="text-4xl inline-block pb-1 text-copper-dark"
-            aria-label="Laptop Icon"
-            role="img"
-          />
+          <LuLaptop className="text-4xl inline-block pb-1 text-copper-dark" />
         </WipeIcon>{" "}
         <WipeWord
           once={true}
           delay={0.6}
-          text="CSE with AIML at SRMIST. While I am passionate about AI,"
+          text="CSE with AIML at SRMIST. While I am passionate about AI, my true love"
         />
+        <br />
+        <WipeWord once={true} delay={1.5} text="lies in" />
         <WipeIcon once={true} delay={2.1}>
-          <HiOutlinePaintBrush
-            className="text-4xl inline-block pb-1 text-copper-dark"
-            aria-label="Paint Brush Icon"
-            role="img"
-          />
+          <HiOutlinePaintBrush className="text-4xl inline-block pb-1 text-copper-dark" />
         </WipeIcon>{" "}
         <WipeWord
           once={true}
@@ -54,13 +48,10 @@ export default function About() {
           text="designing interfaces that combine aesthetic appeal with"
         />
         <WipeIcon once={true} delay={2.9}>
-          <LiaDumbbellSolid
-            className="text-4xl inline-block pb-1 text-copper-dark"
-            aria-label="Dumbbell Icon"
-            role="img"
-          />
+          <LiaDumbbellSolid className="text-4xl inline-block pb-1 text-copper-dark" />
         </WipeIcon>{" "}
         <WipeWord once={true} delay={2.9} text="strong user experiences." />
+        <br />
       </p>
 
       <motion.p
