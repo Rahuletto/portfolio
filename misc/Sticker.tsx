@@ -15,6 +15,17 @@ interface StickerProps {
   noanim?: boolean;
 }
 
+const one = require("@/public/stickers/sticker1.svg");
+const two = require("@/public/stickers/sticker2.svg");
+const three = require("@/public/stickers/sticker3.svg");
+const four = require("@/public/stickers/sticker4.svg");
+const five = require("@/public/stickers/sticker5.svg");
+const six = require("@/public/stickers/sticker6.svg");
+const seven = require("@/public/stickers/sticker7.svg");
+const eight = require("@/public/stickers/sticker8.svg");
+const nine = require("@/public/stickers/sticker9.svg");
+const ten = require("@/public/stickers/sticker10.svg");
+
 const Sticker = ({
   id,
   delay,
@@ -25,57 +36,43 @@ const Sticker = ({
   mobile,
   noanim,
 }: StickerProps) => {
-  const device = useDevice()
-  if(!mobile && device == 'mobile') mobile = true;
+  const device = useDevice();
+  if (!mobile && device == "mobile") mobile = true;
 
   const stickers = [
     {
       id: 1,
-      svg: (
-        <img src="/stickers/sticker1.svg" alt="Sleek & minimal yet modern" role="presentation" />
-      ),
+      svg: <img src={one} alt="sleek" role="alert" />,
     },
-    { id: 2, svg: <img src="/stickers/sticker2.svg" alt="Pleasant colors" role="presentation" /> },
+    { id: 2, svg: <img src={two} alt="pleasant" role="alert" /> },
     {
       id: 3,
-      svg: <img src="/stickers/sticker3.svg" alt="40K+ active users" role="presentation" />,
+      svg: <img src={three} alt="users" role="alert" />,
     },
     {
       id: 4,
-      svg: (
-        <img
-          src="/stickers/sticker4.svg"
-          alt="Building the future pixel by pixel"
-          role="presentation"
-        />
-      ),
+      svg: <img src={four} alt="pixel" role="alert" />,
     },
     {
       id: 5,
-      svg: <img src="/stickers/sticker5.svg" alt="Really likes NextJS" role="presentation" />,
+      svg: <img src={five} alt="likes" role="alert" />,
     },
-    { id: 6, svg: <img src="/stickers/sticker6.svg" alt="Loves Typescript" role="presentation" /> },
+    { id: 6, svg: <img src={six} alt="typescript" role="alert" /> },
     {
       id: 7,
-      svg: (
-        <img
-          src="/stickers/sticker7.svg"
-          alt="Failure is better than success"
-          role="presentation"
-        />
-      ),
+      svg: <img src={seven} alt="success" role="alert" />,
     },
     {
       id: 8,
-      svg: <img src="/stickers/sticker8.svg" alt="Quality over quantity" role="presentation" />,
+      svg: <img src={eight} alt="quantity" role="alert" />,
     },
     {
       id: 9,
-      svg: <img src="/stickers/sticker9.svg" alt="Let's get connected" role="presentation" />,
+      svg: <img src={nine} alt="connected" role="alert" />,
     },
     {
       id: 10,
-      svg: <img src="/stickers/sticker10.svg" alt="oops" role="presentation" />,
+      svg: <img src={ten} alt="oops" role="alert" />,
     },
   ];
 

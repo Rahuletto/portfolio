@@ -107,11 +107,7 @@ export default function Home() {
 
   return (
     <main
-      onClick={() => {
-        if (device === "mobile") {
-          document.documentElement.requestFullscreen();
-        }
-      }}
+
       className="h-screen flex flex-col items-center justify-center lg:p-4 pb-12 p-2"
     >
       <Head>

@@ -52,7 +52,7 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
       />
 
       <motion.img
-        src="/myself.webp"
+        src="/myself.png"
         loading="lazy"
         layout="preserve-aspect"
         initial={{

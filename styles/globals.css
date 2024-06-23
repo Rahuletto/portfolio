@@ -34,7 +34,8 @@ svg {
   user-select: none !important;
 }
 
-a,button {
+a,
+button {
   cursor: pointer;
 }
 
@@ -119,19 +120,30 @@ body {
   -o-transition: all 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
+.active {
+  padding: 0 2.8rem;
+  opacity: 1;
+  background-color: var(--copper);
+  color: var(--deep-black);
+}
+
+.active:hover {
+  background-color: var(--copper-dark);
+  padding: 0 2.8rem !important;
+}
+
 @media (min-width: 768px) {
+  #works:hover:has(#project:hover) #project:not(:hover) {
+    opacity: 0.5;
+    filter: blur(1px) grayscale(1);
+    -webkit-filter: blur(1px) grayscale(1);
+  }
 
-#works:hover:has(#project:hover) #project:not(:hover) {
-  opacity: 0.5;
-  filter: blur(1px) grayscale(1);
-  -webkit-filter: blur(1px) grayscale(1);
-}
-
-#project:hover {
-  opacity: 1 !important;
-  filter: none !important;
-  -webkit-filter: none !important;
-}
+  #project:hover {
+    opacity: 1 !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
 }
 
 #project:hover #text {
@@ -144,17 +156,7 @@ body {
     color: var(--copper);
   }
 }
-.active {
-  padding: 0 2.8rem;
-  opacity: 1;
-  background-color: var(--copper);
-  color: var(--deep-black);
-}
 
-.active:hover {
-  background-color: var(--copper-dark);
-  padding: 0 2.8rem !important;
-}
 
 @layer utilities {
   .text-balance {
