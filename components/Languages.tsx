@@ -86,7 +86,6 @@ const LanguageSlider = () => {
   return (
     <div className="relative h-full w-full overflow-hidden pt-12">
       <div className="absolute inset-0 z-20 pointer-events-none before:absolute before:left-0 before:top-0 before:w-40 before:h-full before:bg-gradient-to-r before:from-container before:to-transparent before:filter before:blur-3 after:absolute after:right-0 after:top-0 after:w-40 after:h-full after:bg-gradient-to-l after:from-container after:to-transparent after:filter after:blur-3"></div>
-
       <motion.div
         className="flex gap-0"
         animate={{

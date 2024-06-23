@@ -43,24 +43,24 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
         initial={{ opacity: noanim ? 1 : 0 }}
         animate={{ opacity: 1 }}
         style={{
-          minWidth: "76vw",
           transformOrigin: "bottom center",
+          width: '100%',
           ...sty,
         }}
-        className="md:w-[90vw] lg:w-[76vw] w-[95vw] relative md:flex"
+        className="relative md:flex"
         id="frame"
         src="/frame.svg"
         alt="rahul marban"
+        loading="eager"
       />
-
       <motion.img
         src="/myself.png"
-        loading="lazy"
+        loading="eager"
         layout="preserve-aspect"
         initial={{
           scale: device == "mobile" ? 1.15 : 0.9,
           opacity: noanim ? 1 : 0,
-          filter: "saturate(0)",
+          filter: "saturate(0.1)",
         }}
         animate={{
           opacity: 1,
@@ -71,7 +71,7 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
             delay: 2.3,
           },
         }}
-        whileHover={{ scale: device == "mobile" ? 1.2 : 1.02, filter: "none" }}
+        whileHover={{ scale: device == "mobile" ? 1.2 : 1.02, filter: "saturate(1)" }}
         transition={{ duration: 0.9, bounce: 0.2, type: "spring" }}
         alt="My Photo"
         style={{

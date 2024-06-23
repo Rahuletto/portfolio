@@ -133,7 +133,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="h-screen flex flex-col items-center justify-center lg:p-4 md:pb-12 p-2">
+    <main className="h-screen flex flex-col items-center justify-between lg:p-4 md:pb-12 p-2">
       <Head>
         <title>Marban.</title>
         <meta

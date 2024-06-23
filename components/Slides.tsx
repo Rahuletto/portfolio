@@ -11,7 +11,7 @@ export default function Scroller({ children, id }: SlidesProps) {
   return (
     <section
       id={id}
-      className="outline-none relative snap-center md:p-6 p-6 rounded-xl overflow-hidden"
+      className="outline-none relative snap-center md:p-6 p-5 rounded-xl overflow-hidden"
       style={{ height: device == "mobile" ? "100vh" : "calc(100vh - 96px)" }}
     >
       {children}

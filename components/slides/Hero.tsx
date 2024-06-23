@@ -15,7 +15,7 @@ export default function Hero({ noanim }: { noanim?: boolean }) {
 
   return (
     <Slides id="me">
-      <div className="lg:px-12 lg:py-16 px-4 py-6 max-h-[265px]">
+      <div className="lg:px-12 lg:py-16 px-2 py-2 max-h-[265px]">
         <motion.h1
           viewport={{ once: true }}
           animate={device == 'mobile' ? {} : {
