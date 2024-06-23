@@ -28,9 +28,9 @@ export default function Connect() {
           id={9}
           delay={1}
           mobile
-          style={{ bottom: "20%", right: "84px" }}
+          style={{ bottom: "20%", right: "70px" }}
           className="absolute z-20"
-          scale={0.9}
+          scale={0.85}
         />
       ) : (
         <Sticker

@@ -45,7 +45,7 @@ export default function Journey() {
           mobile
           style={{ bottom: "7%", right: "69px" }}
           className="absolute z-20"
-          scale={1.3}
+          scale={0.9}
         />
       ) : (
         <Sticker
