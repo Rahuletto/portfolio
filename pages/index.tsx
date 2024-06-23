@@ -94,10 +94,8 @@ export default function Home() {
     window.location.hash = "#me";
 
     const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      if (device === "mobile") return;
-
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && device !== "mobile") {
           if (entry.target === lastSection) {
             firstSection?.scrollIntoView({
               behavior: "instant",
@@ -115,7 +113,7 @@ export default function Home() {
 
     const observer = new IntersectionObserver(handleIntersect, {
       root: container,
-      threshold: 0.1,
+      threshold: 0.000001,
     });
 
     if (firstSection && lastSection && device !== "mobile") {
@@ -130,7 +128,7 @@ export default function Home() {
       window.removeEventListener("keydown", movePages);
       observer.disconnect();
     };
-  }, []);
+  }, [device]);
 
   return (
     <main className="h-screen flex flex-col items-center justify-between lg:p-4 md:pb-12 p-2">
@@ -143,14 +141,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Scroller>
-        <div className="py-3" ref={firstSectionRef} />
+        <div className="py-8 mb-4 w-full" ref={firstSectionRef} />
         <Hero />
         <About />
         <Journey />
         <Work />
         <Connect />
-        <Hero noanim />
-        <div className="py-3" ref={lastSectionRef} />
+        {device !== "mobile" && <Hero noanim />}
+        <div className="py-8 mb-4  w-full" ref={lastSectionRef} />
       </Scroller>
       <Navbar />
     </main>

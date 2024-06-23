@@ -15,8 +15,8 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
     device === "mobile"
       ? {
           left: "-26vw",
-          width: "100%",
-          maxWidth: "100%",
+          width: "98vw",
+          maxWidth: "100vw",
           marginLeft: "-24px",
         }
       : {
@@ -29,7 +29,7 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
       style={{
         ...cont,
         position: "relative",
-        width: "80%",
+        width: "76vw",
         height: "auto",
         zIndex: 0,
         transformOrigin: "bottom center",
@@ -58,7 +58,7 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
         loading="eager"
         layout="preserve-aspect"
         initial={{
-          scale: device == "mobile" ? 1.15 : 0.9,
+          scale: device == "mobile" ? 1.15 : 0.95,
           opacity: noanim ? 1 : 0,
           filter: "saturate(0.1)",
         }}
@@ -79,11 +79,11 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
         alt="My Photo"
         style={{
           position: "absolute",
-          bottom: "0",
+          bottom: "0px",
           left: "27.774%",
           width: "39.528%",
           height: "auto",
-          transformOrigin: "bottom center",
+          transformOrigin: "bottom",
           objectFit: "contain",
         }}
       />

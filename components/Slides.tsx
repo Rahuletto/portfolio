@@ -4,15 +4,19 @@ import { ReactNode } from "react";
 interface SlidesProps {
   children: ReactNode;
   id: string;
+  noanim?: boolean;
 }
 
-export default function Scroller({ children, id }: SlidesProps) {
+export default function Scroller({ children, id, noanim }: SlidesProps) {
   const device = useDevice();
+  const st = noanim ? {
+    height: '91vh'
+  } : {}
   return (
     <section
       id={id}
       className="outline-none relative snap-center md:p-6 p-5 rounded-xl overflow-hidden"
-      style={{ height: device == "mobile" ? "100vh" : "calc(100vh - 96px)" }}
+      style={{ height: device == "mobile" ? "99vh" : "calc(100vh - 108px)", ...st }}
     >
       {children}
     </section>
