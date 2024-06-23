@@ -4,6 +4,7 @@ import { useDevice } from "@/provider/DeviceProvider";
 import Link from "next/link";
 import Head from "next/head";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 const Sticker = dynamic(() => import("@/misc/Sticker").then((a) => a.default), {
   ssr: false,
@@ -26,6 +27,7 @@ const FaLinkedinIn = dynamic(
 );
 
 export default function LinkTree() {
+  const router = useRouter()
   const device = useDevice();
 
   return (
@@ -100,6 +102,7 @@ export default function LinkTree() {
         </motion.div>
 
         <motion.div
+          onClick={() => router.push('/')}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{

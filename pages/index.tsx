@@ -75,6 +75,8 @@ export default function Home() {
     const lastSection = lastSectionRef.current;
 
     const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      if(device === "mobile") return;
+      
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           if (entry.target === lastSection) {
@@ -91,7 +93,7 @@ export default function Home() {
       threshold: 0.1,
     });
 
-    if (firstSection && lastSection) {
+    if (firstSection && lastSection && device !== 'mobile') {
       observer.observe(firstSection);
       observer.observe(lastSection);
     }
