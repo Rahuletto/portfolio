@@ -20,6 +20,9 @@ export default function Home() {
     const menu_links = document.querySelectorAll("#scrollLink");
     const container = document.querySelector("#container");
 
+    const firstSection = firstSectionRef.current;
+    const lastSection = lastSectionRef.current;
+
     const makeActive = (link: string) => {
       const active = Array.from(menu_links).find((a) =>
         a.getAttribute("href")?.includes(link)
@@ -61,28 +64,50 @@ export default function Home() {
 
     function movePages(e: KeyboardEvent) {
       if (!container) return;
+      const pos =
+        sections.length -
+        [...sections]
+          .reverse()
+          .findIndex(
+            (section) =>
+              container.scrollTop >= section.offsetTop - sectionMargin
+          ) -
+        1;
       if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-        container.scrollTop += container.clientHeight;
+        if (pos === 0) {
+          lastSection?.scrollIntoView({ behavior: "instant" });
+          setTimeout(() => {
+            sections[pos - 2]?.scrollIntoView({ behavior: "smooth" });
+          }, 100);
+        } else container.scrollTop += container.clientHeight;
       }
       if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
-        container.scrollTop -= container.clientHeight;
+        if (pos === sections.length - 1) {
+          firstSection?.scrollIntoView({ behavior: "instant" });
+          setTimeout(() => {
+            sections[1]?.scrollIntoView({ behavior: "smooth" });
+          }, 150);
+        } else container.scrollTop -= container.clientHeight;
       }
     }
 
     window.location.hash = "#me";
 
-    const firstSection = firstSectionRef.current;
-    const lastSection = lastSectionRef.current;
-
     const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      if(device === "mobile") return;
-      
+      if (device === "mobile") return;
+
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           if (entry.target === lastSection) {
-            firstSection?.scrollIntoView({ behavior: 'instant', block: 'center'})
+            firstSection?.scrollIntoView({
+              behavior: "instant",
+              block: "center",
+            });
           } else if (entry.target === firstSection) {
-            lastSection?.scrollIntoView({ behavior: 'instant', block: 'center' })
+            lastSection?.scrollIntoView({
+              behavior: "instant",
+              block: "center",
+            });
           }
         }
       });
@@ -93,7 +118,7 @@ export default function Home() {
       threshold: 0.1,
     });
 
-    if (firstSection && lastSection && device !== 'mobile') {
+    if (firstSection && lastSection && device !== "mobile") {
       observer.observe(firstSection);
       observer.observe(lastSection);
     }
@@ -108,10 +133,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main
-
-      className="h-screen flex flex-col items-center justify-center lg:p-4 pb-12 p-2"
-    >
+    <main className="h-screen flex flex-col items-center justify-center lg:p-4 pb-12 p-2">
       <Head>
         <title>Marban.</title>
         <meta
