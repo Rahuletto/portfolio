@@ -15,13 +15,13 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
     device === "mobile"
       ? {
           left: "-26vw",
-          width: "100vw",
-          maxWidth: "100vw",
+          width: "100%",
+          maxWidth: "100%",
           marginLeft: "-24px",
         }
       : {
-        marginLeft: "-24px"
-      };
+          marginLeft: "-24px",
+        };
   const cont = device === "mobile" ? { scale: "1.4" } : {};
 
   return (
@@ -29,7 +29,7 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
       style={{
         ...cont,
         position: "relative",
-        width: "76vw",
+        width: "80%",
         height: "auto",
         zIndex: 0,
         transformOrigin: "bottom center",
@@ -44,7 +44,7 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
         animate={{ opacity: 1 }}
         style={{
           transformOrigin: "bottom center",
-          width: '100%',
+          width: "100%",
           ...sty,
         }}
         className="relative md:flex"
@@ -71,7 +71,10 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
             delay: 2.3,
           },
         }}
-        whileHover={{ scale: device == "mobile" ? 1.2 : 1.02, filter: "saturate(1)" }}
+        whileHover={{
+          scale: device == "mobile" ? 1.2 : 1.02,
+          filter: "saturate(1)",
+        }}
         transition={{ duration: 0.9, bounce: 0.2, type: "spring" }}
         alt="My Photo"
         style={{
