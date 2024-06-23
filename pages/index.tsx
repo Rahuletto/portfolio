@@ -78,15 +78,9 @@ export default function Home() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           if (entry.target === lastSection) {
-            container?.scrollTo({
-              top: firstSection?.offsetTop || 0 + 100,
-              behavior: "instant",
-            });
+            firstSection?.scrollIntoView({ behavior: 'instant', block: 'center'})
           } else if (entry.target === firstSection) {
-            container?.scrollTo({
-              top: lastSection?.offsetTop || 0 - 100,
-              behavior: "instant",
-            });
+            lastSection?.scrollIntoView({ behavior: 'instant', block: 'center' })
           }
         }
       });
