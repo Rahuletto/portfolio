@@ -130,7 +130,9 @@ export default function LinkTree() {
               filter: "none",
             }}
             transition={{ duration: 0.9, bounce: 0.2, type: "spring" }}
-            src="/myself.png"
+            src="/myself.webp"
+            loading="lazy"
+            layout="preserve-aspect"
             style={{
               transformOrigin: "bottom left",
             }}

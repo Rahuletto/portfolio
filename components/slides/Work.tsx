@@ -2,6 +2,7 @@ import { WipeText } from "@/misc/WipeText";
 import { useDevice } from "@/provider/DeviceProvider";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 const Sticker = dynamic(() => import("@/misc/Sticker").then((a) => a.default), {
   ssr: false,
@@ -13,10 +14,17 @@ const Slides = dynamic(
   () => import("@/components/Slides").then((a) => a.default),
   { ssr: true }
 );
-const Project = dynamic(
-  () => import("@/components/Projects").then((a) => a.default),
-  { ssr: true }
-);
+import Project from "@/components/Projects";
+
+
+const unix = require("@/public/works/unix.webp");
+const codeboard = require("@/public/works/codeboard.webp");
+const betterlab = require("@/public/works/betterlab.webp");
+const academia = require("@/public/works/academia.webp");
+const passket = require("@/public/works/passket.webp");
+const lirics = require("@/public/works/lirics.webp");
+const simplyd = require("@/public/works/simplyd.webp");
+const rocket = require("@/public/works/rocket.webp");
 
 export default function Work() {
   const device = useDevice();
@@ -53,17 +61,17 @@ export default function Work() {
             <Project
               title="lirics."
               link="https://github.com/Rahuletto/lirics"
-              image="/works/lirics.png"
+              image={lirics}
             />
             <Project
               title="Rocket"
               link="https://github.com/Rahuletto/rocket"
-              image="/works/rocket.png"
+              image={rocket}
             />
             <Project
               title="SimplyDJS"
               link="https://simplyd.js.org"
-              image="/works/simplyd.webp"
+              image={simplyd}
             />
             {device == "desktop" && (
               <>
@@ -74,31 +82,31 @@ export default function Work() {
             <Project
               title="Passket"
               link="https://passket.vercel.app"
-              image="/works/passket.png"
+              image={passket}
             />
             <Project
               title="AcademiaPro"
               link="https://github.com/Rahuletto/academiapro"
               left
-              image="/works/academia.png"
+              image={academia}
             />
             <Project
               title="Betterlab"
               link="https://github.com/Rahuletto/betterlab"
-              image="/works/betterlab.png"
+              image={betterlab}
             />
 
             <Project
               left
               title="Unix dots"
               link="https://unixporn-dots.vercel.app"
-              image="/works/unix.webp"
+              image={unix}
             />
             <Project
               left
               title="Codeboard"
               link="https://codeboard.tech"
-              image="/works/codeboard.webp"
+              image={codeboard}
             />
             <motion.a
               initial={{

@@ -52,7 +52,9 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
       />
 
       <motion.img
-        src="/myself.png"
+        src="/myself.webp"
+        loading="lazy"
+        layout="preserve-aspect"
         initial={{
           scale: device == "mobile" ? 1.15 : 0.9,
           opacity: noanim ? 1 : 0,

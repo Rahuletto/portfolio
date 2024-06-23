@@ -14,7 +14,7 @@ const BsArrowUpRightCircle = dynamic(
 interface ProjectProps {
   title: string;
   link: string;
-  image: string;
+  image: any;
   left?: boolean;
 }
 
@@ -44,8 +44,14 @@ export default function Project({ title, link, image, left }: ProjectProps) {
           <h2 className="text-color">{title}</h2>
           <BsArrowUpRightCircle className="text-color" />
         </div>
+        <Image
+        unoptimized
+          loading="lazy"
+          width={1920}
+          height={1080}
 
-        <img
+          quality={100}
+          id="image"
           src={image}
           alt={title}
           className={`rounded-[3.4rem] w-full lg:aspect-video h-full ${

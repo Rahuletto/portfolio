@@ -76,7 +76,7 @@ export default function Resume() {
               </div>
               <img
                 className="object-cover rounded-[3.2rem] w-full h-[40vh] lg:h-max"
-                src="/resource/resume.png"
+                src="/resource/resume.webp"
                 alt="print"
               />
             </Link>
@@ -113,7 +113,7 @@ export default function Resume() {
               </div>
               <img
                 className="object-cover rounded-[3.2rem] w-full h-[40vh] lg:h-max"
-                src="/resource/print.png"
+                src="/resource/print.webp"
                 alt="print"
               />
             </Link>
