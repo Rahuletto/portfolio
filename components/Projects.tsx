@@ -22,6 +22,8 @@ export default function Project({ title, link, image, left }: ProjectProps) {
   const device = useDevice();
   return (
     <motion.div
+    id="project"
+
       initial={device == "mobile" ? {} : { x: 10 }}
       exit={{ x: device == "mobile" ? 0 : 10 }}
       viewport={{ once: true }}
@@ -45,11 +47,10 @@ export default function Project({ title, link, image, left }: ProjectProps) {
           <BsArrowUpRightCircle className="text-color" />
         </div>
         <Image
-        unoptimized
+          unoptimized
           loading="lazy"
           width={1920}
           height={1080}
-
           quality={100}
           id="image"
           src={image}

@@ -28,7 +28,7 @@ export default function Connect() {
           id={9}
           delay={1}
           mobile
-          style={{ bottom: "20%", right: "70px" }}
+          style={{ bottom: "15%", right: "20px" }}
           className="absolute z-20"
           scale={0.85}
         />

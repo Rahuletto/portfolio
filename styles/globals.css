@@ -133,15 +133,20 @@ body {
 }
 
 @media (min-width: 768px) {
-
-  #works:hover:has(#project:hover) #project:not(:hover) {
+  #works:hover:has(#project:hover) #project {
     opacity: 0.5;
     filter: blur(1px) grayscale(1);
     -webkit-filter: blur(1px) grayscale(1);
-  }
+    transition: all 0.5s linear !important;
+    -webkit-transition: all 0.5s linear !important;
+    -moz-transition: all 0.5s linear !important;
+    -ms-transition: all 0.5s linear !important;
+    -o-transition: all 0.5s linear !important;
+}
 
   #project:hover {
     opacity: 1 !important;
+    transition: all 0.5s linear !important;
     filter: none !important;
     -webkit-filter: none !important;
   }
@@ -160,7 +165,6 @@ body {
     color: var(--copper);
   }
 }
-
 
 @layer utilities {
   .text-balance {

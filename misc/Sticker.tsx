@@ -86,6 +86,7 @@ const Sticker = ({
         style={{
           display: "inline-block",
           width: width || "auto",
+          userSelect: 'none',
           zIndex: 2,
           ...style,
         }}
@@ -100,6 +101,14 @@ const Sticker = ({
           rotateZ: 0,
           transition: { delay: delay || 0.5 },
         }}
+        whileTap={
+          device != "desktop"
+            ? {
+                rotateZ: getRandomRotation(),
+                transition: { delay: 0, margin: { velocity: 2, delay: 0.1 } },
+              }
+            : {}
+        }
         whileHover={{
           rotateZ: getRandomRotation(),
           transition: { delay: 0, margin: { velocity: 2, delay: 0.1 } },
