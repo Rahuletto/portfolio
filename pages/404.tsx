@@ -5,9 +5,17 @@ import Head from "next/head";
 import { WipeText, WipeWord } from "@/misc/WipeText";
 import dynamic from "next/dynamic";
 
-const Sticker = dynamic(() => import("@/misc/Sticker").then(a => a.default), { ssr: false });
-const Scroller = dynamic(() => import("@/components/Scroller").then(a => a.default), { ssr: false });
-const Slides = dynamic(() => import("@/components/Slides").then(a => a.default), { ssr: false });
+const Sticker = dynamic(() => import("@/misc/Sticker").then((a) => a.default), {
+  ssr: false,
+});
+const Scroller = dynamic(
+  () => import("@/components/Scroller").then((a) => a.default),
+  { ssr: false }
+);
+const Slides = dynamic(
+  () => import("@/components/Slides").then((a) => a.default),
+  { ssr: false }
+);
 
 export default function Error() {
   return (
@@ -17,14 +25,14 @@ export default function Error() {
         <meta name="description" content="Look? Wait where is the" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
-        <Sticker
-          id={10}
-          delay={1.4}
-          style={{ bottom: "32%", left: "99px", rotate: '-23deg' }}
-          className="absolute z-20"
-          scale={1.3}
-        />
+
+      <Sticker
+        id={10}
+        delay={1.4}
+        style={{ bottom: "32%", left: "99px", rotate: "-23deg" }}
+        className="absolute z-20"
+        scale={1.3}
+      />
 
       <Scroller>
         <Slides id="404">
