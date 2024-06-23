@@ -7,7 +7,7 @@ export default function Navbar() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="fixed bottom-4 sm:bottom-3 w-full"
+      className="fixed md:flex hidden bottom-4 sm:bottom-3 w-full"
     >
       <div className="flex gap-1 justify-center items-center max-w-[250px] rounded-full m-auto">
         <Link

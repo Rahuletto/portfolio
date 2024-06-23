@@ -23,7 +23,7 @@ export default function About() {
 
   return (
     <Slides id="me">
-      <p className="lg:text-4xl md:text-2xl text-xl pt-8 py-4 leading-relaxed px-4 font-medium text-color lg:px-16 lg:py-6 lg:pt-24 max-w-[1200px]">
+      <p className="lg:text-4xl text-2xl pt-8 py-4 leading-relaxed px-4 font-medium text-color lg:px-16 lg:py-6 lg:pt-24 max-w-[1200px]">
       <WipeWord
           once={true}
           delay={0.05}
@@ -55,7 +55,7 @@ export default function About() {
       </p>
 
       <motion.p
-        className="lg:text-4xl md:text-2xl text-xl py-4 px-4 pb-24 font-medium text-color lg:px-16 lg:py-6 lg:pb-48 max-w-[1200px]"
+        className="lg:text-4xl text-2xl py-4 px-4 pb-24 font-medium text-color lg:px-16 lg:py-6 lg:pb-48 max-w-[1200px]"
         initial={{ opacity: 0, y: 30 }}
         viewport={{ once: true }}
         style={{lineHeight: 1.3}}

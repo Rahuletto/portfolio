@@ -59,7 +59,7 @@ export default function Journey() {
 
       <div className="lg:p-6 p-0">
         <Subhead text="Journey" />
-        <div className="lg:my-20 my-12 relative w-[89vw] h-[72vh] px-2 lg:px-0">
+        <div className="lg:my-20 my-12 relative md:w-[89vw] md:h-[72vh] h-screen w-full px-2 lg:px-0">
           <JourneyPath />
           <div
             ref={grid}
@@ -191,7 +191,7 @@ function JourneyText({
       }}
     >
       <h2 className="md:text-2xl text-xl font-medium text-color">{head}</h2>
-      <p className="md:text-md font-regular text-color opacity-75 lg:max-w-[200px]">
+      <p className="md:text-md font-regular text-color opacity-50 lg:max-w-[200px] w-auto">
         {text}
       </p>
     </motion.div>

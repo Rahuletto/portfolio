@@ -14,11 +14,14 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
   const sty =
     device === "mobile"
       ? {
-          left: "-22vw",
+          left: "-26vw",
           width: "100vw",
           maxWidth: "100vw",
+          marginLeft: "-24px",
         }
-      : {};
+      : {
+        marginLeft: "-24px"
+      };
   const cont = device === "mobile" ? { scale: "1.4" } : {};
 
   return (
@@ -40,7 +43,6 @@ export default function Frame({ noanim }: { noanim?: boolean }) {
         initial={{ opacity: noanim ? 1 : 0 }}
         animate={{ opacity: 1 }}
         style={{
-          marginLeft: "-24px",
           minWidth: "76vw",
           transformOrigin: "bottom center",
           ...sty,

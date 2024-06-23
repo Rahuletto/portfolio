@@ -26,7 +26,7 @@ export default function Signature() {
           ) -
         1;
 
-      if (pos == 4) setInView(true);
+      if (pos >= 4) setInView(true);
     }
     container?.addEventListener("scroll", isInViewport);
     return () => {

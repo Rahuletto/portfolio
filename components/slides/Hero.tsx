@@ -28,10 +28,10 @@ export default function Hero({ noanim }: { noanim?: boolean }) {
               repeat: Infinity,
             },
           }}
-          whileHover={{ letterSpacing: "-6px" }}
+          whileHover={device == 'mobile' ? {} : { letterSpacing: "-6px" }}
           transition={{ opacity: { duration: 0.5, type: "spring" } }}
           id="stroke"
-          className="m-0 lg:m-0 inline-block lg:text-8xl font-semibold md:normal-case capitalize text-transparent transition-all md:text-6xl sm:text-5xl text-4xl duration-500"
+          className="m-0 lg:m-0 inline-block lg:text-8xl font-semibold md:normal-case capitalize text-transparent transition-all md:text-6xl leading-relaxed text-5xl duration-500"
         >
           <Link href="https://www.linkedin.com/in/rahul-marban" target="_blank">
             {noanim ? (
@@ -48,7 +48,7 @@ export default function Hero({ noanim }: { noanim?: boolean }) {
         <motion.a
         href="/resume"
           initial={{
-            maxWidth: noanim ? (device === "desktop" ? "14vw" : "80vw") : "2vw",
+            maxWidth: noanim ? (device === "desktop" ? "14vw" : "80vw") : (device === "desktop" ? "2vw" : "80vw"),
             opacity: noanim ? 1 : 0,
           }}
           viewport={{ once: true }}
@@ -63,7 +63,7 @@ export default function Hero({ noanim }: { noanim?: boolean }) {
             },
           }}
           transition={{
-            scale: { delay: 0, duration: 0.2, bounce: 0.4 },
+           
           }}
           whileTap={{ scale: 0.85 }}
           style={{ width: `${device === "desktop" ? "14vw" : "80vw"}` }}

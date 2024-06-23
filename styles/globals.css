@@ -133,6 +133,7 @@ body {
 }
 
 @media (min-width: 768px) {
+
   #works:hover:has(#project:hover) #project:not(:hover) {
     opacity: 0.5;
     filter: blur(1px) grayscale(1);
@@ -151,6 +152,9 @@ body {
 }
 
 @media (max-width: 768px) {
+  :root {
+    --container: var(--deep-black);
+  }
   #stroke {
     -webkit-text-stroke: 2px transparent;
     color: var(--copper);
