@@ -2,9 +2,6 @@
 import withOptimizedImages from "next-optimized-images";
 
 const config = withOptimizedImages({
-  handleImages: ["svg", 'png', 'webp'],
-  optimizeImages: true,
-  optimizeImagesInDev: true,
   images: {
     disableStaticImages: true,
     formats: ['image/webp'],
@@ -22,6 +19,10 @@ const config = withOptimizedImages({
     };
     return config;
   },
+}, {
+  handleImages: ["svg", 'png', 'webp'],
+  optimizeImages: true,
+  optimizeImagesInDev: true,
 });
 
 export default config;
