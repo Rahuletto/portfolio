@@ -51,7 +51,8 @@ export default function About() {
 
   return (
     <Slides id="me">
-      <p className="lg:text-4xl text-2xl md:pt-8 py-2 md:leading-relaxed px-4 font-medium text-color lg:px-16 lg:py-6 lg:pt-24 max-w-[1200px]">
+
+      <p className="lg:text-4xl text-2xl md:pt-8 py-2 md:leading-relaxed px-4 font-medium text-color lg:px-16 lg:py-6 lg:pt-24 max-w-[1100px]">
         <WipeWord
           once={true}
           delay={0.05}
@@ -65,7 +66,7 @@ export default function About() {
           delay={0.6}
           text="CSE with AIML at SRMIST. While I am passionate about AI, my true love"
         />
-        <br />
+
         <WipeWord once={true} delay={1.9} text="lies in" />
         <WipeIcon once={true} delay={2.4}>
           <HiOutlinePaintBrush className="md:text-4xl text-2xl inline-block pb-1 text-copper-dark" />
@@ -83,7 +84,7 @@ export default function About() {
       </p>
 
       <motion.p
-        className="lg:text-4xl text-2xl py-4 px-4 pb-24 font-medium text-color lg:px-16 lg:py-6 lg:pb-48 max-w-[1200px]"
+        className=" lg:text-4xl text-2xl py-4 px-4 pb-24 font-medium text-color lg:px-16 lg:py-6 lg:pb-48 max-w-[1100px]"
         initial={{ opacity: 0, y: 30 }}
         viewport={{ once: true }}
         style={{ lineHeight: 1.3 }}
@@ -94,7 +95,7 @@ export default function About() {
         <IoConstruct className="md:text-4xl text-2xl inline-block pb-1 text-copper-dark" />{" "}
         build everything from the visible parts of websites to the
         behind-the-scenes{" "}
-        <FaWandMagicSparkles className="md:text-4xl text-2xl inline-block pb-1 text-copper-dark" />{" "}
+        <FaWandMagicSparkles className="md:text-3xl text-xl inline-block pb-1 text-copper-dark" />{" "}
         magic, making tech accessible and user-friendly{" "}
         <FaUniversalAccess className="md:text-4xl text-2xl inline-block pb-1 text-copper-dark" />
       </motion.p>
@@ -112,14 +113,14 @@ export default function About() {
           <Sticker
             id={5}
             delay={2 + getRandomDelay()}
-            style={{ bottom: "24%", right: "40px" }}
+            style={{ bottom: "22%", right: "40px" }}
             className="absolute z-20"
             scale={1.1}
           />
         </>
       )}
 
-      <div className="absolute bottom-24 max-w-[83vw] lg:max-w-[93vw] lg:w-screen left-4">
+      <div className="md:absolute md:bottom-24 max-w-[83vw] lg:max-w-[93vw] lg:w-screen left-4">
         <RevealText />
         <LanguageSlider />
       </div>

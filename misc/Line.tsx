@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useDevice } from "@/provider/DeviceProvider";
 
@@ -7,12 +6,21 @@ interface LineProps {
 }
 
 export default function Line({ delay }: LineProps) {
-  const device = useDevice()
-  return (
+  const device = useDevice();
+  return device === "mobile" ? (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 0.4, delay: delay ? delay - 0.2 : 0 } }}
+      className="h-[6px] p-1 w-[6px] rounded-full bg-copper"
+    />
+  ) : (
     <motion.svg
       whileHover={{ scaleX: 1.7, width: 60 }}
       initial={{ width: 0 }}
-      animate={{ width: (device == 'desktop' ? 41: 20), transition: { duration: 0.4, delay: delay || 0 } }}
+      animate={{
+        width: device == "desktop" ? 41 : 20,
+        transition: { duration: 0.4, delay: delay || 0 },
+      }}
       transition={{ delay: 0, type: "spring", bounce: 0.3 }}
       height="4"
       viewBox="0 0 41 4"
@@ -20,7 +28,7 @@ export default function Line({ delay }: LineProps) {
       xmlns="http://www.w3.org/2000/svg"
     >
       <motion.path
-        whileHover={{ width: (device == 'desktop' ? 60: 30) }}
+        whileHover={{ width: device == "desktop" ? 60 : 30 }}
         initial={{ pathLength: 0, visibility: "hidden" }}
         animate={{ pathLength: 1, visibility: "visible" }}
         transition={{

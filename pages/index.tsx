@@ -1,12 +1,19 @@
-import Navbar from "@/components/Navbar";
-import Scroller from "@/components/Scroller";
 import About from "@/components/slides/About";
 import Connect from "@/components/slides/Connect";
 import Hero from "@/components/slides/Hero";
 import Journey from "@/components/slides/Journey";
 import Work from "@/components/slides/Work";
 import { useDevice } from "@/provider/DeviceProvider";
+import dynamic from "next/dynamic";
 import Head from "next/head";
+
+const Navbar = dynamic(() => import("@/components/Navbar"), {
+  ssr: false,
+});
+
+const Scroller = dynamic(() => import("@/components/Scroller"), {
+  ssr: true,
+});
 
 import { useEffect, useRef } from "react";
 
@@ -14,6 +21,7 @@ export default function Home() {
   const device = useDevice();
   const firstSectionRef = useRef<HTMLDivElement>(null);
   const lastSectionRef = useRef<HTMLDivElement>(null);
+  const scrollTop = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const sections = document.querySelectorAll("section");
@@ -22,6 +30,7 @@ export default function Home() {
 
     const firstSection = firstSectionRef.current;
     const lastSection = lastSectionRef.current;
+    const scrollToTop = scrollTop.current;
 
     const makeActive = (link: string) => {
       const active = Array.from(menu_links).find((a) =>
@@ -107,6 +116,15 @@ export default function Home() {
               block: "center",
             });
           }
+        } else if (entry.isIntersecting && device == "mobile") {
+          if (entry.target === scrollToTop) {
+            setTimeout(() => {
+              container?.scrollTo({
+                behavior: "smooth",
+                top: 0,
+              });
+            }, 700);
+          }
         }
       });
     };
@@ -116,9 +134,16 @@ export default function Home() {
       threshold: 0.000001,
     });
 
+    const topScroll = new IntersectionObserver(handleIntersect, {
+      root: container,
+      threshold: 1,
+    });
+
     if (firstSection && lastSection && device !== "mobile") {
       observer.observe(firstSection);
       observer.observe(lastSection);
+    } else if (scrollToTop && device == "mobile") {
+      topScroll.observe(scrollToTop);
     }
 
     container?.addEventListener("scroll", navActive, { passive: true });
@@ -127,11 +152,12 @@ export default function Home() {
       container?.removeEventListener("scroll", navActive);
       window.removeEventListener("keydown", movePages);
       observer.disconnect();
+      topScroll.disconnect();
     };
   }, [device]);
 
   return (
-    <main className="h-screen flex flex-col items-center justify-between lg:p-4 md:pb-12 p-2">
+    <main className="h-screen flex flex-col items-center justify-between lg:p-4 md:pb-12 p-0">
       <Head>
         <title>Marban.</title>
         <meta
@@ -148,7 +174,16 @@ export default function Home() {
         <Work />
         <Connect />
         {device !== "mobile" && <Hero noanim />}
-        <div className="py-8 mb-4  w-full" ref={lastSectionRef} />
+        {device !== "mobile" ? (
+          <div className="py-8 mb-4  w-full" ref={lastSectionRef} />
+        ) : (
+          <div
+            className="py-8 mb-4 w-full bg-copper flex justify-center items-center rounded-full text-deep font-semibold text-2xl"
+            ref={scrollTop}
+          >
+            Scroll to top
+          </div>
+        )}
       </Scroller>
       <Navbar />
     </main>

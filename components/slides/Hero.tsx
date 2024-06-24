@@ -116,7 +116,7 @@ export default function Hero({ noanim }: { noanim?: boolean }) {
 
 function RevealText({ noanim }: { noanim?: boolean }) {
   return (
-    <div className="flex gap-4 mt-4 justify-start items-center flex-wrap">
+    <div className="flex gap-4 md:mt-4 mt-1 justify-start items-center flex-wrap">
       <h2 className="text-xl lg:text-2xl text-copper">
         {noanim ? (
           "UI Designer"

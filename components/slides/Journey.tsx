@@ -177,7 +177,37 @@ function JourneyText({
   className,
   style,
 }: JourneyTextProps) {
-  return (
+  const device = useDevice();
+
+  return device == "mobile" ? (
+    <motion.div
+      style={{ ...style, display: "flex", gap: "18px", marginLeft: '-30px' }}
+      className={className}
+      initial={{ opacity: 0, y: -10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{
+        delay: (delay || 0) + 3,
+        duration: 0.5,
+        type: "spring",
+        bounce: 0.2,
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{
+          opacity: 1,
+          transition: { duration: 0.4, delay: delay ? delay - 0.2 : 0 },
+        }}
+        className="h-[6px] p-2 w-[6px] rounded-full bg-copper mt-2"
+      />
+      <div className="flex flex-col gap-1">
+        <h2 className="md:text-2xl text-xl font-medium text-color">{head}</h2>
+        <p className="md:text-md font-regular text-color opacity-50 lg:max-w-[200px] w-auto">
+          {text}
+        </p>
+      </div>
+    </motion.div>
+  ) : (
     <motion.div
       style={style}
       className={className}

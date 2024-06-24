@@ -80,16 +80,16 @@ const slides = [
 ];
 
 const LanguageSlider = () => {
-  const device = useDevice()
+  const device = useDevice();
   const duplicatedSlides = [...slides, ...slides];
 
   return (
-    <div className="relative h-full w-full overflow-hidden pt-12">
+    <div className="relative h-full w-full overflow-hidden md:pt-12 pt-6">
       <div className="absolute inset-0 z-20 pointer-events-none before:absolute before:left-0 before:top-0 before:w-40 before:h-full before:bg-gradient-to-r before:from-container before:to-transparent before:filter before:blur-3 after:absolute after:right-0 after:top-0 after:w-40 after:h-full after:bg-gradient-to-l after:from-container after:to-transparent after:filter after:blur-3"></div>
       <motion.div
         className="flex gap-0"
         animate={{
-          x: [(device == 'mobile' ? "-350%" : "-150%"), "0%"],
+          x: [device == "mobile" ? "-350%" : "-150%", "0%"],
           transition: {
             ease: "linear",
             duration: 30,
@@ -104,7 +104,9 @@ const LanguageSlider = () => {
               key={index}
               className="flex-shrink-0 flex items-center justify-center h-full py-4 opacity-70"
               id="icon"
-              style={{ width: `${(device == 'mobile' ? 350 : 150) / slides.length}%` }}
+              style={{
+                width: `${(device == "mobile" ? 350 : 150) / slides.length}%`,
+              }}
             >
               {Icon}
             </div>
