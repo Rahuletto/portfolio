@@ -4,18 +4,12 @@ import Hero from "@/components/slides/Hero";
 import Journey from "@/components/slides/Journey";
 import Work from "@/components/slides/Work";
 import { useDevice } from "@/provider/DeviceProvider";
-
+import Navbar from "@/components/Navbar";
+import Scroller from "@/components/Scroller";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useEffect, useRef } from "react";
 
-const Navbar = dynamic(() => import("@/components/Navbar"), {
-  ssr: false,
-});
-
-const Scroller = dynamic(() => import("@/components/Scroller"), {
-  ssr: false,
-});
 export default function Home() {
   const device = useDevice();
   const firstSectionRef = useRef<HTMLDivElement>(null);
