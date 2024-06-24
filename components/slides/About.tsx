@@ -52,7 +52,7 @@ export default function About() {
   return (
     <Slides id="me">
 
-      <p className="lg:text-4xl text-2xl md:pt-8 py-2 md:leading-relaxed px-4 font-medium text-color lg:px-16 lg:py-6 lg:pt-24 max-w-[1100px]">
+      <p tabIndex={0} className="lg:text-4xl text-2xl md:pt-8 py-2 md:leading-relaxed px-4 font-medium text-color lg:px-16 lg:py-6 lg:pt-24 max-w-[1100px]">
         <WipeWord
           once={true}
           delay={0.05}
@@ -84,6 +84,7 @@ export default function About() {
       </p>
 
       <motion.p
+        tabIndex={0}
         className=" lg:text-4xl text-2xl py-4 px-4 pb-24 font-medium text-color lg:px-16 lg:py-6 lg:pb-48 max-w-[1100px]"
         initial={{ opacity: 0, y: 30 }}
         viewport={{ once: true }}

@@ -2,6 +2,7 @@ import { useDevice } from "@/provider/DeviceProvider";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Slides = dynamic(
   () => import("@/components/Slides").then((a) => a.default),
@@ -20,6 +21,7 @@ const WipeText = dynamic(
 
 export default function Hero({ noanim }: { noanim?: boolean }) {
   const device = useDevice();
+  const router = useRouter();
 
   return (
     <Slides id="me" noanim>
@@ -57,8 +59,11 @@ export default function Hero({ noanim }: { noanim?: boolean }) {
       </div>
       <div className="flex lg:mt-12 md:gap-8 gap-3 mt-24 flex-col lg:flex-row items-start lg:justify-stretch lg:items-stretch">
         <Frame noanim={noanim} />
-        <motion.a
-          href="/resume"
+        <motion.button
+          onClick={() => router.push('/resume')}
+          role={noanim ? "none" : "button"}
+          aria-label="Resume"
+          tabIndex={noanim ? -1 :1}
           initial={{
             maxWidth: noanim
               ? device === "desktop"
@@ -83,12 +88,13 @@ export default function Hero({ noanim }: { noanim?: boolean }) {
           whileTap={{ scale: 0.85 }}
           style={{ width: `${device === "desktop" ? "14vw" : "80vw"}` }}
           whileHover={{ scale: 0.95 }}
-          className="lg:mt-0 mt-12 flex w-full border-4 border-copper rounded-full items-center justify-center lg:py-0 lg:px-0 px-12 py-6 max-w-[80vw] lg:max-w-[14vw]"
+          whileFocus={{ scale: 0.95 }}
+          className="rounded-full lg:mt-0 mt-12 flex w-full border-4 border-copper items-center justify-center lg:py-0 lg:px-0 px-12 py-6 max-w-[80vw] lg:max-w-[14vw]"
         >
           <p className="lg:text-4xl text-2xl font-medium lg:rotate-90 text-copper-dark">
             Résumé
           </p>
-        </motion.a>
+        </motion.button>
       </div>
 
       <p className="opacity-70 italic font-medium pl-3 absolute md:bottom-12 bottom-24 text-lg pr-2">

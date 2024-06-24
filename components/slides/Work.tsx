@@ -16,7 +16,6 @@ const Slides = dynamic(
 );
 import Project from "@/components/Projects";
 
-
 const unix = require("@/public/works/unix.webp");
 const codeboard = require("@/public/works/codeboard.webp");
 const betterlab = require("@/public/works/betterlab.webp");
@@ -108,7 +107,7 @@ export default function Work() {
               link="https://codeboard.tech"
               image={codeboard}
             />
-            <motion.a
+            <motion.button
               initial={{
                 opacity: 0,
                 x: 5,
@@ -142,12 +141,19 @@ export default function Work() {
                 background: "rgba(0,0,0,0.01)",
                 color: "var(--copper)",
               }}
-              href="https://github.com/Rahuletto"
-              target="_blank"
+              whileTap={{ scale: 0.9 }}
+              whileFocus={{
+                scale: 0.95,
+                border: "6px solid var(--copper)",
+                background: "rgba(0,0,0,0.01)",
+                color: "var(--copper)",
+              }}
+              tabIndex={0}
+              onClick={() => window.open("https://github.com/Rahuletto")}
               className="text-4xl font-medium underline col-span-2 aspect-video h-full w-full p-6 text-deep bg-copper-dark rounded-[2.5rem] flex justify-center items-center snap-center"
             >
               See more.
-            </motion.a>
+            </motion.button>
           </motion.div>
 
           {device == "mobile" && (

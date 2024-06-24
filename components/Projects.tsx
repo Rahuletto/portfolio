@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useDevice } from "@/provider/DeviceProvider";
+import { useRouter } from "next/router";
 
 const BsArrowUpRightCircle = dynamic(
   () => import("react-icons/bs").then((a) => a.BsArrowUpRightCircle),
@@ -20,10 +21,11 @@ interface ProjectProps {
 
 export default function Project({ title, link, image, left }: ProjectProps) {
   const device = useDevice();
+  const router = useRouter();
+
   return (
     <motion.div
-    id="project"
-
+      id="project"
       initial={device == "mobile" ? {} : { x: 10 }}
       exit={{ x: device == "mobile" ? 0 : 10 }}
       viewport={{ once: true }}
@@ -33,11 +35,16 @@ export default function Project({ title, link, image, left }: ProjectProps) {
       }}
       className="hover:drop-shadow-xl hover:z-20 z-0 relative col-span-2 aspect-video h-full w-full bg-border rounded-[3.4rem] snap-center hover:scale-95 transform-all ease-bouncy duration-500"
     >
-      <Link
+      <button
+        tabIndex={0}
+        role="button"
+        aria-label={title}
+        aria-details="my project"
+        aria-describedby="text"
+        aria-labelledby="text"
         id="project"
-        href={link}
-        target="_blank"
-        className="aspect-video text-3xl font-regular underline"
+        onClick={() => window.open(link)}
+        className="aspect-video text-3xl font-regular underline h-full w-full rounded-[3.4rem]"
       >
         <div
           id="text"
@@ -59,7 +66,7 @@ export default function Project({ title, link, image, left }: ProjectProps) {
             left ? "object-left-top object-cover" : "object-cover"
           }`}
         />
-      </Link>
+      </button>
     </motion.div>
   );
 }

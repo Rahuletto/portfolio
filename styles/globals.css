@@ -133,7 +133,8 @@ body {
 }
 
 @media (min-width: 768px) {
-  #works:hover:has(#project:hover) #project {
+  #works:hover:has(#project:hover) #project img,
+  #works:has(#project:focus) #project img {
     opacity: 0.5;
     filter: blur(1px) grayscale(1);
     -webkit-filter: blur(1px) grayscale(1);
@@ -142,17 +143,19 @@ body {
     -moz-transition: all 0.5s linear !important;
     -ms-transition: all 0.5s linear !important;
     -o-transition: all 0.5s linear !important;
-}
-
-  #project:hover {
-    opacity: 1 !important;
-    transition: all 0.5s linear !important;
-    filter: none !important;
-    -webkit-filter: none !important;
   }
 }
 
-#project:hover #text {
+#project:hover img,
+#project:focus img {
+  opacity: 1 !important;
+  transition: all 0.5s linear !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+
+#project:hover #text,
+#project:focus #text {
   opacity: 1 !important;
 }
 

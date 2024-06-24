@@ -42,37 +42,40 @@ const Sticker = ({
   const stickers = [
     {
       id: 1,
-      svg: <img src={one} alt="sleek" role="alert" />,
+      svg: <img src={one} alt="sleek" role="none" tabIndex={-1} />,
     },
-    { id: 2, svg: <img src={two} alt="pleasant" role="alert" /> },
+    { id: 2, svg: <img src={two} alt="pleasant" role="none" tabIndex={-1} /> },
     {
       id: 3,
-      svg: <img src={three} alt="users" role="alert" />,
+      svg: <img src={three} alt="users" role="none" tabIndex={-1} />,
     },
     {
       id: 4,
-      svg: <img src={four} alt="pixel" role="alert" />,
+      svg: <img src={four} alt="pixel" role="none" tabIndex={-1} />,
     },
     {
       id: 5,
-      svg: <img src={five} alt="likes" role="alert" />,
+      svg: <img src={five} alt="likes" role="none" tabIndex={-1} />,
     },
-    { id: 6, svg: <img src={six} alt="typescript" role="alert" /> },
+    {
+      id: 6,
+      svg: <img src={six} alt="typescript" role="none" tabIndex={-1} />,
+    },
     {
       id: 7,
-      svg: <img src={seven} alt="success" role="alert" />,
+      svg: <img src={seven} alt="success" role="none" tabIndex={-1} />,
     },
     {
       id: 8,
-      svg: <img src={eight} alt="quantity" role="alert" />,
+      svg: <img src={eight} alt="quantity" role="none" tabIndex={-1} />,
     },
     {
       id: 9,
-      svg: <img src={nine} alt="connected" role="alert" />,
+      svg: <img src={nine} alt="connected" role="none" tabIndex={-1} />,
     },
     {
       id: 10,
-      svg: <img src={ten} alt="oops" role="alert" />,
+      svg: <img src={ten} alt="oops" role="none" tabIndex={-1} />,
     },
   ];
 
@@ -81,12 +84,14 @@ const Sticker = ({
   return (
     sticker && (
       <motion.div
+        tabIndex={-1}
+        role="none"
         className={`origin-center absolute${className ? " " + className : ""}`}
         id="sticker"
         style={{
           display: "inline-block",
           width: width || "auto",
-          userSelect: 'none',
+          userSelect: "none",
           zIndex: 2,
           ...style,
         }}

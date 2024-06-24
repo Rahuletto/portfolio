@@ -181,6 +181,10 @@ function JourneyText({
 
   return device == "mobile" ? (
     <motion.div
+    role="cell"
+    tabIndex={0}
+
+    aria-label={head}
       style={{ ...style, display: "flex", gap: "18px", marginLeft: '-30px' }}
       className={className}
       initial={{ opacity: 0, y: -10 }}
@@ -209,6 +213,9 @@ function JourneyText({
     </motion.div>
   ) : (
     <motion.div
+    role="cell"
+    aria-label={head}
+    tabIndex={0}
       style={style}
       className={className}
       initial={{ opacity: 0, y: -10 }}

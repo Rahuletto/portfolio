@@ -60,6 +60,9 @@ export default function Connect() {
             className="container flex border-copper-dark border-4 p-1 lg:rounded-full mt-8 gap-2 md:w-max w-full flex-col rounded-[2.3rem] lg:flex-row"
           >
             <Link
+              tabIndex={0}
+              role="link"
+              aria-label="connect"
               href="https://github.com/Rahuletto"
               target="_blank"
               className="md:text-xl md:h-auto h-full text-lg text-copper px-12 py-4 font-medium rounded-full hover:bg-copper hover:text-deep transition-all ease-bouncy duration-300"
@@ -67,6 +70,9 @@ export default function Connect() {
               Github
             </Link>
             <Link
+              tabIndex={0}
+              role="link"
+              aria-label="connect"
               href="https://www.linkedin.com/in/rahul-marban"
               target="_blank"
               className="md:text-xl text-lg text-copper px-12 py-4 font-medium rounded-full hover:bg-copper hover:text-deep transition-all ease-bouncy duration-300"
@@ -74,6 +80,9 @@ export default function Connect() {
               Linkedin
             </Link>
             <Link
+              tabIndex={0}
+              role="link"
+              aria-label="connect"
               href="https://discord.gg/3JzDV9T5Fn"
               target="_blank"
               className="md:text-xl text-lg text-copper px-12 py-4 font-medium rounded-full hover:bg-copper hover:text-deep transition-all ease-bouncy duration-300"
@@ -81,6 +90,9 @@ export default function Connect() {
               Discord
             </Link>
             <Link
+              tabIndex={0}
+              role="link"
+              aria-label="connect"
               href="https://instagram.com/rahul_marban"
               target="_blank"
               className="md:text-xl text-lg text-copper px-12 py-4 font-medium rounded-full hover:bg-copper hover:text-deep transition-all ease-bouncy duration-300"
@@ -101,6 +113,9 @@ export default function Connect() {
               className="container flex border-copper-dark border-4 p-1 rounded-full  gap-2 w-max flex-col lg:flex-row"
             >
               <Link
+                tabIndex={0}
+                role="link"
+                aria-label="connect"
                 href="mailto:rahulmarban@gmail.com"
                 target="_blank"
                 className="md:text-xl text-lg text-copper px-12 py-4 font-medium rounded-full hover:bg-copper hover:text-deep transition-all ease-bouncy duration-300"
@@ -120,6 +135,9 @@ export default function Connect() {
               className="flex p-1 rounded-full gap-2 w-max flex-col"
             >
               <Link
+                tabIndex={0}
+                role="link"
+                aria-label="connect"
                 href="/resume"
                 target="_blank"
                 className="md:text-xl text-lg border-4 border-copper px-12 py-4 font-medium rounded-full bg-copper text-deep transition-all ease-bouncy duration-300"
