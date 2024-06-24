@@ -4,19 +4,18 @@ import Hero from "@/components/slides/Hero";
 import Journey from "@/components/slides/Journey";
 import Work from "@/components/slides/Work";
 import { useDevice } from "@/provider/DeviceProvider";
-import dynamic from "next/dynamic";
+
 import Head from "next/head";
+import dynamic from "next/dynamic";
+import { useEffect, useRef } from "react";
 
 const Navbar = dynamic(() => import("@/components/Navbar"), {
   ssr: false,
 });
 
 const Scroller = dynamic(() => import("@/components/Scroller"), {
-  ssr: true,
+  ssr: false,
 });
-
-import { useEffect, useRef } from "react";
-
 export default function Home() {
   const device = useDevice();
   const firstSectionRef = useRef<HTMLDivElement>(null);
@@ -24,81 +23,11 @@ export default function Home() {
   const scrollTop = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const sections = document.querySelectorAll("section");
-    const menu_links = document.querySelectorAll("#scrollLink");
     const container = document.querySelector("#container");
 
     const firstSection = firstSectionRef.current;
     const lastSection = lastSectionRef.current;
     const scrollToTop = scrollTop.current;
-
-    const makeActive = (link: string) => {
-      const active = Array.from(menu_links).find((a) =>
-        a.getAttribute("href")?.includes(link)
-      );
-
-      active?.classList.add("active");
-    };
-    const removeActive = (link: number) =>
-      menu_links[link] && menu_links[link]?.classList?.remove("active");
-
-    const removeAllActive = () =>
-      [...Array(sections.length).keys()].forEach((link) => removeActive(link));
-
-    const sectionMargin = 100;
-
-    let currentActive = "me";
-
-    function navActive() {
-      if (!container) return;
-      const newScroll = container.scrollTop;
-
-      const pos =
-        sections.length -
-        [...sections]
-          .reverse()
-          .findIndex(
-            (section) => newScroll >= section.offsetTop - sectionMargin
-          ) -
-        1;
-
-      const current = sections[pos]?.id;
-
-      if (current !== currentActive) {
-        removeAllActive();
-        currentActive = current;
-        makeActive(current);
-      }
-    }
-
-    function movePages(e: KeyboardEvent) {
-      if (!container) return;
-      const pos =
-        sections.length -
-        [...sections]
-          .reverse()
-          .findIndex(
-            (section) =>
-              container.scrollTop >= section.offsetTop - sectionMargin
-          ) -
-        1;
-      if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-        if (pos === 0) {
-          lastSection?.scrollIntoView({ behavior: "instant" });
-          setTimeout(() => {
-            sections[pos - 2]?.scrollIntoView({ behavior: "smooth" });
-          }, 100);
-        } else container.scrollTop += container.clientHeight;
-      }
-      if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
-        if (pos === sections.length - 1) {
-          firstSection?.scrollIntoView({ behavior: "instant" });
-          setTimeout(() => {
-            sections[1]?.scrollIntoView({ behavior: "smooth" });
-          }, 150);
-        } else container.scrollTop -= container.clientHeight;
-      }
-    }
 
     window.location.hash = "#me";
 
@@ -146,11 +75,7 @@ export default function Home() {
       topScroll.observe(scrollToTop);
     }
 
-    container?.addEventListener("scroll", navActive, { passive: true });
-    window.addEventListener("keydown", movePages);
     return () => {
-      container?.removeEventListener("scroll", navActive);
-      window.removeEventListener("keydown", movePages);
       observer.disconnect();
       topScroll.disconnect();
     };

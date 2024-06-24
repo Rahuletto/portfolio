@@ -9,28 +9,101 @@ interface ScrollerProps {
 export default function Scroller({ children }: ScrollerProps) {
   const device = useDevice();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
 
   useEffect(() => {
-    const updateScale = () => {
-      if (containerRef.current) {
-        const height = containerRef.current.clientHeight;
-        containerRef.current.style.maxWidth = `${(16 / 9) * height}px`;
+    const container = containerRef.current;
+    const menu_links = document.querySelectorAll("#scrollLink");
 
-        const desiredHeight = 700;
-        if (height < desiredHeight) {
-          setScale(height / desiredHeight);
-        } else {
-          setScale(1);
-        }
+    const sections = document.querySelectorAll("section");
+
+    const makeActive = (link: string) => {
+      const active = Array.from(menu_links).find((a) =>
+        a.getAttribute("href")?.includes(link)
+      );
+
+      active?.classList.add("active");
+    };
+    const removeActive = (link: number) =>
+      menu_links[link] && menu_links[link]?.classList?.remove("active");
+
+    const removeAllActive = () =>
+      [...Array(sections.length).keys()].forEach((link) => removeActive(link));
+
+    const sectionMargin = 100;
+
+    let currentActive = "me";
+
+    function navActive() {
+      if (!container) return;
+      const newScroll = container.scrollTop;
+
+      const pos =
+        sections.length -
+        [...sections]
+          .reverse()
+          .findIndex(
+            (section) => newScroll >= section.offsetTop - sectionMargin
+          ) -
+        1;
+
+      const current = sections[pos]?.id;
+
+      if (current !== currentActive) {
+        removeAllActive();
+        currentActive = current;
+        makeActive(current);
+      }
+    }
+
+    function movePages(e: KeyboardEvent) {
+      if (!container) return;
+      const pos =
+        sections.length -
+        [...sections]
+          .reverse()
+          .findIndex(
+            (section) =>
+              container.scrollTop >= section.offsetTop - sectionMargin
+          ) -
+        1;
+
+      const firstSection = sections[0];
+      const lastSection = sections[sections.length - 1];
+
+      if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+        if (pos === 0) {
+          lastSection?.scrollIntoView({ behavior: "instant" });
+          setTimeout(() => {
+            sections[pos - 2]?.scrollIntoView({ behavior: "smooth" });
+          }, 100);
+        } else container.scrollTop += container.clientHeight;
+      }
+      if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+        if (pos === sections.length - 1) {
+          firstSection?.scrollIntoView({ behavior: "instant" });
+          setTimeout(() => {
+            sections[1]?.scrollIntoView({ behavior: "smooth" });
+          }, 150);
+        } else container.scrollTop -= container.clientHeight;
+      }
+    }
+
+    const updateScale = () => {
+      if (container) {
+        const height = container.clientHeight;
+        container.style.maxWidth = `${(16 / 9) * height}px`;
       }
     };
 
+    container?.addEventListener("scroll", navActive, { passive: true });
+    window.addEventListener("keydown", movePages);
     window.addEventListener("resize", updateScale);
     updateScale();
 
     return () => {
       window.removeEventListener("resize", updateScale);
+      container?.removeEventListener("scroll", navActive);
+      window.removeEventListener("keydown", movePages);
     };
   }, []);
 
