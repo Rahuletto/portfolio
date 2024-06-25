@@ -31,12 +31,12 @@ export default function Home() {
           if (entry.target === lastSection) {
             firstSection?.scrollIntoView({
               behavior: "instant",
-              block: "center",
+              block: "end",
             });
           } else if (entry.target === firstSection) {
             lastSection?.scrollIntoView({
               behavior: "instant",
-              block: "center",
+              block: "start",
             });
           }
         } else if (entry.isIntersecting && device == "mobile") {
@@ -94,7 +94,7 @@ export default function Home() {
         <Connect />
         {device !== "mobile" && <Hero noanim />}
         {device !== "mobile" ? (
-          <div className="py-8 mb-4  w-full" ref={lastSectionRef} />
+          <div className="py-8 mb-4 w-full" ref={lastSectionRef} />
         ) : (
           <div
             className="py-8 mb-4 w-full bg-copper flex justify-center items-center rounded-full text-deep font-semibold text-2xl"
