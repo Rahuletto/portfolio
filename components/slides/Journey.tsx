@@ -132,14 +132,14 @@ export default function Journey() {
               <JourneyText
                 delay={device == "desktop" ? 2.4 : 1.4}
                 head="Remake"
-                text={`Made some wrapper sites of our university services`}
+                text={`Started to make wrapper websites from university services`}
               />
             </div>
             <div className="relative h-full lg:p-6 p-2 col-span-2 lg:pt-10">
               <JourneyText
                 delay={device == "desktop" ? 2.8 : 1.8}
                 head="Blowup"
-                text={`Reached overwhelming response of 40k+ active users under a month`}
+                text={`Handling more than 125k+ active users in a month`}
               />
             </div>
             <div className="relative h-full lg:p-6 lg: p-3 col-span-2 lg:pt-12 lg:justify-center lg:items-start lg:flex">
