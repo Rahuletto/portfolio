@@ -270,9 +270,14 @@ const SkillItem: FC<{ item: string; index: number }> = ({ item }) => {
         offset: ["start 90vh", "end 20vh"],
     });
 
-    const x = useTransform(scrollYProgress, [0, 1], [120, 0], {
-        ease: cubicBezier(0.645, 0.045, 0.355, 1),
-    });
+    const x = useTransform(
+        scrollYProgress,
+        [0, 1],
+        [window.innerWidth <= 768 ? 120 : 300, 0],
+        {
+            ease: cubicBezier(0.645, 0.045, 0.355, 1),
+        }
+    );
     const opacity = useTransform(scrollYProgress, [0, 0.1, 1], [0, 0, 1]);
 
     return (

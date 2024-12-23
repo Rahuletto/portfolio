@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
 import { tw } from "../../twind/twind";
+import { FaHeart } from "react-icons/fa";
 
 export default function LastSegment() {
-
     return (
         <motion.div
             className={tw(
@@ -14,22 +14,27 @@ export default function LastSegment() {
                     "flex flex-col gap-4 items-center justify-center",
                 )}
             >
-                <motion.img
-                    loading="eager"
+                <motion.div
+                    className={tw("flex items-center justify-center")}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
+                    style={{
+                        willChange: "transform",
+                    }}
                     transition={{
                         duration: 0.5,
                         ease: [0.25, 0.8, 0.25, 1],
                     }}
-                    src={"/svgs/heart.svg"}
-                    alt="Heart"
-                    className={tw("w-12 h-12 z-10")}
-                />
+                >
+                    <FaHeart className={tw("text-red text-5xl")} />
+                </motion.div>
                 <motion.h1
                     initial={{ opacity: 0, filter: "blur(10px)" }}
                     whileInView={{ opacity: 1, filter: "blur(0px)" }}
                     exit={{ opacity: 0, filter: "blur(10px)" }}
+                    style={{
+                        willChange: "opacity, filter",
+                    }}
                     transition={{
                         duration: 1,
                         delay: 0.3,
