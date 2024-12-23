@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, useScroll } from "motion/react";
 import { tw } from "../../twind/twind";
 import BallsSVG from "../svgs/balls";
