@@ -16,12 +16,14 @@ export default function Comments({
 }) {
     return (
         <motion.div
+
             style={{
                 backgroundColor: "#1E1E1E",
                 top: `${24 + (index * 0.05)}rem`,
+                willChange: "transform, opacity",
             }}
             className={tw(
-                "md:w-[700px] w-[500px] sticky top-96 shadow-xl rounded-2xl md:rounded-[38px] p-6 md:p-8 flex gap-4 flex-col",
+                "md:w-[700px] w-[85vw] sticky top-96 shadow-xl rounded-2xl md:rounded-[38px] p-6 md:p-8 flex gap-4 flex-col",
             )}
             initial={{ rotate: index % 2 === 0 ? 3 : -3, opacity: 0, scale: 0.7 }}
             transition={{

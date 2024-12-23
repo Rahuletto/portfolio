@@ -51,7 +51,7 @@ export default function LastSegment() {
                         ease: [0.25, 0.8, 0.25, 1],
                     }}
                     className={tw(
-                        "text-center max-w-[600px] text-sm md:text-base",
+                        "text-center max-w-[600px] w-[80vw] md:w-full text-sm md:text-base",
                     )}
                 >
                     Pouring passion and precision into every design to create

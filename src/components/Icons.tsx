@@ -20,7 +20,7 @@ export default function Icons() {
     <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
-    style={{ top: top }}
+    style={{ top: top, willChange: "opacity, transform" }}
     transition={{
       delay: 1.8,
       duration: 0.1,

@@ -40,6 +40,7 @@ function App() {
             style={{
               color: useScroll().scrollYProgress.get() > 0.997 ? "var(--background)" : "var(--color)",
               transition: "color 0.3s ease",
+              willChange: "opacity",
             }}
             transition={{ duration: 0.4, ease: [0.645, 0.045, 0.355, 1] }}
           >
@@ -49,6 +50,9 @@ function App() {
             <motion.div
               className={tw("text-xs md:text-sm text-right flex items-center gap-1")}
               animate={{ x: useScroll().scrollYProgress.get() > 0.95 ? 100 : 0 }}
+              style={{
+                willChange: "transform",
+              }}
               transition={{ duration: 0.3, delay: useScroll().scrollYProgress.get() > 0.95 ? 0.2 : 0, ease: [0.645, 0.045, 0.355, 1] }}
             >
               <p
@@ -91,6 +95,9 @@ function App() {
                   color: "var(--color)",
                   opacity: 0.9,
                 }}
+                style={{
+                  willChange: "transform, opacity",
+                }}
                 animate={{
                   x: useScroll().scrollYProgress.get() > 0.95 ? 100 : 0,
                   opacity: useScroll().scrollYProgress.get() > 0.95 ? 0 : 1,
@@ -102,13 +109,16 @@ function App() {
             </div>
           </div>
         </header>
-        <motion.div style={{ backgroundPosition: bgPosition }} className="parallax-background" />
+        <motion.div style={{ backgroundPosition: bgPosition, willChange: "background" }} className="parallax-background" />
         <section className={tw("flex justify-center items-center flex-col py-16 md:py-32 px-4 md:px-8")}>
           <div>
             <motion.h3
               className={tw("text-lg md:text-xl lg:text-2xl")}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
+              style={{
+                willChange: "opacity",
+              }}
               transition={{
                 duration: 0.4,
                 delay: 0.4,
@@ -122,6 +132,9 @@ function App() {
                 className={tw(`text-4xl md:text-6xl lg:text-8xl font-bold`)}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
+                style={{
+                  willChange: "opacity",
+                }}
                 transition={{
                   duration: 0.4,
                   delay: 0.8,
@@ -134,6 +147,9 @@ function App() {
                 className={tw("mt-2 hidden md:!block")}
                 initial={{ rotate: 0, opacity: 0 }}
                 animate={{ rotate: 360, opacity: 1 }}
+                style={{
+                  willChange: "transform, opacity",
+                }}
                 transition={{
                   duration: 1,
                   delay: 1,
@@ -146,6 +162,9 @@ function App() {
                 className={tw(`text-4xl md:text-6xl lg:text-8xl font-semibold before:(content-["&"] inline-block mr-2 md:hidden text-color)`)}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
+                style={{
+                  willChange: "opacity",
+                }}
                 transition={{
                   duration: 0.4,
                   delay: 1.2,
@@ -160,12 +179,15 @@ function App() {
         <Suspense fallback={<div>Loading...</div>}>
           <Icons />
         </Suspense>
-        <div className={tw("absolute bottom-0 w-full items-center justify-center flex")}>
+        <div className={tw("absolute h-[450px] md:h-[650px] lg:h-[700px] bottom-0 w-full items-center justify-center flex")}>
           <motion.img
             loading="eager"
             id="marban"
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
+            style={{
+              willChange: "transform, opacity",
+            }}
             transition={{
               duration: 0.7,
               delay: 1.2,
@@ -191,6 +213,9 @@ function App() {
               initial={{ opacity: 0, filter: "blur(10px)" }}
               whileInView={{ opacity: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, filter: "blur(10px)" }}
+              style={{
+                willChange: "opacity, filter",
+              }}
               transition={{
                 duration: 1,
                 delay: 0.3,
@@ -211,6 +236,9 @@ function App() {
             initial={{ opacity: 0, filter: "blur(10px)" }}
             whileInView={{ opacity: 1, filter: "blur(0px)" }}
             exit={{ opacity: 0, filter: "blur(10px)" }}
+            style={{
+              willChange: "opacity, filter",
+            }}
             transition={{
               duration: 1,
               delay: 0.3,

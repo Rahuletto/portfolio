@@ -28,6 +28,7 @@ const ScrollLine: React.FC = () => {
           height,
           width,
           backgroundColor,
+          willChange: 'height, background, width',
         }}
         className="rounded-full"
         initial={{ opacity: 0 }}

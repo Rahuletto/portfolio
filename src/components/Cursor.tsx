@@ -119,10 +119,12 @@ const CustomCursor = () => {
 
   return (
     <motion.div
+
       className={tw(
-        `fixed top-0 left-0 flex items-center justify-center shadow-lg pointer-events-none rounded-full backdrop-blur-sm`,
+        `hidden fixed top-0 left-0 lg:flex items-center justify-center shadow-lg pointer-events-none rounded-full backdrop-blur-sm`,
       )}
       style={{
+        willChange: "transform, width, height, background, border",
         zIndex: 9999,
         height: isHoveringButton
           ? "40px"

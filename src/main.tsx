@@ -12,7 +12,11 @@ createRoot(document.getElementById("root")!).render(
     <CustomCursor />
     <ReactLenis
       root
+      className="overflow-x-hidden w-screen"
       options={{
+        syncTouch: true,
+        smoothWheel: true,
+        touchMultiplier: 0.5,
         easing: (t: number) =>
           t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
       }}

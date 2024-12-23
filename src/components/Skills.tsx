@@ -246,7 +246,7 @@ const SkillsSection: FC = () => {
                             </h1>
                         </div>
 
-                        <div className={tw("flex flex-col gap-6")}>
+                        <div className={tw("flex overflow-scroll flex-col gap-6")}>
                             {section.items.map((item, itemIndex) => (
                                 <SkillItem
                                     key={`${sectionIndex}-${itemIndex}`}
@@ -270,7 +270,7 @@ const SkillItem: FC<{ item: string; index: number }> = ({ item }) => {
         offset: ["start 90vh", "end 20vh"],
     });
 
-    const x = useTransform(scrollYProgress, [0, 1], [250, 0], {
+    const x = useTransform(scrollYProgress, [0, 1], [120, 0], {
         ease: cubicBezier(0.645, 0.045, 0.355, 1),
     });
     const opacity = useTransform(scrollYProgress, [0, 0.1, 1], [0, 0, 1]);
@@ -278,8 +278,8 @@ const SkillItem: FC<{ item: string; index: number }> = ({ item }) => {
     return (
         <motion.div
             ref={ref}
-            style={{ x, opacity }}
-            className={tw("text-(3xl md:text-4xl xl:text-6xl color) font-semibold")}
+            style={{ x, opacity, willChange: "transform, opacity" }}
+            className={tw("text-(3xl md:text-4xl xl:text-6xl color) w-fit font-semibold")}
         >
             {item}
         </motion.div>
