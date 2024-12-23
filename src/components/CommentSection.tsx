@@ -35,7 +35,7 @@ const comments = [
         name: "Abadima",
         comment: "He's an amazing developer and a great person to work with. I've worked with him for over two years on projects like simply-djs and simply-xp. He's talented, reliable, and great at problem-solving, making teamwork fun and productive.",
         title: "Contributor to simply-xp",
-        image: "/testimonials/abadima.png"
+        image: "/testimonials/abadima.jpeg"
 
     }
 ]
