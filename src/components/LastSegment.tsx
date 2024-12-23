@@ -15,7 +15,7 @@ export default function LastSegment() {
                 )}
             >
                 <motion.img
-                    loading="lazy"
+                    loading="eager"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{

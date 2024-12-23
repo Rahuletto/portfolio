@@ -159,7 +159,7 @@ function App() {
                 <StarSVG className="text-2xl md:text-3xl lg:text-4xl text-color" />
               </motion.div>{" "}
               <motion.span
-                className={tw(`text-4xl md:text-6xl lg:text-8xl font-semibold before:(content-["&"] inline-block mr-2 md:hidden text-color)`)}
+                className={tw(`text-4xl md:text-6xl lg:text-8xl font-bold before:(content-["&"] inline-block mr-2 md:hidden text-color)`)}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 style={{
