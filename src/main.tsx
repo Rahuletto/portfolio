@@ -14,11 +14,14 @@ createRoot(document.getElementById("root")!).render(
       root
       className="overflow-x-hidden w-screen"
       options={{
-        syncTouch: true,
-        smoothWheel: true,
-        touchMultiplier: 0.5,
-        easing: (t: number) =>
-          t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+      syncTouch: true,
+      smoothWheel: true,
+      touchMultiplier: 1.5,
+      touchInertiaMultiplier: 1.2,
+      wheelMultiplier: 1,
+      gestureOrientation: "vertical",
+      easing: (t: number) =>
+        t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
       }}
     >
       <App />
