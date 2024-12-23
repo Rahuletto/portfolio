@@ -204,7 +204,7 @@ function App() {
             text={`I am Rahul Marban, currently pursuing CSE with AIML at SRMIST. While I am passionate about AI, my true love lies in designing interfaces that combine aesthetic appeal with strong user experiences. {} Taught myself to build everything from the visible parts of websites to the behind-the-scenes magic, making tech accessible and user-friendly`}
           />
         </div>
-        <div className={tw("max-w-screen-xl mx-12 px-12 lg:!mx-auto py-16 mb-6 md:!mb-24 min-h-screen flex flex-col md:!flex-row items-start justify-between gap-6")}>
+        <div className={tw("max-w-screen-xl mx-12 px-4 md:px-12 lg:!mx-auto py-16 mb-6 md:!mb-24 min-h-screen flex flex-col md:!flex-row items-start justify-between gap-6")}>
           <ServicesSection />
         </div>
         <div className={tw("py-16 min-h-screen")}>

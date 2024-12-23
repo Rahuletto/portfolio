@@ -246,7 +246,7 @@ const SkillsSection: FC = () => {
                             </h1>
                         </div>
 
-                        <div className={tw("flex overflow-scroll flex-col gap-6")}>
+                        <div className={tw("flex overflow-scroll flex-col gap-3 md:gap-6")}>
                             {section.items.map((item, itemIndex) => (
                                 <SkillItem
                                     key={`${sectionIndex}-${itemIndex}`}
@@ -284,7 +284,7 @@ const SkillItem: FC<{ item: string; index: number }> = ({ item }) => {
         <motion.div
             ref={ref}
             style={{ x, opacity, willChange: "transform, opacity" }}
-            className={tw("text-(3xl md:text-4xl xl:text-6xl color) w-fit font-semibold")}
+            className={tw("text-2xl md:text-2xl xl:text-3xl text-color w-fit font-semibold")}
         >
             {item}
         </motion.div>
