@@ -19,7 +19,7 @@ export default function Footer() {
                     ease: [0.25, 0.8, 0.25, 1],
                 }}
                 className={tw(
-                    "text-5xl md:text-6xl mb-6 opacity-100 lg:text-7xl xl:text-8xl font-bold text-right text-background",
+                    "text-5xl md:text-6xl mb-6 opacity-100 lg:text-7xl xl:text-8xl font-semibold text-right text-background",
                 )}
             >
                 Building a story<br />through code.
@@ -108,7 +108,7 @@ export default function Footer() {
                     href="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/Rahuletto/auto-resume/main/resume.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={tw("rounded-full p-3 px-9 border-4 text-xl md:text-2xl font-bold border-background cursor-pointer")}
+                    className={tw("rounded-full p-3 px-9 border-4 text-xl md:text-2xl font-semibold border-background cursor-pointer")}
                     initial={{
                         background: "#00000000",
                         color: "var(--background)",
@@ -124,7 +124,7 @@ export default function Footer() {
                 </motion.a>
                 <motion.button
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    className={tw("rounded-full p-3 border-4 font-bold border-background cursor-pointer")}
+                    className={tw("rounded-full p-3 border-4 font-semibold border-background cursor-pointer")}
                     initial={{
                         background: "var(--background)",
                         color: "var(--color)",

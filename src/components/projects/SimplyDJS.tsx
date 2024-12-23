@@ -8,7 +8,7 @@ const SimplyDJS: React.FC = () => {
     return (
         <div
             className={tw(
-                "bg-color mx-auto flex items-start gap-2 justify-end flex-col rounded-3xl aspect-[16/10] p-4 sm:p-8 md:p-16 lg:p-24 py-12 sm:py-24 md:py-36 lg:py-32",
+                "bg-background mx-auto flex items-start gap-2 justify-end flex-col rounded-3xl aspect-[16/10] p-4 sm:p-8 md:p-16 lg:p-24 py-12 sm:py-24 md:py-36 lg:py-32",
             )}
             style={{
                 width: "100vw",
@@ -27,7 +27,7 @@ const SimplyDJS: React.FC = () => {
                 <div>
                     <motion.h1
                         className={tw(
-                            "text-color w-fit text-3xl mb-1 md:!mb-2 flex items-center gap-6 md:text-4xl lg:text-5xl font-bold",
+                            "text-color w-fit text-3xl mb-1 md:!mb-2 flex items-center gap-6 md:text-4xl lg:text-5xl font-semibold",
                         )}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -108,7 +108,7 @@ const SimplyDJS: React.FC = () => {
                         <NumberFlow
                             value={useInView(numRef) ? 520189 : 0}
                             className={tw(
-                                "lg:text-5xl md:text-4xl text-3xl font-bold text-color",
+                                "lg:text-5xl md:text-4xl text-3xl font-semibold text-color",
                             )}
                             format={{
                                 compactDisplay: "short",

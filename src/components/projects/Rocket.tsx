@@ -42,7 +42,7 @@ const Rocket: React.FC = () => {
         <motion.div
             ref={divRef}
             className={tw(
-                "bg-color mx-auto flex items-start gap-2 justify-end flex-col rounded-3xl aspect-[16/10] mb-12 p-4 sm:p-8 md:p-16 lg:p-24 py-12 sm:py-24 md:py-36 lg:py-32",
+                "bg-background mx-auto flex items-start gap-2 justify-end flex-col rounded-3xl aspect-[16/10] mb-12 p-4 sm:p-8 md:p-16 lg:p-24 py-12 sm:py-24 md:py-36 lg:py-32",
             )}
             style={{
                 width,
@@ -62,7 +62,7 @@ const Rocket: React.FC = () => {
                 <div>
                     <motion.h1
                         className={tw(
-                            "text-color w-fit text-3xl mb-1 md:!mb-2 flex items-center gap-6 md:text-4xl lg:text-5xl font-bold",
+                            "text-color w-fit text-3xl mb-1 md:!mb-2 flex items-center gap-6 md:text-4xl lg:text-5xl font-semibold",
                         )}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -144,7 +144,7 @@ const Rocket: React.FC = () => {
                         <NumberFlow
                             value={useInView(numRef) ? 30 : 0}
                             className={tw(
-                                "lg:text-5xl md:text-4xl text-3xl font-bold text-color",
+                                "lg:text-5xl md:text-4xl text-3xl font-semibold text-color",
                             )}
                             format={{
                                 compactDisplay: "short",
@@ -164,7 +164,7 @@ const Rocket: React.FC = () => {
                         <NumberFlow
                             value={useInView(numRef) ? 49 : 0}
                             className={tw(
-                                "lg:text-5xl md:text-4xl text-3xl font-bold text-color",
+                                "lg:text-5xl md:text-4xl text-3xl font-semibold text-color",
                             )}
                             format={{
                                 compactDisplay: "short",

@@ -32,7 +32,7 @@ const Paragraph: React.FC<ParagraphProps> = ({ text }) => {
   return (
     <p
       className={tw(
-        'max-w-screen-lg font-bold z-10 break-words'
+        'max-w-screen-lg font-semibold z-10 break-words'
       )}
     >
       <span className={tw('inline-block md:w-[200px] w-[100px]')}>&nbsp;</span>

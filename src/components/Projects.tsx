@@ -33,7 +33,7 @@ const Projects: React.FC = () => {
                         damping: 17,
                     }}
                 >
-                    <span className={tw("font-bold")}>
+                    <span className={tw("font-semibold")}>
                         View all projects{" "}
                     </span>
                     <motion.svg

@@ -46,7 +46,7 @@ export default function Comments({
                 <div>
                     <h1
                         className={tw(
-                            "text-xl md:text-2xl font-bold text-color",
+                            "text-xl md:text-2xl font-semibold text-color",
                         )}
                     >
                         {name}

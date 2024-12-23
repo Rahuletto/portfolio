@@ -91,7 +91,7 @@ const SkillsSection: FC = () => {
                 )}
             >
                 <div>
-                    <h2 className={tw("text-xl font-bold opacity-70 mb-2")}>
+                    <h2 className={tw("text-xl font-semibold opacity-70 mb-2")}>
                         Skills
                     </h2>
                     <AnimatePresence mode="wait">
@@ -105,7 +105,7 @@ const SkillsSection: FC = () => {
                                 ease: [0.25, 0.8, 0.25, 1],
                             }}
                             className={tw(
-                                "inline-block font-bold text-6xl font-bold",
+                                "inline-block font-semibold text-6xl font-semibold",
                             )}
                         >
                             {skillsData[currentSection]?.type ||
@@ -157,7 +157,7 @@ const SkillsSection: FC = () => {
                                         ? 1200000
                                         : 78009
                                     : 0}
-                                className={tw("text-6xl font-bold text-color")}
+                                className={tw("text-6xl font-semibold text-color")}
                                 format={{
                                     compactDisplay: "short",
                                     notation: "compact",
@@ -185,7 +185,7 @@ const SkillsSection: FC = () => {
                                         ? 146000
                                         : 9068
                                     : 0}
-                                className={tw("text-6xl font-bold text-color")}
+                                className={tw("text-6xl font-semibold text-color")}
                                 format={{
                                     compactDisplay: "short",
                                     notation: "compact",
@@ -236,12 +236,12 @@ const SkillsSection: FC = () => {
                         >
                             <h2
                                 className={tw(
-                                    "text-xl font-bold opacity-70 mb-2",
+                                    "text-xl font-semibold opacity-70 mb-2",
                                 )}
                             >
                                 Skills
                             </h2>
-                            <h1 className={tw("text-4xl font-bold")}>
+                            <h1 className={tw("text-4xl font-semibold")}>
                                 {section.type}
                             </h1>
                         </div>
@@ -279,7 +279,7 @@ const SkillItem: FC<{ item: string; index: number }> = ({ item }) => {
         <motion.div
             ref={ref}
             style={{ x, opacity }}
-            className={tw("text-(3xl md:text-4xl xl:text-6xl color) font-bold")}
+            className={tw("text-(3xl md:text-4xl xl:text-6xl color) font-semibold")}
         >
             {item}
         </motion.div>

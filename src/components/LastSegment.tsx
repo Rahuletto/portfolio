@@ -36,7 +36,7 @@ export default function LastSegment() {
                         ease: [0.25, 0.8, 0.25, 1],
                     }}
                     className={tw(
-                        "text-4xl font-bold text-center md:text-5xl mt-4",
+                        "text-4xl font-semibold text-center md:text-5xl mt-4",
                     )}
                 >
                     Love at first sight
@@ -80,7 +80,7 @@ export default function LastSegment() {
                     damping: 17,
                 }}
             >
-                <span className={tw("font-bold")}>
+                <span className={tw("font-semibold")}>
                     Say Hello
                 </span>
             </motion.a>

@@ -41,7 +41,7 @@ function App() {
           </div>
           <motion.h1
             className={tw(
-              "text-lg md:text-xl font-bold text-center",
+              "text-lg md:text-xl font-semibold text-center",
             )}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -97,7 +97,7 @@ function App() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={tw(
-                    "border-l border-color py-1 px-4 font-bold  cursor-pointer",
+                    "border-l border-color py-1 px-4 font-semibold  cursor-pointer",
                   )}
                   initial={{
                     background: "#00000000",
@@ -146,7 +146,7 @@ function App() {
             >
               <motion.span
                 className={tw(
-                  `text-4xl md:text-6xl lg:text-8xl font-bold`,
+                  `text-4xl md:text-6xl lg:text-8xl font-semibold`,
                 )}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -172,7 +172,7 @@ function App() {
               </motion.div>{" "}
               <motion.span
                 className={tw(
-                  `text-4xl md:text-6xl lg:text-8xl font-bold before:(content-["&"] inline-block mr-2 md:hidden text-color)`,
+                  `text-4xl md:text-6xl lg:text-8xl font-semibold before:(content-["&"] inline-block mr-2 md:hidden text-color)`,
                 )}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -244,7 +244,7 @@ function App() {
                 ease: [0.25, 0.8, 0.25, 1],
               }}
               className={tw(
-                "font-bold text-(lg:5xl md:4xl 3xl) text-center w-fit mx-auto",
+                "font-semibold text-(lg:5xl md:4xl 3xl) text-center w-fit mx-auto",
               )}
             >
               What i did so far?
@@ -275,7 +275,7 @@ function App() {
               ease: [0.25, 0.8, 0.25, 1],
             }}
             className={tw(
-              "font-bold w-fit mx-auto text-(lg:6xl md:5xl 4xl) text-center sticky top-32",
+              "font-semibold w-fit mx-auto text-(lg:6xl md:5xl 4xl) text-center sticky top-32",
             )}
           >
             People around here<br />loves my{" "}
