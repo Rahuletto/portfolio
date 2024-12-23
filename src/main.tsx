@@ -17,7 +17,7 @@ createRoot(document.getElementById("root")!).render(
       syncTouch: true,
       smoothWheel: true,
       touchMultiplier: 1.5,
-      touchInertiaMultiplier: 1.2,
+      touchInertiaMultiplier: 2,
       wheelMultiplier: 1,
       gestureOrientation: "vertical",
       easing: (t: number) =>
