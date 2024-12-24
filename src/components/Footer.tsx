@@ -26,7 +26,7 @@ export default function Footer() {
     return (
         <footer
             className={tw(
-                "h-screen bg-red w-screen z-20 relative text-background p-16 pt-24 md:p-24 flex flex-col items-end justify-start gap-6",
+                "h-screen bg-red w-screen z-20 relative text-background p-8 pt-24 md:p-24 flex flex-col items-end justify-start gap-6",
             )}
         >
             <m.h1
@@ -195,7 +195,7 @@ export default function Footer() {
                     onClick={() =>
                         window.scrollTo({ top: 0, behavior: "smooth" })}
                     className={tw(
-                        "rounded-full p-3 border-4 font-semibold border-background cursor-pointer",
+                        "rounded-full p-3 aspect-square w-[60px] h-[60px] flex items-center justify-center border-4 font-semibold border-background cursor-pointer",
                     )}
                     initial={{
                         background: "var(--background)",

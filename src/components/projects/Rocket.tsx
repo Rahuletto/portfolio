@@ -146,7 +146,7 @@ const Rocket: React.FC = () => {
                         "flex items-center border-t border-color/40 w-full pt-3 md:!w-fit lg:!border-t-0 lg:border-l lg:!pt-0 lg:pl-6 justify-between",
                     )}
                 >
-                    <div className={tw("min-w-[180px]")}>
+                    <div className={tw("min-w-[100px]")}>
                         <NumberFlow
                             value={useInView(numRef) ? 30 : 0}
                             className={tw(
@@ -166,7 +166,7 @@ const Rocket: React.FC = () => {
                             ram efficient
                         </p>
                     </div>
-                    <div className={tw("min-w-[180px]")}>
+                    <div className={tw("min-w-[100px]")}>
                         <NumberFlow
                             value={useInView(numRef) ? 49 : 0}
                             className={tw(

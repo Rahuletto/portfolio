@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { tw } from "../twind/twind";
 import { LazyMotion, domAnimation, useScroll } from "motion/react"
 import * as m from "motion/react-m"
+import ScrollLine from "./components/ScrollLine";
 
 const StarSVG = lazy(() => import("./svgs/star"));
 const Paragraph = lazy(() => import("./components/Paragraph"));
@@ -26,6 +27,7 @@ function App() {
 
   return (
     <LazyMotion features={domAnimation} strict>
+      <ScrollLine />
       <main className={tw("min-h-screen")}>
         <header className={tw("flex sticky top-0 justify-between items-center p-4 px-8")}>
           <div className="nav-blur">
@@ -49,14 +51,14 @@ function App() {
           </m.h1>
           <div className="flex items-center gap-4">
             <m.div
-              className={tw("text-xs md:text-sm text-right flex items-center gap-1")}
+              className={tw("text-xs md:text-sm hidden text-right md:flex items-center gap-1")}
               animate={{ x: useScroll().scrollYProgress.get() > 0.95 ? 100 : 0 }}
               style={{
                 willChange: "transform",
               }}
               transition={{ duration: 0.3, delay: useScroll().scrollYProgress.get() > 0.95 ? 0.2 : 0, ease: [0.645, 0.045, 0.355, 1] }}
             >
-              <p
+              <p 
                 style={{
                   color: useScroll().scrollYProgress.get() > 0.997 ? "var(--background)" : "var(--color)",
                   transition: "color 0.3s ease",
@@ -90,7 +92,7 @@ function App() {
                 href="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/Rahuletto/auto-resume/main/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={tw("border-l border-color py-1 px-4 font-semibold cursor-pointer")}
+                className={tw("md:border-l p-0 border-color md:py-1 md:px-4 font-semibold cursor-pointer")}
                 initial={{
                   background: "#00000000",
                   color: "var(--color)",

@@ -146,7 +146,7 @@ const ClassPro: React.FC = () => {
                         "flex items-center border-t border-color/40 w-full pt-3 md:!w-fit lg:!border-t-0 lg:border-l lg:!pt-0 lg:pl-6 justify-between",
                     )}
                 >
-                    <div className={tw("min-w-[180px]")}>
+                    <div className={tw("min-w-[100px]")}>
                         <NumberFlow
                             value={useInView(numRef) ? 1200000 : 0}
                             className={tw(
@@ -166,7 +166,7 @@ const ClassPro: React.FC = () => {
                             visits/month
                         </p>
                     </div>
-                    <div className={tw("min-w-[180px]")}>
+                    <div className={tw("min-w-[100px]")}>
                         <NumberFlow
                             value={useInView(numRef) ? 146000 : 0}
                             className={tw(

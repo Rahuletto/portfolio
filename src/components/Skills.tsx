@@ -149,7 +149,7 @@ const SkillsSection: FC = () => {
                             </p>
                         )}
                     <div className={tw("flex items-center justify-between")}>
-                        <div className={tw("min-w-[180px]")}>
+                        <div className={tw("min-w-[100px]")}>
                             <NumberFlow
                                 value={useInView(numRef)
                                     ? currentSection == 0
@@ -177,7 +177,7 @@ const SkillsSection: FC = () => {
                                     : "visits/day"}
                             </p>
                         </div>
-                        <div className={tw("min-w-[180px]")}>
+                        <div className={tw("min-w-[100px]")}>
                             <NumberFlow
                                 value={useInView(numRef)
                                     ? currentSection == 0

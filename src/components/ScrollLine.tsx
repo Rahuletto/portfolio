@@ -7,8 +7,8 @@ const ScrollLine: React.FC = () => {
   const height = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
   const backgroundColor = useTransform(
     scrollYProgress,
-    [0, 0.5, 1],
-    ['var(--color)', 'var(--color)', 'var(--color-light)']
+    [0, 0.95, 1],
+    ['var(--color)', 'var(--color-light)', 'var(--color)']
   );
   const width = useTransform(scrollYProgress, [0, 1], ['2px', '4px']);
 
