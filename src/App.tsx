@@ -1,15 +1,16 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { tw } from "../twind/twind";
-import { motion, useScroll } from "motion/react";
-import StarSVG from "./svgs/star";
-import { useEffect, useState } from "react";
-import Paragraph from "./components/Paragraph";
-import Corner from "./components/Corner";
-import ServicesSection from "./components/Skills";
-import Projects from "./components/Projects";
-import CommentSection from "./components/CommentSection";
-import LastSegment from "./components/LastSegment";
-import Footer from "./components/Footer";
+import { LazyMotion, domAnimation, useScroll } from "motion/react"
+import * as m from "motion/react-m"
+
+const StarSVG = lazy(() => import("./svgs/star"));
+const Paragraph = lazy(() => import("./components/Paragraph"));
+const Corner = lazy(() => import("./components/Corner"));
+const ServicesSection = lazy(() => import("./components/Skills"));
+const Projects = lazy(() => import("./components/Projects"));
+const CommentSection = lazy(() => import("./components/CommentSection"));
+const LastSegment = lazy(() => import("./components/LastSegment"));
+const Footer = lazy(() => import("./components/Footer"));
 
 const Icons = lazy(() => import("./components/Icons"));
 
@@ -24,7 +25,7 @@ function App() {
   }, [scrollY]);
 
   return (
-    <>
+    <LazyMotion features={domAnimation} strict>
       <main className={tw("min-h-screen")}>
         <header className={tw("flex sticky top-0 justify-between items-center p-4 px-8")}>
           <div className="nav-blur">
@@ -33,7 +34,7 @@ function App() {
             <div></div>
             <div></div>
           </div>
-          <motion.h1
+          <m.h1
             className={tw("text-lg md:text-xl font-semibold text-center")}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -45,9 +46,9 @@ function App() {
             transition={{ duration: 0.4, ease: [0.645, 0.045, 0.355, 1] }}
           >
             [marban.]
-          </motion.h1>
+          </m.h1>
           <div className="flex items-center gap-4">
-            <motion.div
+            <m.div
               className={tw("text-xs md:text-sm text-right flex items-center gap-1")}
               animate={{ x: useScroll().scrollYProgress.get() > 0.95 ? 100 : 0 }}
               style={{
@@ -83,9 +84,9 @@ function App() {
                   hour12: false,
                 })}
               </p>
-            </motion.div>
+            </m.div>
             <div>
-              <motion.a
+              <m.a
                 href="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/Rahuletto/auto-resume/main/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -105,14 +106,14 @@ function App() {
                 transition={{ duration: 0.3 }}
               >
                 Résumé
-              </motion.a>
+              </m.a>
             </div>
           </div>
         </header>
-        <motion.div style={{ backgroundPosition: bgPosition, willChange: "background" }} className="parallax-background" />
+        <m.div style={{ backgroundPosition: bgPosition, willChange: "background" }} className="parallax-background" />
         <section className={tw("flex justify-center items-center flex-col py-16 md:py-32 px-4 md:px-8")}>
           <div>
-            <motion.h3
+            <m.h3
               className={tw("text-lg md:text-xl lg:text-2xl")}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -126,9 +127,9 @@ function App() {
               }}
             >
               I am Marban and I am a
-            </motion.h3>
+            </m.h3>
             <h1 className={tw(`flex items-start justify-start flex-col md:!flex-row md:!items-center md:!justify-center gap-2 w-[70vw] md:!w-auto min-w-[300px] md:!gap-8`)}>
-              <motion.span
+              <m.span
                 className={tw(`text-4xl md:text-6xl lg:text-8xl font-bold`)}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -142,8 +143,8 @@ function App() {
                 }}
               >
                 Designer{" "}
-              </motion.span>
-              <motion.div
+              </m.span>
+              <m.div
                 className={tw("mt-2 hidden md:!block")}
                 initial={{ rotate: 0, opacity: 0 }}
                 animate={{ rotate: 360, opacity: 1 }}
@@ -157,8 +158,8 @@ function App() {
                 }}
               >
                 <StarSVG className="text-2xl md:text-3xl lg:text-4xl text-color" />
-              </motion.div>{" "}
-              <motion.span
+              </m.div>{" "}
+              <m.span
                 className={tw(`text-4xl md:text-6xl lg:text-8xl font-bold before:(content-["&"] inline-block mr-2 md:hidden text-color)`)}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -172,7 +173,7 @@ function App() {
                 }}
               >
                 Developer
-              </motion.span>
+              </m.span>
             </h1>
           </div>
         </section>
@@ -180,7 +181,7 @@ function App() {
           <Icons />
         </Suspense>
         <div className={tw("absolute h-[450px] md:h-[650px] lg:h-[700px] bottom-0 w-full items-center justify-center flex")}>
-          <motion.img
+          <m.img
             loading="eager"
             id="marban"
             initial={{ opacity: 0, y: 100 }}
@@ -209,7 +210,7 @@ function App() {
         </div>
         <div className={tw("py-16 min-h-screen")}>
           <div>
-            <motion.h1
+            <m.h1
               initial={{ opacity: 0, filter: "blur(10px)" }}
               whileInView={{ opacity: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, filter: "blur(10px)" }}
@@ -224,7 +225,7 @@ function App() {
               className={tw("font-semibold text-(lg:5xl md:4xl 3xl) text-center w-fit mx-auto")}
             >
               What i did so far?
-            </motion.h1>
+            </m.h1>
             <p className={tw("opacity-70 w-fit mx-auto text-color text-center text-base max-w-[300px] mx-auto md:max-w-none md:text-lg mt-3")}>
               You gotta see what my 4-years of experience got me so far.
             </p>
@@ -232,7 +233,7 @@ function App() {
           <Projects />
         </div>
         <div className={tw("pt-32 min-h-screen")}>
-          <motion.h1
+          <m.h1
             initial={{ opacity: 0, filter: "blur(10px)" }}
             whileInView={{ opacity: 1, filter: "blur(0px)" }}
             exit={{ opacity: 0, filter: "blur(10px)" }}
@@ -250,13 +251,13 @@ function App() {
             <div className={tw("px-1 pr-3 inline-block italic rounded-lg bg-color text-background")}>
               work
             </div>
-          </motion.h1>
+          </m.h1>
           <CommentSection />
         </div>
         <LastSegment />
         <Footer />
       </main>
-    </>
+    </LazyMotion>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import * as m from "motion/react-m"
 import { tw } from "../../twind/twind";
 import { FaAt } from "react-icons/fa6";
 import { AiFillSmile } from "react-icons/ai";
@@ -118,7 +118,7 @@ const CustomCursor = () => {
   }, [isHoveringButton]);
 
   return (
-    <motion.div
+    <m.div
 
       className={tw(
         `hidden fixed top-0 left-0 lg:flex items-center justify-center shadow-lg pointer-events-none rounded-full backdrop-blur-sm`,
@@ -182,7 +182,7 @@ const CustomCursor = () => {
           isRed
             ? <FaAt className={tw(`${isRed ? "text-red" : "text-color"}`)} />
             : (
-              <motion.svg
+              <m.svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="1em"
                 height="1em"
@@ -202,11 +202,11 @@ const CustomCursor = () => {
               >
                 <line x1="7" y1="17" x2="17" y2="7"></line>
                 <polyline points="7 7 17 7 17 17"></polyline>
-              </motion.svg>
+              </m.svg>
             )
         )
       )}
-    </motion.div>
+    </m.div>
   );
 };
 

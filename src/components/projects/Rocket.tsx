@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 import { tw } from "../../../twind/twind";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { useInView, useScroll, useTransform } from "framer-motion";
+import * as m from "motion/react-m"
 import NumberFlow from "@number-flow/react";
 
 const Rocket: React.FC = () => {
@@ -39,18 +40,18 @@ const Rocket: React.FC = () => {
     ], ["0px", "38px"]);
 
     return (
-        <motion.div
+        <m.div
             ref={divRef}
             className={tw(
                 "bg-background mx-auto flex items-start gap-2 justify-end flex-col rounded-3xl aspect-[16/10] mb-12 p-4 sm:p-8 md:p-16 lg:p-24 py-12 sm:py-24 md:py-36 lg:py-32",
             )}
             style={{
-                width,
+                width: width.get(),
                 backgroundImage: "url(/projects/rocket.png)",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                height,
-                borderRadius,
+                height: height.get(),
+                borderRadius: borderRadius.get(),
             }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
         >
@@ -60,7 +61,7 @@ const Rocket: React.FC = () => {
                 )}
             >
                 <div>
-                    <motion.h1
+                    <m.h1
                         className={tw(
                             "text-color w-fit text-3xl mb-1 md:!mb-2 flex items-center gap-6 md:text-4xl lg:text-5xl font-semibold",
                         )}
@@ -74,7 +75,7 @@ const Rocket: React.FC = () => {
                         }}
                     >
                         Rocket
-                        <motion.a
+                        <m.a
                             href="https://github.com/rahuletto/rocket"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -86,14 +87,18 @@ const Rocket: React.FC = () => {
                                 backgroundColor: "var(--color)",
                                 color: "var(--background)",
                             }}
-                            whileTap={{ scale: 0.85 }}
+                            whileTap={{
+                                scale: 0.95,
+                                backgroundColor: "var(--color)",
+                                color: "var(--background)",
+                            }}
                             transition={{
                                 type: "spring",
                                 stiffness: 400,
                                 damping: 17,
                             }}
                         >
-                            <motion.svg
+                            <m.svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="1em"
                                 height="1em"
@@ -106,6 +111,7 @@ const Rocket: React.FC = () => {
                                 strokeLinejoin="round"
                                 initial={{ x: 0, y: 0 }}
                                 whileHover={{ x: 3, y: -3 }}
+                                whileTap={{ x: 3, y: -3 }}
                                 transition={{
                                     type: "spring",
                                     stiffness: 400,
@@ -114,10 +120,10 @@ const Rocket: React.FC = () => {
                             >
                                 <line x1="7" y1="17" x2="17" y2="7"></line>
                                 <polyline points="7 7 17 7 17 17"></polyline>
-                            </motion.svg>
-                        </motion.a>
-                    </motion.h1>
-                    <motion.p
+                            </m.svg>
+                        </m.a>
+                    </m.h1>
+                    <m.p
                         className={tw(
                             "text-color text-base sm:text-base md:text-lg lg:text-xl",
                         )}
@@ -132,7 +138,7 @@ const Rocket: React.FC = () => {
                     >
                         A super-fast, ram-efficient, and lightweight code editor
                         that's ready to ship your code to the next level! 🚀
-                    </motion.p>
+                    </m.p>
                 </div>
                 <div
                     ref={numRef}
@@ -182,7 +188,7 @@ const Rocket: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 };
 

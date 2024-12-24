@@ -1,5 +1,7 @@
 import Comments from "./Comments"
 
+import { useState, useEffect } from "react";
+
 const comments = [
     {
         name: "Rachit Kumar Pandey",
@@ -36,9 +38,30 @@ const comments = [
         comment: "He's an amazing developer and a great person to work with. I've worked with him for over two years on projects like simply-djs and simply-xp. He's talented, reliable, and great at problem-solving, making teamwork fun and productive.",
         title: "Contributor to simply-xp",
         image: "/testimonials/abadima.jpeg"
-
     }
-]
+];
+
+export const LazyImage = ({ src, alt, className }: { src: string, alt: string, className: string }) => {
+    const [loaded, setLoaded] = useState(false);
+    const [imageSrc, setImageSrc] = useState("");
+
+    useEffect(() => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+            setImageSrc(src);
+            setLoaded(true);
+        };
+    }, [src]);
+
+    return (
+        <img
+            src={loaded ? imageSrc : "placeholder.jpg"}
+            alt={alt}
+            className={`transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"} ${className}`}
+        />
+    );
+};
 
 export default function CommentSection() {
     return (

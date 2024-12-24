@@ -1,5 +1,6 @@
 import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import {  useScroll, useTransform } from 'framer-motion';
+import * as m from "motion/react-m"
 
 const ScrollLine: React.FC = () => {
   const { scrollYProgress } = useScroll();
@@ -12,7 +13,7 @@ const ScrollLine: React.FC = () => {
   const width = useTransform(scrollYProgress, [0, 1], ['2px', '4px']);
 
   return (
-    <motion.div
+    <m.div
       style={{
         position: 'fixed',
         top: 0,
@@ -23,11 +24,11 @@ const ScrollLine: React.FC = () => {
         zIndex: 50,
       }}
     >
-      <motion.div
+      <m.div
         style={{
-          height,
-          width,
-          backgroundColor,
+          height: height.get(),
+          width: width.get(),
+          backgroundColor: backgroundColor.get(),
           willChange: 'height, background, width',
         }}
         className="rounded-full"
@@ -35,7 +36,7 @@ const ScrollLine: React.FC = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       />
-    </motion.div>
+    </m.div>
   );
 };
 

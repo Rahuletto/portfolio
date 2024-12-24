@@ -1,12 +1,26 @@
 import { tw } from "../../twind/twind";
-import { motion } from "motion/react";
-import {
-    FaArrowUp,
-    FaGithub,
-    FaInstagram,
-    FaLinkedinIn,
-    FaXTwitter,
-} from "react-icons/fa6";
+import * as m from "motion/react-m";
+import { lazy } from "react";
+
+const FaArrowUp = lazy(() =>
+    import("react-icons/fa6").then((module) => ({ default: module.FaArrowUp }))
+);
+const FaGithub = lazy(() =>
+    import("react-icons/fa6").then((module) => ({ default: module.FaGithub }))
+);
+const FaInstagram = lazy(() =>
+    import("react-icons/fa6").then((module) => ({
+        default: module.FaInstagram,
+    }))
+);
+const FaLinkedinIn = lazy(() =>
+    import("react-icons/fa6").then((module) => ({
+        default: module.FaLinkedinIn,
+    }))
+);
+const FaXTwitter = lazy(() =>
+    import("react-icons/fa6").then((module) => ({ default: module.FaXTwitter }))
+);
 
 export default function Footer() {
     return (
@@ -15,7 +29,7 @@ export default function Footer() {
                 "h-screen bg-red w-screen z-20 relative text-background p-16 pt-24 md:p-24 flex flex-col items-end justify-start gap-6",
             )}
         >
-            <motion.h1
+            <m.h1
                 initial={{ opacity: 0, filter: "blur(10px)" }}
                 whileInView={{ opacity: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, filter: "blur(10px)" }}
@@ -32,8 +46,8 @@ export default function Footer() {
                 )}
             >
                 Building a story<br />through code.
-            </motion.h1>
-            <motion.div
+            </m.h1>
+            <m.div
                 className={tw("bg-background rounded-full p-1 flex gap-2")}
                 initial={{ opacity: 0, filter: "blur(10px)" }}
                 whileInView={{ opacity: 1, filter: "blur(0px)" }}
@@ -42,7 +56,7 @@ export default function Footer() {
                     willChange: "opacity, filter",
                 }}
             >
-                <motion.a
+                <m.a
                     href="https://github.com/rahuletto"
                     className={tw(
                         "rounded-full p-3 px-6 md:px-9 cursor-pointer",
@@ -58,10 +72,15 @@ export default function Footer() {
                         color: "var(--background)",
                         opacity: 1,
                     }}
+                    whileTap={{
+                        background: "var(--color)",
+                        color: "var(--background)",
+                        opacity: 1,
+                    }}
                 >
                     <FaGithub className={tw("text-2xl md:text-4xl")} />
-                </motion.a>
-                <motion.a
+                </m.a>
+                <m.a
                     href="https://linkedin.com/in/rahul-marban"
                     className={tw(
                         "rounded-full p-3 px-6 md:px-9 cursor-pointer",
@@ -76,13 +95,18 @@ export default function Footer() {
                         color: "var(--background)",
                         opacity: 1,
                     }}
+                    whileTap={{
+                        background: "var(--color)",
+                        color: "var(--background)",
+                        opacity: 1,
+                    }}
                     style={{
                         willChange: "background, color, opacity",
                     }}
                 >
                     <FaLinkedinIn className={tw("text-2xl md:text-4xl")} />
-                </motion.a>
-                <motion.a
+                </m.a>
+                <m.a
                     href="https://x.com/rahuletto"
                     className={tw(
                         "rounded-full p-3 px-6 md:px-9 cursor-pointer",
@@ -97,13 +121,18 @@ export default function Footer() {
                         color: "var(--background)",
                         opacity: 1,
                     }}
+                    whileTap={{
+                        background: "var(--color)",
+                        color: "var(--background)",
+                        opacity: 1,
+                    }}
                     style={{
                         willChange: "background, color, opacity",
                     }}
                 >
                     <FaXTwitter className={tw("text-2xl md:text-4xl")} />
-                </motion.a>
-                <motion.a
+                </m.a>
+                <m.a
                     style={{
                         willChange: "background, color, opacity",
                     }}
@@ -121,18 +150,23 @@ export default function Footer() {
                         color: "var(--background)",
                         opacity: 1,
                     }}
+                    whileTap={{
+                        background: "var(--color)",
+                        color: "var(--background)",
+                        opacity: 1,
+                    }}
                 >
                     <FaInstagram className={tw("text-2xl md:text-4xl")} />
-                </motion.a>
-            </motion.div>
+                </m.a>
+            </m.div>
 
-            <motion.div
+            <m.div
                 className={tw("rounded-full p-1 flex gap-2")}
                 initial={{ opacity: 0, filter: "blur(10px)" }}
                 whileInView={{ opacity: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, filter: "blur(10px)" }}
             >
-                <motion.a
+                <m.a
                     href="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/Rahuletto/auto-resume/main/resume.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -149,10 +183,15 @@ export default function Footer() {
                         color: "var(--background)",
                         opacity: 1,
                     }}
+                    whileTap={{
+                        background: "var(--color)",
+                        color: "var(--background)",
+                        opacity: 1,
+                    }}
                 >
                     Résumé
-                </motion.a>
-                <motion.button
+                </m.a>
+                <m.button
                     onClick={() =>
                         window.scrollTo({ top: 0, behavior: "smooth" })}
                     className={tw(
@@ -168,8 +207,8 @@ export default function Footer() {
                     }}
                 >
                     <FaArrowUp className={tw("text-2xl md:text-3xl")} />
-                </motion.button>
-            </motion.div>
+                </m.button>
+            </m.div>
 
             <img
                 src="/bye.png"

@@ -1,10 +1,10 @@
-import { motion } from "motion/react";
+import * as m from "motion/react-m"
 import { tw } from "../../twind/twind";
 import { FaHeart } from "react-icons/fa";
 
 export default function LastSegment() {
     return (
-        <motion.div
+        <m.div
             className={tw(
                 "py-32 h-screen flex-col top-0 flex gap-12 items-center justify-center",
             )}
@@ -14,7 +14,7 @@ export default function LastSegment() {
                     "flex flex-col gap-4 items-center justify-center",
                 )}
             >
-                <motion.div
+                <m.div
                     className={tw("flex items-center justify-center")}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
@@ -27,8 +27,8 @@ export default function LastSegment() {
                     }}
                 >
                     <FaHeart className={tw("text-red text-5xl")} />
-                </motion.div>
-                <motion.h1
+                </m.div>
+                <m.h1
                     initial={{ opacity: 0, filter: "blur(10px)" }}
                     whileInView={{ opacity: 1, filter: "blur(0px)" }}
                     exit={{ opacity: 0, filter: "blur(10px)" }}
@@ -45,8 +45,8 @@ export default function LastSegment() {
                     )}
                 >
                     Love at first sight
-                </motion.h1>
-                <motion.p
+                </m.h1>
+                <m.p
                     initial={{ opacity: 0, filter: "blur(10px)" }}
                     whileInView={{ opacity: 0.4, filter: "blur(0px)" }}
                     exit={{ opacity: 0, filter: "blur(10px)" }}
@@ -62,9 +62,9 @@ export default function LastSegment() {
                     Pouring passion and precision into every design to create
                     experiences that are visually captivating and intuitively
                     engaging
-                </motion.p>
+                </m.p>
             </div>
-            <motion.a
+            <m.a
                 href="mailto:rahulmarban@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -76,9 +76,13 @@ export default function LastSegment() {
                     backgroundColor: "var(--red)",
                     color: "var(--background)",
                 }}
+                whileTap={{
+                    scale: 0.95,
+                    backgroundColor: "var(--red)",
+                    color: "var(--background)",
+                }}
                 initial={{ opacity: 0, scale: 0 }}
                 whileInView={{ opacity: 1, scale: 1, transition: { delay: 1 } }}
-                whileTap={{ scale: 0.85 }}
                 transition={{
                     type: "spring",
                     stiffness: 400,
@@ -88,7 +92,7 @@ export default function LastSegment() {
                 <span className={tw("font-semibold")}>
                     Say Hello
                 </span>
-            </motion.a>
-        </motion.div>
+            </m.a>
+        </m.div>
     );
 }

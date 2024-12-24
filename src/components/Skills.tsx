@@ -2,11 +2,12 @@ import { FC, useEffect, useRef, useState } from "react";
 import {
     AnimatePresence,
     cubicBezier,
-    motion,
     useInView,
     useScroll,
     useTransform,
 } from "motion/react";
+import * as m from "motion/react-m"
+
 import { tw } from "../../twind/twind";
 import NumberFlow from "@number-flow/react";
 
@@ -95,7 +96,7 @@ const SkillsSection: FC = () => {
                         Skills
                     </h2>
                     <AnimatePresence mode="wait">
-                        <motion.h1
+                        <m.h1
                             key={currentSection}
                             initial={{ opacity: 0, filter: "blur(10px)" }}
                             animate={{ opacity: 1, filter: "blur(0px)" }}
@@ -110,7 +111,7 @@ const SkillsSection: FC = () => {
                         >
                             {skillsData[currentSection]?.type ||
                                 "Skills Overview"}
-                        </motion.h1>
+                        </m.h1>
                     </AnimatePresence>
                     <p
                         className={tw(
@@ -273,7 +274,7 @@ const SkillItem: FC<{ item: string; index: number }> = ({ item }) => {
     const x = useTransform(
         scrollYProgress,
         [0, 1],
-        [window.innerWidth <= 768 ? 120 : 300, 0],
+        [window.innerWidth <= 768 ? 100 : 300, 0],
         {
             ease: cubicBezier(0.645, 0.045, 0.355, 1),
         }
@@ -281,13 +282,13 @@ const SkillItem: FC<{ item: string; index: number }> = ({ item }) => {
     const opacity = useTransform(scrollYProgress, [0, 0.1, 1], [0, 0, 1]);
 
     return (
-        <motion.div
+        <m.div
             ref={ref}
-            style={{ x, opacity, willChange: "transform, opacity" }}
+            style={{ x: x.get(), opacity: opacity.get(), willChange: "transform, opacity" }}
             className={tw("text-2xl md:text-2xl xl:text-3xl text-color w-fit font-semibold")}
         >
             {item}
-        </motion.div>
+        </m.div>
     );
 };
 

@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { tw } from "../../../twind/twind";
-import { motion, useInView } from "framer-motion";
+import { useInView } from "framer-motion";
+import * as m from "motion/react-m"
 import NumberFlow from "@number-flow/react";
 
 const SimplyDJS: React.FC = () => {
@@ -25,7 +26,7 @@ const SimplyDJS: React.FC = () => {
                 )}
             >
                 <div>
-                    <motion.h1
+                    <m.h1
                         className={tw(
                             "text-color w-fit text-3xl mb-1 md:!mb-2 flex items-center gap-6 md:text-4xl lg:text-5xl font-semibold",
                         )}
@@ -39,7 +40,7 @@ const SimplyDJS: React.FC = () => {
                         }}
                     >
                         SimplyDJS
-                        <motion.a
+                        <m.a
                             href="https://simplyd.js.org"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -51,14 +52,19 @@ const SimplyDJS: React.FC = () => {
                                 backgroundColor: "var(--color)",
                                 color: "var(--background)",
                             }}
-                            whileTap={{ scale: 0.85 }}
+
+                            whileTap={{
+                                scale: 0.95,
+                                backgroundColor: "var(--color)",
+                                color: "var(--background)",
+                            }}
                             transition={{
                                 type: "spring",
                                 stiffness: 400,
                                 damping: 17,
                             }}
                         >
-                            <motion.svg
+                            <m.svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="1em"
                                 height="1em"
@@ -71,6 +77,7 @@ const SimplyDJS: React.FC = () => {
                                 strokeLinejoin="round"
                                 initial={{ x: 0, y: 0 }}
                                 whileHover={{ x: 3, y: -3 }}
+                                whileTap={{ x: 3, y: -3 }}
                                 transition={{
                                     type: "spring",
                                     stiffness: 400,
@@ -79,10 +86,10 @@ const SimplyDJS: React.FC = () => {
                             >
                                 <line x1="7" y1="17" x2="17" y2="7"></line>
                                 <polyline points="7 7 17 7 17 17"></polyline>
-                            </motion.svg>
-                        </motion.a>
-                    </motion.h1>
-                    <motion.p
+                            </m.svg>
+                        </m.a>
+                    </m.h1>
+                    <m.p
                         className={tw(
                             "text-color text-base sm:text-base md:text-lg lg:text-xl",
                         )}
@@ -96,7 +103,7 @@ const SimplyDJS: React.FC = () => {
                         }}
                     >
                         The simplest way to build complex Discord bots.
-                    </motion.p>
+                    </m.p>
                 </div>
                 <div
                     ref={numRef}

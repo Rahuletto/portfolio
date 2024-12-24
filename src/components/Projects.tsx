@@ -1,10 +1,10 @@
 import React from "react";
-import ClassPro from "./projects/ClassPro";
-import SimplyDJS from "./projects/SimplyDJS";
-import Unix from "./projects/Unix";
-import Rocket from "./projects/Rocket";
+const ClassPro = React.lazy(() => import("./projects/ClassPro"));
+const SimplyDJS = React.lazy(() => import("./projects/SimplyDJS"));
+const Unix = React.lazy(() => import("./projects/Unix"));
+const Rocket = React.lazy(() => import("./projects/Rocket"));
 import { tw } from "../../twind/twind";
-import { motion } from "motion/react";
+import * as m from "motion/react-m"
 
 const Projects: React.FC = () => {
     return (
@@ -14,7 +14,7 @@ const Projects: React.FC = () => {
             <Unix />
             <Rocket />
             <div className={tw("mt-3 flex items-center justify-center")}>
-                <motion.a
+                <m.a
                     href="https://unixporn-dots.github.io/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -26,7 +26,11 @@ const Projects: React.FC = () => {
                         backgroundColor: "var(--color)",
                         color: "var(--background)",
                     }}
-                    whileTap={{ scale: 0.85 }}
+                    whileTap={{
+                        scale: 0.95,
+                        backgroundColor: "var(--color)",
+                        color: "var(--background)",
+                    }}
                     transition={{
                         type: "spring",
                         stiffness: 400,
@@ -36,7 +40,7 @@ const Projects: React.FC = () => {
                     <span className={tw("font-semibold")}>
                         View all projects{" "}
                     </span>
-                    <motion.svg
+                    <m.svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="1em"
                         height="1em"
@@ -49,6 +53,7 @@ const Projects: React.FC = () => {
                         strokeLinejoin="round"
                         initial={{ x: 0, y: 0 }}
                         whileHover={{ x: 3, y: -3 }}
+                        whileTap={{ x: 3, y: -3 }}
                         transition={{
                             type: "spring",
                             stiffness: 400,
@@ -57,8 +62,8 @@ const Projects: React.FC = () => {
                     >
                         <line x1="7" y1="17" x2="17" y2="7"></line>
                         <polyline points="7 7 17 7 17 17"></polyline>
-                    </motion.svg>
-                </motion.a>
+                    </m.svg>
+                </m.a>
             </div>
         </div>
     );

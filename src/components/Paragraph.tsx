@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { motion, useTransform, useScroll } from "framer-motion";
+import { useTransform, useScroll } from "framer-motion";
+import * as m from "motion/react-m"
 import { tw } from "../../twind/twind";
 
 interface ParagraphProps {
@@ -38,13 +39,13 @@ const Paragraph: React.FC<ParagraphProps> = ({ text }) => {
       <span className={tw('inline-block md:w-[200px] w-[100px]')}>&nbsp;</span>
       {words.map((word, index) => (
         word === "{}" ? <><br /><br /></> :
-        <motion.span
+        <m.span
           key={index}
           style={{ opacity: opacityValues[index] }}
           className={tw('inline-block text-2xl md:text-3xl lg:text-4xl mr-2')}
         >
           {word}
-        </motion.span>
+        </m.span>
       ))}
     </p>
   );

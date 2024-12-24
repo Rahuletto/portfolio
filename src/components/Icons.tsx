@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
-import { motion, useScroll } from "motion/react";
+import { useState, useEffect, lazy } from "react";
+import { useScroll } from "motion/react";
+import * as m from "motion/react-m"
 import { tw } from "../../twind/twind";
-import BallsSVG from "../svgs/balls";
-import BeanSVG from "../svgs/bean";
-import MSVG from "../svgs/m";
-import SpringSVG from "../svgs/spring";
-import StarSVG from "../svgs/star";
+const BallsSVG = lazy(() => import("../svgs/balls"));
+const BeanSVG = lazy(() => import("../svgs/bean"));
+const MSVG = lazy(() => import("../svgs/m"));
+const SpringSVG = lazy(() => import("../svgs/spring"));
+const StarSVG = lazy(() => import("../svgs/star"));
 
 export default function Icons() {
   const { scrollY } = useScroll();
@@ -17,7 +18,7 @@ export default function Icons() {
   }, [scrollY]);
   
   return (
-    <motion.div
+    <m.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     style={{ top: top, willChange: "opacity, transform" }}
@@ -27,7 +28,7 @@ export default function Icons() {
     }}
     className="relative w-screen lg:h-[45vh] h-[70vh] mt-12 lg:mt-0"
   >
-    <motion.div
+    <m.div
       className={tw(
         "absolute h-fit w-fit",
       )}
@@ -49,8 +50,8 @@ export default function Icons() {
       }}
     >
       <BallsSVG className="text-6xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-color" />
-    </motion.div>
-    <motion.div
+    </m.div>
+    <m.div
       className={tw(
         "absolute h-fit w-fit",
       )}
@@ -72,8 +73,8 @@ export default function Icons() {
       }}
     >
       <SpringSVG className="text-6xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-color" />
-    </motion.div>
-    <motion.div
+    </m.div>
+    <m.div
       className={tw(
         "absolute h-fit w-fit",
       )}
@@ -95,8 +96,8 @@ export default function Icons() {
       }}
     >
       <StarSVG className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl text-color" />
-    </motion.div>
-    <motion.div
+    </m.div>
+    <m.div
       className={tw(
         "absolute h-fit w-fit",
       )}
@@ -118,8 +119,8 @@ export default function Icons() {
       }}
     >
       <StarSVG className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl text-color" />
-    </motion.div>
-    <motion.div
+    </m.div>
+    <m.div
       className={tw(
         "absolute h-fit w-fit",
       )}
@@ -141,8 +142,8 @@ export default function Icons() {
       }}
     >
       <MSVG className="text-6xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-color" />
-    </motion.div>
-    <motion.div
+    </m.div>
+    <m.div
       className={tw(
         "absolute h-fit w-fit",
       )}
@@ -164,7 +165,7 @@ export default function Icons() {
       }}
     >
       <BeanSVG className="text-6xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-color" />
-    </motion.div>
-  </motion.div>
+    </m.div>
+  </m.div>
   );
 }
