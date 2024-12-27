@@ -168,7 +168,7 @@ const ClassPro: React.FC = () => {
                     </div>
                     <div className={tw("min-w-[100px]")}>
                         <NumberFlow
-                            value={useInView(numRef) ? 146000 : 0}
+                            value={useInView(numRef) ? 26000 : 0}
                             className={tw(
                                 "lg:text-5xl md:text-4xl text-3xl font-semibold text-color",
                             )}
