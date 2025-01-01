@@ -183,7 +183,7 @@ const SkillsSection: FC = () => {
                                     ? currentSection == 0
                                         ? 230
                                         : currentSection == 1
-                                        ? 146000
+                                        ? 25000
                                         : 9068
                                     : 0}
                                 className={tw("text-6xl font-semibold text-color")}
