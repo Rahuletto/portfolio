@@ -249,7 +249,7 @@ function App() {
             }}
             className={tw("font-semibold w-fit mx-auto text-(lg:6xl md:5xl 4xl) text-center sticky top-32")}
           >
-            People around here<br />loves my{" "}
+            People around here<br />love my{" "}
             <div className={tw("px-1 pr-3 inline-block italic rounded-lg bg-color text-background")}>
               work
             </div>
