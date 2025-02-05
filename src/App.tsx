@@ -204,7 +204,7 @@ function App() {
         <div className={tw("lg:py-36 relative flex items-center justify-center py-24 px-12 max-w-screen-xl mx-auto w-full h-screen")}>
           <Corner />
           <Paragraph
-            text={`I am Rahul Marban, currently pursuing CSE with AIML at SRMIST. While I am passionate about AI, my true love lies in designing interfaces that combine aesthetic appeal with strong user experiences. {} Taught myself to build everything from the visible parts of websites to the behind-the-scenes magic, making tech accessible and user-friendly`}
+            text={`I am Rahul Marban, a CSE with AIML student at SRMIST. I specialize in designing visually appealing and user-centered interfaces that create seamless and intuitive experiences. {} I have independently learned to develop both front-end interfaces and back-end systems, focusing on creating technology that is both accessible and practical for end-users.`}
           />
         </div>
         <div className={tw("max-w-screen-xl mx-12 px-4 md:px-12 lg:!mx-auto py-16 mb-6 md:!mb-24 min-h-screen flex flex-col md:!flex-row items-start justify-between gap-6")}>

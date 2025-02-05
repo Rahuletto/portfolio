@@ -15,7 +15,7 @@ const Projects: React.FC = () => {
             <Rocket />
             <div className={tw("mt-3 flex items-center justify-center")}>
                 <m.a
-                    href="https://unixporn-dots.github.io/"
+                    href="https://github.com/Rahuletto?tab=repositories"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={tw(

@@ -1,9 +1,9 @@
 ### I am Marban and I am a
 # Designer & Developer
 
-I am Rahul Marban, currently pursuing  CSE with AIML at SRMIST. While I am passionate about AI, my true love
-lies in  designing interfaces that combine aesthetic appeal with  strong user experiences.
-Taught myself to  build everything from the visible parts of websites to the behind-the-scenes  magic, making tech accessible and user-friendly 
+I am Rahul Marban, a CSE with AIML student at SRMIST. I specialize in designing visually appealing and user-centered interfaces that create seamless and intuitive experiences.
+
+I have independently learned to develop both front-end interfaces and back-end systems, focusing on creating technology that is both accessible and practical for end-users.
 
 ![IMAGE](/public/website.png)
 
