@@ -23,7 +23,8 @@ export default function Marquee() {
     const setEl = setRef.current;
     if (!track || !setEl) return;
 
-    const setWidth = setEl.offsetWidth;
+    const gap = 24; // gap-6 = 1.5rem = 24px
+    const setWidth = setEl.offsetWidth + gap;
 
     const onScroll = () => {
       const currentY = window.scrollY;
