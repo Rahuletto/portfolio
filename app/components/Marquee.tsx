@@ -82,7 +82,7 @@ export default function Marquee() {
     ));
 
   return (
-    <div className="relative w-full overflow-hidden border-y-4 border-dark bg-light text-dark select-none">
+    <div className="absolu w-full overflow-hidden border-y-4 border-dark bg-light text-dark select-none">
       <div className="py-5 overflow-hidden">
         <div
           ref={trackRef}

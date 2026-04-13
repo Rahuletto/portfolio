@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 const ScrollProgress = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [tickCount, setTickCount] = useState(40);
+  const [isInverted, setIsInverted] = useState(false);
 
   useEffect(() => {
     const calculateTicks = () => {
       const width = window.innerWidth;
-
       const count = Math.floor(width / 8);
       setTickCount(Math.max(20, Math.min(count, 300)));
     };
@@ -17,10 +17,21 @@ const ScrollProgress = () => {
 
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       setScrollProgress(scrolled);
+
+      const elements = document.querySelectorAll('[data-color="invert"]');
+      let found = false;
+      const sampleY = 16;
+
+      elements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (sampleY >= rect.top && sampleY <= rect.bottom) {
+          found = true;
+        }
+      });
+      setIsInverted(found);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -44,9 +55,10 @@ const ScrollProgress = () => {
           return (
             <div
               key={i}
-              className={`h-3 rounded-full w-0.5 transition-opacity duration-300 ${
-                isCompleted ? "opacity-100 bg-white" : "opacity-30 bg-white"
-              }`}
+              className={`h-3 rounded-full w-0.5 transition-all duration-300 ${isInverted
+                ? (isCompleted ? "opacity-100 bg-dark" : "opacity-30 bg-dark")
+                : (isCompleted ? "opacity-100 bg-white" : "opacity-30 bg-white")
+                }`}
             />
           );
         })}

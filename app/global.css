@@ -16,16 +16,14 @@
 
 @font-face {
     font-family: "Aeonik";
-    src: url("../assets/fonts/aeonik/Aeonik-RegularItalic.ttf")
-        format("truetype");
+    src: url("../assets/fonts/aeonik/Aeonik-RegularItalic.ttf") format("truetype");
     font-weight: 400;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Aeonik";
-    src: url("../assets/fonts/aeonik/Aeonik-MediumItalic.ttf")
-        format("truetype");
+    src: url("../assets/fonts/aeonik/Aeonik-MediumItalic.ttf") format("truetype");
     font-weight: 500;
     font-style: italic;
 }
@@ -78,12 +76,27 @@
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 @view-transition {
@@ -108,6 +121,7 @@ body {
     from {
         opacity: 1;
     }
+
     to {
         opacity: 0;
     }
@@ -117,6 +131,7 @@ body {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
