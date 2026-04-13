@@ -1,6 +1,6 @@
 import Works from "./Works";
-import { useEffect, useRef, useCallback, useState, type ReactNode } from "react";
-import { type ThemeColor } from "./~themes";
+import { useLayoutEffect, useRef, useCallback, useState, useMemo, memo, type ReactNode } from "react";
+import { type ThemeColor } from "@/config/themes";
 
 const RAINBOW_MAP: Record<ThemeColor, string> = {
   purple: "#a860ff",
@@ -11,8 +11,6 @@ const RAINBOW_MAP: Record<ThemeColor, string> = {
   orange: "#ff7057",
   red: "#ff5757",
 };
-
-const RAINBOW_COLORS = Object.keys(RAINBOW_MAP) as ThemeColor[];
 
 const clamp = (v: number, min: number, max: number) =>
   Math.min(max, Math.max(min, v));
@@ -25,7 +23,7 @@ type Props = {
   onColorClick?: (color: ThemeColor) => void;
 };
 
-export default function RainbowStrings({ children, className = "", onColorClick }: Props) {
+const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const barRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [isAtTop, setIsAtTop] = useState(true);
@@ -34,6 +32,7 @@ export default function RainbowStrings({ children, className = "", onColorClick 
   const target = useRef(0);
   const rafId = useRef(0);
 
+  const RAINBOW_COLORS = useMemo(() => Object.keys(RAINBOW_MAP) as ThemeColor[], []);
   const N = RAINBOW_COLORS.length;
 
   const tick = useCallback(() => {
@@ -80,7 +79,7 @@ export default function RainbowStrings({ children, className = "", onColorClick 
 
   }, [N]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const onScroll = () => {
       const el = sectionRef.current;
       if (!el) return;
@@ -145,4 +144,6 @@ export default function RainbowStrings({ children, className = "", onColorClick 
       </div>
     </div>
   );
-}
+};
+
+export default memo(RainbowStrings);

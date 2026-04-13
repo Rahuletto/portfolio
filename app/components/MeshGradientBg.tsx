@@ -1,22 +1,18 @@
 import { MeshGradient } from "@mesh-gradient/react";
+import { useMeshTheme } from "@/context/MeshThemeContext";
 
-interface MeshGradientBgProps {
-  colors?: [string, string, string, string];
-  seed?: number;
-}
-
-const MeshGradientBg = ({ colors, seed = 5 }: MeshGradientBgProps) => {
-  const finalColors = colors || ["#5D3FD3", "#A389D4", "#C5B0E3", "#D9B3FF"];
+const MeshGradientBg = () => {
+  const { currentColors, seed } = useMeshTheme();
   
   return (
     <div className="fixed inset-0 -z-10 bg-dark">
       <MeshGradient
-        key={`${seed}-${finalColors.join("-")}`}
+        key={`${seed}-${currentColors.join("-")}`}
         className="w-full h-full"
         options={{
           seed: seed,
           animationSpeed: 3,
-          colors: finalColors as any,
+          colors: currentColors as any,
         }}
       />
     </div>

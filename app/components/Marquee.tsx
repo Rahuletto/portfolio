@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef, memo } from "react";
 
 const items = [
   { type: "text" as const, content: "DESIGNER" },
@@ -9,7 +9,7 @@ const items = [
 
 const REPEATS = 6;
 
-export default function Marquee() {
+const Marquee = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const setRef = useRef<HTMLDivElement>(null);
   const xRef = useRef(0);
@@ -96,4 +96,6 @@ export default function Marquee() {
       </div>
     </div>
   );
-}
+};
+
+export default memo(Marquee);

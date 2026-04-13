@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState, useMemo, useRef } from "react";
 
 const ScrollProgress = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [tickCount, setTickCount] = useState(40);
   const [isInverted, setIsInverted] = useState(false);
 
-  useEffect(() => {
+  const invertElements = useRef<NodeListOf<Element> | null>(null);
+
+  useLayoutEffect(() => {
     const calculateTicks = () => {
       const width = window.innerWidth;
       const count = Math.floor(width / 8);
       setTickCount(Math.max(20, Math.min(count, 300)));
+      invertElements.current = document.querySelectorAll('[data-color="invert"]');
     };
 
     calculateTicks();
@@ -21,11 +24,14 @@ const ScrollProgress = () => {
       const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       setScrollProgress(scrolled);
 
-      const elements = document.querySelectorAll('[data-color="invert"]');
+      if (!invertElements.current) {
+        invertElements.current = document.querySelectorAll('[data-color="invert"]');
+      }
+
       let found = false;
       const sampleY = 16;
 
-      elements.forEach((el) => {
+      invertElements.current.forEach((el) => {
         const rect = el.getBoundingClientRect();
         if (sampleY >= rect.top && sampleY <= rect.bottom) {
           found = true;
@@ -34,7 +40,8 @@ const ScrollProgress = () => {
       setIsInverted(found);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -42,9 +49,11 @@ const ScrollProgress = () => {
     };
   }, []);
 
-  const ticks = Array.from(
-    { length: tickCount },
-    (_, i) => (i / tickCount) * 100,
+  const ticks = useMemo(() =>
+    Array.from(
+      { length: tickCount },
+      (_, i) => (i / tickCount) * 100,
+    ), [tickCount]
   );
 
   return (
