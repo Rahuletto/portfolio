@@ -47,9 +47,11 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
 
     const vw = window.innerWidth;
 
+    const baseW = vw < 768 ? 32 : 52;
+    const targetW = vw < 768 ? 40 : 64;
     const basePhase = clamp(p / 0.4, 0, 1);
-    const currentW = lerp(52, 64, basePhase);
-    const currentGap = lerp(2, 5, basePhase);
+    const currentW = lerp(baseW, targetW, basePhase);
+    const currentGap = lerp(2, vw < 768 ? 3 : 5, basePhase);
     const centerDist = currentW + currentGap;
 
     const expandPhase = clamp((p - 0.35) / 0.55, 0, 1);
@@ -60,7 +62,7 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
     const fadePhase = clamp((p - 0.7) / 0.2, 0, 1);
     const currentOpacity = 1 - fadePhase;
 
-    const maxSpread = Math.max(vw / 4, 200);
+    const maxSpread = vw / (N - 1);
 
     barRefs.current.forEach((el, i) => {
       if (!el) return;

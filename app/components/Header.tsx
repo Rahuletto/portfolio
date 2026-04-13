@@ -38,7 +38,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 right-24 z-50">
+    <nav className="fixed top-0 right-4 md:right-12 lg:right-24 z-50">
       <div
         className="relative"
         onMouseEnter={() => setOpen(true)}
@@ -46,7 +46,7 @@ const Header = () => {
       >
         <motion.div
           layout
-          className="w-76 overflow-hidden rounded-b-2xl border-2 border-t-0 border-dark bg-light text-dark"
+          className="overflow-hidden rounded-b-2xl border-2 border-t-0 border-dark bg-light text-dark"
           transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
         >
           <AnimatePresence mode="popLayout" initial={false}>
@@ -59,9 +59,9 @@ const Header = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2, ease: [0.19, 1, 0.22, 1] }}
-                className="flex h-14 w-full items-center justify-between px-6"
+                className="flex h-14 w-16 md:w-76 items-center justify-center md:justify-between px-4 md:px-6"
               >
-                <span className="text-xl leading-none font-medium">
+                <span className="hidden md:block text-xl leading-none font-medium">
                   Explore
                 </span>
                 <img
@@ -77,6 +77,7 @@ const Header = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2, ease: [0.19, 1, 0.22, 1] }}
+                className="w-76"
               >
                 {navItems.map((item, index) => (
                   <motion.button

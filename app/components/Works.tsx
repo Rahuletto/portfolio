@@ -13,13 +13,13 @@ export default function Works({ children }: Props) {
         </h2>
       </div>
 
-      <div className="grid grid-cols-6 gap-6 w-full auto-rows-[220px]">
-        <div className="bg-light rounded-3xl col-span-2 row-span-2 " />
-        <div className="bg-light rounded-3xl col-span-3 row-span-1 " />
-        <div className="bg-light rounded-3xl col-span-1 row-span-2 " />
-        <div className="bg-light rounded-3xl col-span-3 row-span-2 " />
-        <div className="bg-light rounded-3xl col-span-2 row-span-1 " />
-        <div className="bg-light rounded-3xl col-span-1 row-span-1 " />
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-6 w-full auto-rows-[220px]">
+        <div className="bg-light rounded-3xl col-span-2 lg:col-span-2 row-span-1 lg:row-span-2" />
+        <div className="bg-light rounded-3xl col-span-2 lg:col-span-3 row-span-1" />
+        <div className="bg-light rounded-3xl col-span-1 lg:col-span-1 row-span-1 lg:row-span-2" />
+        <div className="bg-light rounded-3xl col-span-2 lg:col-span-3 row-span-1 lg:row-span-2" />
+        <div className="bg-light rounded-3xl col-span-1 lg:col-span-2 row-span-1" />
+        <div className="bg-light rounded-3xl col-span-1 lg:col-span-1 row-span-1" />
       </div>
 
       {children}

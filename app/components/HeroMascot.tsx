@@ -29,7 +29,7 @@ export default function HeroMascot() {
         if (isWaving && now >= waveEndAt) {
           imgRef.current.src = IDLE;
           imgRef.current.style.transform = "scale(1.02)";
-          imgRef.current.style.top = "16px";
+          imgRef.current.style.top = "14px";
           isWaving = false;
           nextWaveAt = now + randomDelay();
         } else if (!isWaving && now >= nextWaveAt) {
@@ -63,7 +63,7 @@ export default function HeroMascot() {
         if (imgRef.current) {
           imgRef.current.src = IDLE;
           imgRef.current.style.transform = "scale(1.02)";
-          imgRef.current.style.top = "16px";
+          imgRef.current.style.top = "14px";
         }
       }}
     >
@@ -72,7 +72,7 @@ export default function HeroMascot() {
         src={IDLE}
         alt="Mascot"
         className="h-30 w-75 object-contain transition-transform relative duration-300"
-        style={{ transform: "scale(1.02)", top: "16px" }}
+        style={{ transform: "scale(1.02)", top: "14px" }}
       />
     </span>
   );

@@ -64,7 +64,7 @@ const Marquee = () => {
           item.type === "text" ? (
             <span
               key={i}
-              className="bold text-[64px] leading-none whitespace-nowrap"
+              className="bold text-3xl md:text-[64px] leading-none whitespace-nowrap"
               style={{ fontStretch: "200%" }}
             >
               {item.content}
@@ -74,7 +74,7 @@ const Marquee = () => {
               key={i}
               src={item.src}
               alt=""
-              className="h-14 w-14 pt-1.5 shrink-0 mx-6"
+              className="h-8 w-8 md:h-14 md:w-14 pt-1.5 shrink-0 mx-3 md:mx-6"
             />
           ),
         )}
