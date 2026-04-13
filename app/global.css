@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: "Aeonik";
+    src: url("../assets/fonts/aeonik/Aeonik-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Aeonik";
+    src: url("../assets/fonts/aeonik/Aeonik-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Aeonik";
+    src: url("../assets/fonts/aeonik/Aeonik-RegularItalic.ttf")
+        format("truetype");
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Aeonik";
+    src: url("../assets/fonts/aeonik/Aeonik-MediumItalic.ttf")
+        format("truetype");
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Google Sans Code";
+    src: url("../assets/fonts/GoogleSansCode.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "PolySans";
+    src: url("../assets/fonts/PolySans.ttf") format("truetype");
+    font-weight: 100 900;
+}
+
+@theme {
+    --color-background: var(--theme-dark);
+    --color-foreground: var(--theme-light);
+
+    --color-light: var(--theme-light);
+    --color-dark: var(--theme-dark);
+
+    /*RAINBOW*/
+    --color-purple: var(--theme-purple);
+    --color-blurple: var(--theme-blurple);
+    --color-blue: var(--theme-blue);
+    --color-neon: var(--theme-neon);
+    --color-yellow: var(--theme-yellow);
+    --color-orange: var(--theme-orange);
+    --color-red: var(--theme-red);
+}
+
+:root {
+    --theme-dark: #242424;
+    --theme-light: #faf8f6;
+
+    /* RAINBOW */
+    --theme-purple: #a860ff;
+    --theme-blurple: #575fff;
+    --theme-blue: #57beff;
+    --theme-neon: #84ff57;
+    --theme-yellow: #ffd557;
+    --theme-orange: #ff7057;
+    --theme-red: #ff5757;
+
+    font-family:
+        "Aeonik",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.25s;
+    animation-timing-function: ease-out;
+}
+
+::view-transition-old(root) {
+    animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+    animation-name: fade-in;
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+code {
+    font-family: "Google Sans Code", monospace;
+}
+
+.bold {
+    font-family: "PolySans", sans-serif;
+    font-weight: 200;
+}
