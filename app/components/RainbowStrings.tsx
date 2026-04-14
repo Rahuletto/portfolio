@@ -12,11 +12,15 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const glRef = useRef<WebGL2RenderingContext | null>(null);
   const programRef = useRef<WebGLProgram | null>(null);
-  const layoutRef = useRef({ scrollable: 0, offsetTop: 0, dpr: 1 });
+  const layoutRef = useRef({ scrollable: 0, offsetTop: 0, dpr: 1, width: 0, height: 0 });
+  const locsRef = useRef<{ res: WebGLUniformLocation | null; op: WebGLUniformLocation | null; pos: number; col: number } | null>(null);
+  const buffersRef = useRef<{ pos: WebGLBuffer | null; col: WebGLBuffer | null } | null>(null);
+  const arraysRef = useRef<{ pos: Float32Array; col: Float32Array } | null>(null);
 
   const current = useRef(0);
   const target = useRef(0);
   const rafId = useRef(0);
+  const isAnimatingRef = useRef(false);
   const isAtTopRef = useRef(true);
   const entryStartRef = useRef<number | null>(null);
   const isVisibleRef = useRef(true);
@@ -36,7 +40,7 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
   const initGL = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const gl = canvas.getContext("webgl2", { alpha: true, antialias: true });
+    const gl = canvas.getContext("webgl2", { alpha: true, antialias: false });
     if (!gl) return;
     glRef.current = gl;
 
@@ -71,38 +75,71 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
     };
 
     const program = gl.createProgram()!;
-    gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vs));
-    gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fs));
+    const vertexShader = createShader(gl, gl.VERTEX_SHADER, vs);
+    const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fs);
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
     gl.linkProgram(program);
     programRef.current = program;
-  }, []);
+
+    locsRef.current = {
+      res: gl.getUniformLocation(program, "resolution"),
+      op: gl.getUniformLocation(program, "opacity"),
+      pos: gl.getAttribLocation(program, "position"),
+      col: gl.getAttribLocation(program, "color"),
+    };
+
+    buffersRef.current = {
+      pos: gl.createBuffer(),
+      col: gl.createBuffer(),
+    };
+
+    const vertexCount = N * 6;
+    arraysRef.current = {
+      pos: new Float32Array(vertexCount * 2),
+      col: new Float32Array(vertexCount * 3),
+    };
+
+    if (buffersRef.current?.pos && buffersRef.current?.col && arraysRef.current) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffersRef.current.pos);
+      gl.bufferData(gl.ARRAY_BUFFER, arraysRef.current.pos.byteLength, gl.DYNAMIC_DRAW);
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffersRef.current.col);
+      gl.bufferData(gl.ARRAY_BUFFER, arraysRef.current.col.byteLength, gl.DYNAMIC_DRAW);
+    }
+
+    gl.deleteShader(vertexShader);
+    gl.deleteShader(fragmentShader);
+  }, [N]);
 
   const draw = useCallback(() => {
     const gl = glRef.current;
-    if (!gl || !programRef.current || !isVisibleRef.current) return;
+    const canvas = canvasRef.current;
+    const locs = locsRef.current;
+    const buffers = buffersRef.current;
+    const arrays = arraysRef.current;
+    if (!gl || !programRef.current || !canvas || !locs || !buffers || !arrays || !isVisibleRef.current) {
+      return false;
+    }
 
     current.current = lerp(current.current, target.current, 0.08);
     const p = current.current;
-
-    const canvas = canvasRef.current!;
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     const program = programRef.current;
     gl.useProgram(program);
+    gl.uniform2f(locs.res, canvas.width, canvas.height);
 
-    const resLoc = gl.getUniformLocation(program, "resolution");
-    const opLoc = gl.getUniformLocation(program, "opacity");
-    gl.uniform2f(resLoc, canvas.width, canvas.height);
-
-    const baseW = (window.innerWidth < 768 ? 32 : 52) * layoutRef.current.dpr;
-    const targetW = (window.innerWidth < 768 ? 48 : 72) * layoutRef.current.dpr;
-    const baseGap = (window.innerWidth < 768 ? 3 : 5) * layoutRef.current.dpr;
+    const { width, dpr } = layoutRef.current;
+    const isMobile = width < 768;
+    const baseW = (isMobile ? 32 : 52) * dpr;
+    const targetW = (isMobile ? 48 : 72) * dpr;
+    const baseGap = (isMobile ? 3 : 5) * dpr;
 
     const basePhase = clamp(p / 0.6, 0, 1);
     const currentW = lerp(baseW, targetW, basePhase);
-    const currentGap = lerp(2 * layoutRef.current.dpr, baseGap, basePhase);
+    const currentGap = lerp(2 * dpr, baseGap, basePhase);
 
     const easedExpand = cubicBezier(clamp((p - 0.9) / 0.1, 0, 1));
     const fadeT = clamp((p - 0.95) / 0.05, 0, 1);
@@ -111,20 +148,18 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
     const centerDist = currentW + currentGap;
     const maxSpread = canvas.width / (N - 1);
 
-    gl.uniform1f(opLoc, currentOpacity);
-
-    const posAttr = gl.getAttribLocation(program, "position");
-    const colAttr = gl.getAttribLocation(program, "color");
-    const posBuffer = gl.createBuffer();
-    const colBuffer = gl.createBuffer();
-    const positions: number[] = [];
-    const colorsArr: number[] = [];
+    gl.uniform1f(locs.op, currentOpacity);
 
     const ENTRY_DELAY = 400;
     const ENTRY_DURATION = 900;
     const ENTRY_STAGGER = 120;
     const now = performance.now();
     const entryStart = entryStartRef.current ?? now;
+
+    let posOffset = 0;
+    let colorOffset = 0;
+    const positions = arrays.pos;
+    const colors = arrays.col;
 
     RAINBOW_COLORS.forEach((color, i) => {
       const rgb = colorsRgb[i];
@@ -147,36 +182,63 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
       const y1 = slideOffset;
       const y2 = canvas.height + slideOffset;
 
-      positions.push(x1, y1, x2, y1, x1, y2, x1, y2, x2, y1, x2, y2);
-      for (let j = 0; j < 6; j++) colorsArr.push(...rgb);
+      positions[posOffset++] = x1;
+      positions[posOffset++] = y1;
+      positions[posOffset++] = x2;
+      positions[posOffset++] = y1;
+      positions[posOffset++] = x1;
+      positions[posOffset++] = y2;
+      positions[posOffset++] = x1;
+      positions[posOffset++] = y2;
+      positions[posOffset++] = x2;
+      positions[posOffset++] = y1;
+      positions[posOffset++] = x2;
+      positions[posOffset++] = y2;
+
+      for (let j = 0; j < 6; j++) {
+        colors[colorOffset++] = rgb[0];
+        colors[colorOffset++] = rgb[1];
+        colors[colorOffset++] = rgb[2];
+      }
     });
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-    gl.enableVertexAttribArray(posAttr);
-    gl.vertexAttribPointer(posAttr, 2, gl.FLOAT, false, 0, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.pos);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, positions);
+    gl.enableVertexAttribArray(locs.pos);
+    gl.vertexAttribPointer(locs.pos, 2, gl.FLOAT, false, 0, 0);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, colBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colorsArr), gl.STATIC_DRAW);
-    gl.enableVertexAttribArray(colAttr);
-    gl.vertexAttribPointer(colAttr, 3, gl.FLOAT, false, 0, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.col);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, colors);
+    gl.enableVertexAttribArray(locs.col);
+    gl.vertexAttribPointer(locs.col, 3, gl.FLOAT, false, 0, 0);
 
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    gl.drawArrays(gl.TRIANGLES, 0, positions.length / 2);
-
-    gl.deleteBuffer(posBuffer);
-    gl.deleteBuffer(colBuffer);
+    gl.drawArrays(gl.TRIANGLES, 0, posOffset / 2);
 
     const ENTRY_TOTAL = 1500 + 900 + (Math.ceil(N / 2) * 120);
     const entryDone = entryStartRef.current !== null &&
       (performance.now() - entryStartRef.current) > ENTRY_TOTAL;
 
 
-    if (!entryDone || Math.abs(current.current - target.current) > 0.0001) {
-      rafId.current = requestAnimationFrame(draw);
-    }
+    return !entryDone || Math.abs(current.current - target.current) > 0.0001;
   }, [RAINBOW_COLORS, N, colorsRgb]);
+
+  const startAnimationLoop = useCallback(() => {
+    if (isAnimatingRef.current || !isVisibleRef.current) return;
+    isAnimatingRef.current = true;
+
+    const tick = () => {
+      const keepAnimating = draw();
+      if (!keepAnimating) {
+        isAnimatingRef.current = false;
+        return;
+      }
+      rafId.current = requestAnimationFrame(tick);
+    };
+
+    rafId.current = requestAnimationFrame(tick);
+  }, [draw]);
 
   useLayoutEffect(() => {
     initGL();
@@ -186,9 +248,9 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
       const gl = glRef.current;
       if (!el || !canvas || !gl) return;
 
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       canvas.width = window.innerWidth * dpr;
-      canvas.height = (window.innerHeight * dpr) + 2500;
+      canvas.height = window.innerHeight * dpr;
       canvas.style.width = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -196,9 +258,11 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
       layoutRef.current = {
         scrollable: el.scrollHeight - window.innerHeight,
         offsetTop: el.offsetTop,
-        dpr
+        dpr,
+        width: window.innerWidth,
+        height: window.innerHeight,
       };
-      draw();
+      startAnimationLoop();
     };
 
     const onScroll = () => {
@@ -206,9 +270,7 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
       if (!scrollable) return;
       target.current = clamp((window.scrollY - offsetTop) / Math.max(scrollable, 1), 0, 1.0);
       isAtTopRef.current = window.scrollY < 50;
-      if (!isVisibleRef.current) return;
-      cancelAnimationFrame(rafId.current);
-      rafId.current = requestAnimationFrame(draw);
+      startAnimationLoop();
     };
 
     updateLayout();
@@ -220,8 +282,10 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
           if (entryStartRef.current === null) {
             entryStartRef.current = performance.now();
           }
+          startAnimationLoop();
+        } else if (isAnimatingRef.current) {
           cancelAnimationFrame(rafId.current);
-          rafId.current = requestAnimationFrame(draw);
+          isAnimatingRef.current = false;
         }
       },
       { threshold: 0 }
@@ -235,8 +299,14 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", updateLayout);
       cancelAnimationFrame(rafId.current);
+      isAnimatingRef.current = false;
+      if (glRef.current) {
+        if (buffersRef.current?.pos) glRef.current.deleteBuffer(buffersRef.current.pos);
+        if (buffersRef.current?.col) glRef.current.deleteBuffer(buffersRef.current.col);
+        if (programRef.current) glRef.current.deleteProgram(programRef.current);
+      }
     };
-  }, [draw, initGL]);
+  }, [initGL, startAnimationLoop]);
 
   return (
     <div ref={sectionRef} className={`relative w-full ${className}`}>
@@ -252,9 +322,10 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
               if (!canvas) return;
               const dpr = layoutRef.current.dpr;
               const p = current.current;
-              const baseW = (window.innerWidth < 768 ? 32 : 52) * dpr;
-              const targetW = (window.innerWidth < 768 ? 38 : 78) * dpr;
-              const baseGap = (window.innerWidth < 768 ? 3 : 5) * dpr;
+              const isMobile = layoutRef.current.width < 768;
+              const baseW = (isMobile ? 32 : 52) * dpr;
+              const targetW = (isMobile ? 38 : 78) * dpr;
+              const baseGap = (isMobile ? 3 : 5) * dpr;
               const currentW = lerp(baseW, targetW, clamp(p / 0.2, 0, 1));
               const currentGap = lerp(2 * dpr, baseGap, clamp(p / 0.2, 0, 1));
               const easedExpand = cubicBezier(clamp((p - 0.6) / 0.2, 0, 1));
@@ -277,7 +348,7 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 3.6, duration: 1 }}
+        transition={{ delay: 4.2, duration: 1 }}
         className="relative w-full z-20 py-24 md:py-48 pointer-events-none !pb-64"
       >
         <Works>{children}</Works>

@@ -14,12 +14,7 @@ const ProgressiveBlur = ({ className = "" }: ProgressiveBlurProps) => {
         transition={{ delay: 4.6, duration: 2 }}
         className="absolute inset-x-0 top-0 h-full transform translate-z-0"
         style={{
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          maskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
-          WebkitMaskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
-          willChange: "backdrop-filter, opacity",
-          backfaceVisibility: "hidden",
+          background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.6) 15%, rgba(0,0,0,0.6) 85%, transparent)",
         }}
       />
     </div>

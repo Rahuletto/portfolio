@@ -33,7 +33,8 @@ function WorkCard({
   const typeClasses = WORK_CARD_TYPE_MAP[type as keyof typeof WORK_CARD_TYPE_MAP] || WORK_CARD_TYPE_MAP.short;
   const originClass = WORK_CARD_ORIGIN_MAP[dir as keyof typeof WORK_CARD_ORIGIN_MAP] || WORK_CARD_ORIGIN_MAP.center;
 
-  const isPriority = index < 5;
+  const isPriority = index < 2;
+  const dimensions = type === "long" ? { width: 324, height: 488 } : { width: 324, height: 236 };
 
   return (
     <motion.div
@@ -48,14 +49,17 @@ function WorkCard({
         src={image}
         alt=""
         onLoad={() => setLoaded(true)}
-        fetchPriority="high"
+        fetchPriority={isPriority ? "high" : "auto"}
         initial={{ opacity: 0 }}
         animate={{ opacity: loaded ? 1 : 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="absolute inset-0 w-full h-full object-cover pointer-events-none transform translate-z-0"
         style={{ imageRendering: "auto" }}
-        decoding={isPriority ? "sync" : "async"}
+        decoding="async"
         loading={isPriority ? "eager" : "lazy"}
+        width={dimensions.width}
+        height={dimensions.height}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         {...(isPriority ? { fetchpriority: "high" } : {})}
       />
     </motion.div>

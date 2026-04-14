@@ -1,11 +1,10 @@
 import { useLayoutEffect, useRef } from "react";
 
-import { checkYOverlap, getScrollProgress } from "@/lib/dom";
+import { getScrollProgress } from "@/lib/dom";
 
 const ScrollProgress = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const invertElements = useRef<NodeListOf<Element> | null>(null);
   const stateRef = useRef({
     progress: 0,
     isInverted: false,
@@ -19,13 +18,6 @@ const ScrollProgress = () => {
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-
-    const updateInversion = () => {
-      if (!invertElements.current) {
-        invertElements.current = document.querySelectorAll('[data-color="invert"]');
-      }
-      stateRef.current.isInverted = checkYOverlap(16, invertElements.current);
-    };
 
     const draw = () => {
       const { progress, isInverted, width, dpr } = stateRef.current;
@@ -56,15 +48,35 @@ const ScrollProgress = () => {
       }
     };
 
+    let pending = false;
     const handleScroll = () => {
-      stateRef.current.progress = getScrollProgress() * 100;
-      updateInversion();
-      draw();
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(() => {
+        pending = false;
+        const nextProgress = getScrollProgress() * 100;
+        if (Math.abs(nextProgress - stateRef.current.progress) < 0.15) return;
+        stateRef.current.progress = nextProgress;
+        draw();
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        stateRef.current.isInverted = entries.some((e) => e.isIntersecting);
+        draw();
+      },
+      { rootMargin: `-16px 0px -${window.innerHeight - 17}px 0px` }
+    );
+
+    const observeElements = () => {
+      observer.disconnect();
+      document.querySelectorAll('[data-color="invert"]').forEach((el) => observer.observe(el));
     };
 
     const handleResize = () => {
       const width = window.innerWidth - 48;
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const height = 32;
 
       stateRef.current.width = width;
@@ -75,7 +87,7 @@ const ScrollProgress = () => {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
 
-      invertElements.current = document.querySelectorAll('[data-color="invert"]');
+      observeElements();
       handleScroll();
     };
 
@@ -86,6 +98,7 @@ const ScrollProgress = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
+      observer.disconnect();
     };
   }, []);
 

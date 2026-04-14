@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { MotionText } from "@/components/ui/MotionText";
 
 export default function HeroSection() {
-  const baseDelay = 3.4;
+  const baseDelay = 4.0;
 
   return (
     <section
