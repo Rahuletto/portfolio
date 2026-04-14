@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ASSETS, NAV_ITEMS } from "@/lib/constants";
 import { scrollToId, openLink } from "@/lib/navigation";
+import { useClickOutside } from "@/hooks/useClickOutside";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(navRef, () => {
+    if (open) setOpen(false);
+  });
 
   const handleNavClick = (id: string) => {
     if (id === "resume") {
@@ -12,6 +18,7 @@ const Header = () => {
       return;
     }
     scrollToId(id);
+    setOpen(false);
   };
 
   return (
@@ -22,6 +29,7 @@ const Header = () => {
       className="fixed top-0 right-4 md:right-12 lg:right-24 z-50"
     >
       <div
+        ref={navRef}
         className="relative"
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
@@ -41,6 +49,7 @@ const Header = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2, ease: [0.19, 1, 0.22, 1] }}
+                onClick={() => setOpen(true)}
                 className="flex h-14 w-16 md:w-76 items-center justify-center md:justify-between px-4 md:px-6"
               >
                 <span className="hidden md:block text-xl leading-none font-medium">

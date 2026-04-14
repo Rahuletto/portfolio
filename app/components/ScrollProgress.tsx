@@ -63,7 +63,7 @@ const ScrollProgress = () => {
     };
 
     const handleResize = () => {
-      const width = window.innerWidth;
+      const width = window.innerWidth - 48;
       const dpr = window.devicePixelRatio || 1;
       const height = 32;
 
@@ -90,7 +90,7 @@ const ScrollProgress = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="fixed top-0 left-0 right-0 h-8 z-45 pointer-events-none">
+    <div ref={containerRef} className="fixed top-0 left-0 right-0 h-8 px-6 z-45 pointer-events-none">
       <canvas ref={canvasRef} className="block w-full h-full" />
     </div>
   );

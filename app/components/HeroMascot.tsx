@@ -10,7 +10,9 @@ const getRandomDelay = () => randomRange(WAVE_MIN_DELAY, WAVE_MAX_DELAY);
 
 export default function HeroMascot() {
   const imgRef = useRef<HTMLImageElement>(null);
+  const wrapperRef = useRef<HTMLSpanElement>(null);
   const isHoveredRef = useRef(false);
+  const isVisibleRef = useRef(true);
 
   useEffect(() => {
     new Image().src = WAVE;
@@ -22,6 +24,10 @@ export default function HeroMascot() {
     let rafId: number;
 
     const tick = (now: number) => {
+      if (!isVisibleRef.current) {
+        rafId = requestAnimationFrame(tick);
+        return;
+      }
       if (!isHoveredRef.current && imgRef.current) {
         if (isWaving && now >= waveEndAt) {
           imgRef.current.src = IDLE;
@@ -40,12 +46,22 @@ export default function HeroMascot() {
       rafId = requestAnimationFrame(tick);
     };
 
+    const observer = new IntersectionObserver(
+      ([entry]) => { isVisibleRef.current = entry.isIntersecting; },
+      { threshold: 0 }
+    );
+    if (wrapperRef.current) observer.observe(wrapperRef.current);
+
     rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
+    return () => {
+      cancelAnimationFrame(rafId);
+      observer.disconnect();
+    };
   }, []);
 
   return (
     <span
+      ref={wrapperRef}
       className="inline-flex items-center justify-center h-30"
       onMouseEnter={() => {
         isHoveredRef.current = true;

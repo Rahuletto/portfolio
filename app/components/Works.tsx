@@ -11,7 +11,7 @@ function Works({ children }: ChildrenProps) {
   const { isMobile } = useViewport();
 
   return (
-    <div className="flex flex-col items-center relative gap-12 mt-92 z-20 max-w-7xl w-full px-8 mx-auto pb-48 pointer-events-none">
+    <div className="flex flex-col items-center relative gap-12 mt-92 z-20 max-w-7xl w-full px-8 mx-auto pb-64 pointer-events-none">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -19,7 +19,7 @@ function Works({ children }: ChildrenProps) {
         transition={WORKS_HEADER_TRANSITION}
         className="flex justify-start items-center gap-8 w-full pointer-events-auto"
       >
-        <h2 className="text-5xl leading-none text-left font-medium text-light relative z-10">
+        <h2 className="lg:text-5xl md:text-4xl text-3xl leading-none text-left font-medium text-light relative z-10">
           Works
         </h2>
         <motion.div

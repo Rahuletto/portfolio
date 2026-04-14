@@ -63,7 +63,8 @@ export const MARQUEE_ITEMS: MarqueeItem[] = [
 
 export const MARQUEE_REPEATS = 6;
 export const MARQUEE_SPEED = 1.5;
-export const MARQUEE_GAP = 24;
+export const MARQUEE_MAX_SPEED = 40;
+export const MARQUEE_GAP = 34;
 export const MARQUEE_SCROLL_SCALE = 0.3;
 export const MARQUEE_LERP = 0.03;
 export const MARQUEE_STRETCH = "200%";
@@ -95,6 +96,7 @@ export const WORK_CARDS = [
   { image: "/assets/works/classpro.webp?v=2", type: "long" as const },
   { image: "/assets/works/rocket.webp?v=2", type: "short" as const },
   { image: "/assets/works/Manic.webp?v=2", type: "short" as const },
+  { image: "/assets/works/NTL.webp?v=2", type: "short" as const },
   { image: "/assets/works/prism.webp?v=2", type: "short" as const },
   { image: "/assets/works/ami.webp?v=2", type: "long" as const },
   { image: "/assets/works/dreamnity.webp?v=2", type: "short" as const },

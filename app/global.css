@@ -146,6 +146,7 @@ code {
 .bold {
     font-family: "PolySans", sans-serif;
     font-weight: 200;
+    font-variation-settings: 'wdth' 200;
 }
 
 @keyframes reveal-up {
@@ -153,6 +154,7 @@ code {
         transform: translateY(110%);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -163,6 +165,7 @@ code {
     from {
         height: 0%;
     }
+
     to {
         height: 100%;
     }
@@ -180,6 +183,7 @@ code {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -190,6 +194,7 @@ code {
         transform: translateY(20px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -208,6 +213,7 @@ code {
     0% {
         transform: translateY(-100vh);
     }
+
     100% {
         transform: translateY(0);
     }
@@ -221,6 +227,7 @@ code {
     0% {
         transform: translateY(0);
     }
+
     100% {
         transform: translateY(100%);
     }

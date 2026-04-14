@@ -3,6 +3,7 @@ import {
   MARQUEE_ITEMS, 
   MARQUEE_REPEATS, 
   MARQUEE_SPEED, 
+  MARQUEE_MAX_SPEED,
   MARQUEE_GAP,
   MARQUEE_SCROLL_SCALE,
   MARQUEE_LERP,
@@ -28,7 +29,9 @@ const Marquee = () => {
       const currentY = window.scrollY;
       const delta = currentY - lastScrollY.current;
       lastScrollY.current = currentY;
-      speedRef.current = MARQUEE_SPEED + delta * MARQUEE_SCROLL_SCALE;
+      
+      const targetSpeed = MARQUEE_SPEED + delta * MARQUEE_SCROLL_SCALE;
+      speedRef.current = Math.max(-MARQUEE_MAX_SPEED, Math.min(MARQUEE_MAX_SPEED, targetSpeed));
     };
 
     const animate = () => {
