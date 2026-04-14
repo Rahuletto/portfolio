@@ -57,7 +57,7 @@ const ScrollProgress = () => {
   );
 
   return (
-    <div className="fixed top-0 left-0 right-0 h-8 z-40">
+    <div className="fixed top-0 left-0 right-0 h-8 z-45">
       <div className="absolute inset-0 flex items-center justify-between px-4">
         {ticks.map((tickPos, i) => {
           const isCompleted = tickPos <= scrollProgress;

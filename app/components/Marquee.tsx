@@ -23,7 +23,7 @@ const Marquee = () => {
     const setEl = setRef.current;
     if (!track || !setEl) return;
 
-    const gap = 24; // gap-6 = 1.5rem = 24px
+    const gap = 24;
     const setWidth = setEl.offsetWidth + gap;
 
     const onScroll = () => {
@@ -82,9 +82,8 @@ const Marquee = () => {
     ));
 
   return (
-    <div 
-      className="w-full overflow-hidden border-y-4 border-dark bg-light text-dark select-none animate-slide-in-bottom"
-      style={{ animationDelay: "1800ms" }}
+    <div
+      className="w-full overflow-hidden border-y-4 border-dark bg-light text-dark select-none"
     >
       <div className="py-5 overflow-hidden">
         <div

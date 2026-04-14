@@ -38,7 +38,12 @@ const Header = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 right-4 md:right-12 lg:right-24 z-50">
+    <motion.nav
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 3, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+      className="fixed top-0 right-4 md:right-12 lg:right-24 z-50"
+    >
       <div
         className="relative"
         onMouseEnter={() => setOpen(true)}
@@ -58,7 +63,7 @@ const Header = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, delay: 2.2, ease: [0.19, 1, 0.22, 1] }}
+                transition={{ duration: 0.2, ease: [0.19, 1, 0.22, 1] }}
                 className="flex h-14 w-16 md:w-76 items-center justify-center md:justify-between px-4 md:px-6"
               >
                 <span className="hidden md:block text-xl leading-none font-medium">
@@ -91,11 +96,10 @@ const Header = () => {
                       duration: 0.35,
                       ease: [0.19, 1, 0.22, 1],
                     }}
-                    className={`flex w-full items-center cursor-pointer justify-between px-6 py-3.5 text-left transition-colors duration-200 focus:outline-none ${
-                      index !== navItems.length - 1
-                        ? "border-b-2 border-[#d8d4ce]"
-                        : ""
-                    }`}
+                    className={`flex w-full items-center cursor-pointer justify-between px-6 py-3.5 text-left transition-colors duration-200 focus:outline-none ${index !== navItems.length - 1
+                      ? "border-b-2 border-[#d8d4ce]"
+                      : ""
+                      }`}
                   >
                     <span className="text-xl leading-none font-medium">
                       {item.label}
@@ -112,7 +116,7 @@ const Header = () => {
           </AnimatePresence>
         </motion.div>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 

@@ -1,6 +1,7 @@
 import Works from "./Works";
 import { useLayoutEffect, useRef, useCallback, useState, useMemo, memo, type ReactNode } from "react";
 import { type ThemeColor } from "@/config/themes";
+import { motion } from "motion/react";
 
 const RAINBOW_MAP: Record<ThemeColor, string> = {
   purple: "#a860ff",
@@ -92,7 +93,7 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
       const progress = clamp(-rect.top / Math.max(scrollable, 1), 0, 0.9);
       target.current = progress;
 
-      const atTop = progress < 0.05;
+      const atTop = window.scrollY < 50;
       setIsAtTop(atTop);
 
       cancelAnimationFrame(rafId.current);
@@ -119,9 +120,9 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
       <div className="sticky top-0 h-screen w-full overflow-hidden z-10">
         <div className="absolute inset-0 h-full w-full">
           {RAINBOW_COLORS.map((color, i) => (
-            <div
+            <motion.div
               key={color}
-              ref={(el) => {
+              ref={(el: HTMLDivElement | null) => {
                 barRefs.current[i] = el;
               }}
               onClick={() => {
@@ -129,13 +130,19 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
                   onColorClick?.(color);
                 }
               }}
-              className={`absolute top-0 origin-top animate-grow-height transition-opacity duration-300 ${isAtTop ? "cursor-pointer hover:brightness-110 pointer-events-auto" : "pointer-events-none"}`}
+              initial={{ height: 0 }}
+              animate={{ height: "100vh" }}
+              transition={{
+                delay: i * 0.1 + 0.4,
+                duration: 1.4,
+                ease: [0.19, 1, 0.22, 1],
+              }}
+              className={`absolute top-0 origin-top transition-opacity duration-300 ${isAtTop ? "cursor-pointer hover:brightness-110 pointer-events-auto" : "pointer-events-none"}`}
               style={{
                 left: "50%",
                 width: "52px",
                 backgroundColor: RAINBOW_MAP[color],
                 willChange: "transform, opacity, width",
-                animationDelay: `${i * 120 + 2000}ms`,
               }}
             />
           ))}
@@ -144,19 +151,29 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
 
       </div>
 
-      <div className="absolute top-0 left-0 w-full z-20 pt-48 pointer-events-none">
-
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="absolute top-0 left-0 w-full z-20 pt-48 pointer-events-none"
+      >
         <Works>{children}</Works>
 
         <div className="absolute inset-0 top-64 pointer-events-none overflow-hidden z-[11]">
           {[...Array(6)].map((_, i) => (
-            <div
+            <motion.div
               key={i}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.8 }}
+              transition={{
+                delay: 2 + i * 0.1,
+                duration: 1.2,
+                ease: [0.19, 1, 0.22, 1],
+              }}
               className="absolute inset-0"
               style={{
                 backdropFilter: `blur(${(i + 1) * 6}px)`,
                 WebkitBackdropFilter: `blur(${(i + 1) * 6}px)`,
-                opacity: 0.8,
                 maskImage: `linear-gradient(to bottom, 
                   transparent ${i * 8}%, 
                   black ${i * 8 + 10}%, 
@@ -171,7 +188,7 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
             />
           ))}
         </div>
-      </div>
+      </motion.div >
     </div>
   );
 };

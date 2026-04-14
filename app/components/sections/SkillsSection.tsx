@@ -2,14 +2,14 @@ export default function SkillsSection() {
   return (
     <section data-color="invert">
       <div className="relative -mt-62 left-0 w-full z-20 pointer-events-none">
-        <div className="max-w-6xl mx-auto w-full px-8 relative h-0">
+        <div className="max-w-6xl mx-auto w-full px-8 relative h-0 z-10">
           <div className="absolute bottom-20 md:bottom-32 left-4 md:left-8">
             <p className="text-3xl md:text-5xl lg:text-[54px] tracking-tight font-medium leading-tight text-white mb-4">
               Core disciplines — where <br />
               thinking becomes design.
             </p>
           </div>
-          <div className="absolute bottom-[-8px] z-2 -mb-2 right-[5%] md:right-[10%]">
+          <div className="absolute bottom-[-8px] z-10 -mb-2 right-[5%] md:right-[10%]">
             <img
               src="/assets/mascots/wave.svg"
               alt="Waving Mascot"
@@ -18,7 +18,7 @@ export default function SkillsSection() {
           </div>
         </div>
 
-        <div className="w-full bg-light h-[200vh] z-5 pointer-events-auto border-t-4 border-dark"></div>
+        <div className="w-full bg-light h-[200vh] z-0 pointer-events-auto border-t-4 border-dark"></div>
       </div>
     </section>
   );

@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
 
 @font-face {
     font-family: "Aeonik";
@@ -200,4 +202,30 @@ code {
 
 .animate-slide-in-bottom {
     animation: slide-in-bottom 1s cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+@keyframes slide-down-reveal {
+    0% {
+        transform: translateY(-100vh);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-down-reveal {
+    animation: slide-down-reveal 1.4s cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+@keyframes slide-curtain-down {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+.animate-curtain-down {
+    animation: slide-curtain-down 1.2s cubic-bezier(0.19, 1, 0.22, 1) both;
 }
