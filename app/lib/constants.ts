@@ -89,13 +89,13 @@ export const WORK_CARD_TRANSITION = { duration: 1.4, ease: [0.16, 1, 0.3, 1] } a
 export const WORKS_HEADER_TRANSITION = { duration: 1.2, ease: [0.16, 1, 0.3, 1] } as const;
 export const WORKS_LINE_TRANSITION = { duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 } as const;
 export const WORK_CARDS = [
-  { image: "/assets/works/unix.webp", type: "short" as const },
-  { image: "/assets/works/mandy.webp", type: "long" as const },
-  { image: "/assets/works/simplydjs.webp", type: "long" as const },
-  { image: "/assets/works/classpro.webp", type: "long" as const },
-  { image: "/assets/works/rocket.webp", type: "short" as const },
-  { image: "/assets/works/Manic.webp", type: "short" as const },
-  { image: "/assets/works/prism.webp", type: "short" as const },
-  { image: "/assets/works/ami.webp", type: "long" as const },
-  { image: "/assets/works/dreamnity.webp", type: "short" as const },
+  { image: "/assets/works/unix.webp?v=2", type: "short" as const },
+  { image: "/assets/works/mandy.webp?v=2", type: "long" as const },
+  { image: "/assets/works/simplydjs.webp?v=2", type: "long" as const },
+  { image: "/assets/works/classpro.webp?v=2", type: "long" as const },
+  { image: "/assets/works/rocket.webp?v=2", type: "short" as const },
+  { image: "/assets/works/Manic.webp?v=2", type: "short" as const },
+  { image: "/assets/works/prism.webp?v=2", type: "short" as const },
+  { image: "/assets/works/ami.webp?v=2", type: "long" as const },
+  { image: "/assets/works/dreamnity.webp?v=2", type: "short" as const },
 ] as const;

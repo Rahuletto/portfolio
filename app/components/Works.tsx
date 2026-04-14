@@ -43,6 +43,7 @@ function Works({ children }: ChildrenProps) {
               dir={isMobile() ? "center" : autoDir}
               type={card.type}
               delay={autoDelay}
+              index={index}
             />
           );
         })}

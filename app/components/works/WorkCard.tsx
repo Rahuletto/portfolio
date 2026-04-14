@@ -25,17 +25,18 @@ function WorkCard({
   delay = 0,
   type = "short",
   dir = "center",
-  className = ""
+  className = "",
+  index
 }: WorkCardProps) {
   const direction = WORK_CARD_DIR_MAP[dir as keyof typeof WORK_CARD_DIR_MAP] || 0;
   const typeClasses = WORK_CARD_TYPE_MAP[type as keyof typeof WORK_CARD_TYPE_MAP] || WORK_CARD_TYPE_MAP.short;
   const originClass = WORK_CARD_ORIGIN_MAP[dir as keyof typeof WORK_CARD_ORIGIN_MAP] || WORK_CARD_ORIGIN_MAP.center;
 
-  const custom = { direction, delay };
+  const isPriority = index < 3;
 
   return (
     <motion.div
-      custom={custom}
+      custom={{ direction, delay }}
       variants={cardVariants}
       initial="hidden"
       whileInView="visible"
@@ -44,10 +45,12 @@ function WorkCard({
     >
       <img
         src={image}
-        alt="Work Showcase"
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-        decoding="async"
-        loading="lazy"
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none transform translate-z-0"
+        style={{ imageRendering: "auto" }}
+        decoding={isPriority ? "sync" : "async"}
+        loading={isPriority ? "eager" : "lazy"}
+        {...(isPriority ? { fetchpriority: "high" } : {})}
       />
     </motion.div>
   );
