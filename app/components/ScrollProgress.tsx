@@ -1,77 +1,103 @@
-import { useLayoutEffect, useState, useMemo, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 const ScrollProgress = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [tickCount, setTickCount] = useState(40);
-  const [isInverted, setIsInverted] = useState(false);
-
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const invertElements = useRef<NodeListOf<Element> | null>(null);
+  const stateRef = useRef({
+    progress: 0,
+    isInverted: false,
+    width: 0,
+    dpr: 1
+  });
 
   useLayoutEffect(() => {
-    const calculateTicks = () => {
-      const width = window.innerWidth;
-      const count = Math.floor(width / 8);
-      setTickCount(Math.max(20, Math.min(count, 300)));
-      invertElements.current = document.querySelectorAll('[data-color="invert"]');
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const updateInversion = () => {
+      if (!invertElements.current) {
+        invertElements.current = document.querySelectorAll('[data-color="invert"]');
+      }
+      let found = false;
+      const sampleY = 16;
+      invertElements.current.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (sampleY >= rect.top && sampleY <= rect.bottom) found = true;
+      });
+      stateRef.current.isInverted = found;
     };
 
-    calculateTicks();
-    window.addEventListener("resize", calculateTicks);
+    const draw = () => {
+      const { progress, isInverted, width, dpr } = stateRef.current;
+      const height = 32 * dpr;
+      
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      const tickCount = Math.floor((width / 8));
+      const gap = (width * dpr) / tickCount;
+      const tickW = 2 * dpr;
+      const tickH = 12 * dpr;
+      const y = (height - tickH) / 2;
+
+      for (let i = 0; i < tickCount; i++) {
+        const tickPos = (i / tickCount) * 100;
+        const isCompleted = tickPos <= progress;
+        const x = i * gap + (gap / 2);
+
+        ctx.beginPath();
+        ctx.roundRect(x - tickW / 2, y, tickW, tickH, tickW / 2);
+        
+        if (isInverted) {
+          ctx.fillStyle = isCompleted ? "rgba(0, 0, 0, 1)" : "rgba(0, 0, 0, 0.3)";
+        } else {
+          ctx.fillStyle = isCompleted ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0.3)";
+        }
+        ctx.fill();
+      }
+    };
 
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      setScrollProgress(scrolled);
+      stateRef.current.progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      updateInversion();
+      draw();
+    };
 
-      if (!invertElements.current) {
-        invertElements.current = document.querySelectorAll('[data-color="invert"]');
-      }
-
-      let found = false;
-      const sampleY = 16;
-
-      invertElements.current.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        if (sampleY >= rect.top && sampleY <= rect.bottom) {
-          found = true;
-        }
-      });
-      setIsInverted(found);
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const dpr = window.devicePixelRatio || 1;
+      const height = 32;
+      
+      stateRef.current.width = width;
+      stateRef.current.dpr = dpr;
+      
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      
+      invertElements.current = document.querySelectorAll('[data-color="invert"]');
+      handleScroll();
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    window.addEventListener("resize", handleResize);
+    handleResize();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", calculateTicks);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  const ticks = useMemo(() =>
-    Array.from(
-      { length: tickCount },
-      (_, i) => (i / tickCount) * 100,
-    ), [tickCount]
-  );
-
   return (
-    <div className="fixed top-0 left-0 right-0 h-8 z-45">
-      <div className="absolute inset-0 flex items-center justify-between px-4">
-        {ticks.map((tickPos, i) => {
-          const isCompleted = tickPos <= scrollProgress;
-          return (
-            <div
-              key={i}
-              className={`h-3 rounded-full w-0.5 transition-all duration-300 ${isInverted
-                ? (isCompleted ? "opacity-100 bg-dark" : "opacity-30 bg-dark")
-                : (isCompleted ? "opacity-100 bg-white" : "opacity-30 bg-white")
-                }`}
-            />
-          );
-        })}
-      </div>
+    <div ref={containerRef} className="fixed top-0 left-0 right-0 h-8 z-45 pointer-events-none">
+      <canvas ref={canvasRef} className="block w-full h-full" />
     </div>
   );
 };

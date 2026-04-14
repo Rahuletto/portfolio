@@ -27,11 +27,12 @@ type Props = {
 const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const barRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [isAtTop, setIsAtTop] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const current = useRef(0);
   const target = useRef(0);
   const rafId = useRef(0);
+  const isAtTopRef = useRef(true);
 
   const RAINBOW_COLORS = useMemo(() => Object.keys(RAINBOW_MAP) as ThemeColor[], []);
   const N = RAINBOW_COLORS.length;
@@ -47,7 +48,6 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
     }
 
     const vw = window.innerWidth;
-
     const baseW = vw < 768 ? 32 : 52;
     const targetW = vw < 768 ? 40 : 64;
     const basePhase = clamp(p / 0.4, 0, 1);
@@ -68,10 +68,8 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
     barRefs.current.forEach((el, i) => {
       if (!el) return;
       const side = i - (N - 1) / 2;
-
       const baseX = side * centerDist;
       const targetX = side * maxSpread;
-
       const currentX = lerp(baseX, targetX, easedExpand);
       const currentScaleX = 1 - 0.95 * easedExpand;
 
@@ -79,7 +77,6 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
       el.style.transform = `translateX(-50%) translateX(${currentX}px) scaleX(${currentScaleX})`;
       el.style.opacity = `${currentOpacity}`;
     });
-
   }, [N]);
 
   useLayoutEffect(() => {
@@ -89,12 +86,23 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
 
       const rect = el.getBoundingClientRect();
       const scrollable = el.scrollHeight - window.innerHeight;
-
       const progress = clamp(-rect.top / Math.max(scrollable, 1), 0, 0.9);
       target.current = progress;
 
       const atTop = window.scrollY < 50;
-      setIsAtTop(atTop);
+      if (atTop !== isAtTopRef.current) {
+        isAtTopRef.current = atTop;
+        barRefs.current.forEach((bar) => {
+          if (!bar) return;
+          if (atTop) {
+            bar.classList.add("cursor-pointer", "hover:brightness-110", "pointer-events-auto");
+            bar.classList.remove("pointer-events-none");
+          } else {
+            bar.classList.remove("cursor-pointer", "hover:brightness-110", "pointer-events-auto");
+            bar.classList.add("pointer-events-none");
+          }
+        });
+      }
 
       cancelAnimationFrame(rafId.current);
       rafId.current = requestAnimationFrame(tick);
@@ -115,51 +123,50 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
     <div
       ref={sectionRef}
       className={`relative w-full ${className}`}
-      style={{ height: "290vh" }}
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden z-10">
-        <div className="absolute inset-0 h-full w-full">
-          {RAINBOW_COLORS.map((color, i) => (
-            <motion.div
-              key={color}
-              ref={(el: HTMLDivElement | null) => {
-                barRefs.current[i] = el;
-              }}
-              onClick={() => {
-                if (isAtTop) {
-                  onColorClick?.(color);
-                }
-              }}
-              initial={{ height: 0 }}
-              animate={{ height: "100vh" }}
-              transition={{
-                delay: i * 0.1 + 3.6,
-                duration: 1.4,
-                ease: [0.19, 1, 0.22, 1],
-              }}
-              className={`absolute top-0 origin-top transition-opacity duration-300 ${isAtTop ? "cursor-pointer hover:brightness-110 pointer-events-auto" : "pointer-events-none"}`}
-              style={{
-                left: "50%",
-                width: "52px",
-                backgroundColor: RAINBOW_MAP[color],
-                willChange: "transform, opacity, width",
-              }}
-            />
-          ))}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="sticky top-0 h-screen w-full overflow-hidden">
+          <div className="absolute inset-0 h-full w-full">
+            {RAINBOW_COLORS.map((color, i) => (
+              <motion.div
+                key={color}
+                ref={(el: HTMLDivElement | null) => {
+                  barRefs.current[i] = el;
+                }}
+                onClick={() => {
+                  if (isAtTopRef.current) {
+                    onColorClick?.(color);
+                  }
+                }}
+                initial={{ height: 0 }}
+                animate={{ height: "100vh" }}
+                transition={{
+                  delay: i * 0.1 + 3.6,
+                  duration: 1.4,
+                  ease: [0.19, 1, 0.22, 1],
+                }}
+                className={`absolute top-0 origin-top transition-opacity duration-300 ${isAtTopRef.current ? "cursor-pointer hover:brightness-110 pointer-events-auto" : "pointer-events-none"}`}
+                style={{
+                  left: "50%",
+                  width: "52px",
+                  backgroundColor: RAINBOW_MAP[color],
+                  willChange: "transform, opacity, width",
+                }}
+              />
+            ))}
+          </div>
         </div>
-
-
       </div>
 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 3.6, duration: 1 }}
-        className="absolute top-0 left-0 w-full z-20 pt-48 pointer-events-none"
+        className="relative w-full z-20 pt-48 pointer-events-none min-h-[300vh]"
       >
         <Works>{children}</Works>
 
-        <div className="absolute inset-0 top-64 pointer-events-none overflow-hidden z-[11]">
+        <div className="absolute inset-0 top-64 max-h-[190vh] pointer-events-none overflow-hidden z-[11]">
           {[...Array(6)].map((_, i) => (
             <motion.div
               key={i}

@@ -1,63 +1,29 @@
-import { type ReactNode, useState, useLayoutEffect } from "react";
-import { motion, type Variants } from "motion/react";
+import { type ReactNode, memo } from "react";
+import { motion } from "motion/react";
+import WorkCard from "./works/WorkCard";
+import { useViewport } from "@/context/ViewportContext";
 
 type Props = {
   children?: ReactNode;
 };
 
-const transitionEvent = {
-  duration: 1.4,
-  ease: [0.16, 1, 0.3, 1]
-};
+const CARDS = [
+  { image: "/assets/works/unix.svg",      type: "short" },
+  { image: "/assets/works/mandy.svg",     type: "long"  },
+  { image: "/assets/works/simplydjs.svg", type: "long"  },
+  { image: "/assets/works/classpro.svg",  type: "long"  },
+  { image: "/assets/works/rocket.svg",    type: "short" },
+  { image: "/assets/works/Manic.svg",     type: "short" },
+  { image: "/assets/works/prism.svg",     type: "short" },
+  { image: "/assets/works/ami.svg",       type: "long"  },
+  { image: "/assets/works/dreamnity.svg", type: "short" },
+] as const;
 
-const cardVariants: Variants = {
-  hidden: (custom: { direction: number; delay: number }) => ({
-    opacity: 0,
-    y: 100,
-    x: custom.direction,
-    scale: 1.1,
-    transition: transitionEvent
-  }),
-  visible: (custom: { direction: number; delay: number }) => ({
-    opacity: 1,
-    y: 0,
-    x: 0,
-    scale: 1,
-    transition: { ...transitionEvent, delay: custom.delay }
-  })
-};
+const HEADER_TRANSITION = { duration: 1.2, ease: [0.16, 1, 0.3, 1] } as const;
+const LINE_TRANSITION   = { duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 } as const;
 
-function WorkCard({
-  className,
-  direction,
-  delay,
-  isMobile
-}: {
-  className: string;
-  direction: number;
-  delay: number;
-  isMobile: boolean;
-}) {
-  return (
-    <motion.div
-      custom={{ direction: isMobile ? 0 : direction, delay }}
-      variants={cardVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.2, margin: "10000px 0px -5% 0px" }}
-      className={`bg-light rounded-[32px] [corner-shape:superellipse(1.2)] ${className}`}
-    />
-  );
-}
-
-export default function Works({ children }: Props) {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
-
-  useLayoutEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 1024);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+function Works({ children }: Props) {
+  const { isMobile } = useViewport();
 
   return (
     <div className="flex flex-col items-center relative gap-12 mt-92 z-20 max-w-7xl w-full px-8 mx-auto pb-48 pointer-events-none">
@@ -65,7 +31,7 @@ export default function Works({ children }: Props) {
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        transition={HEADER_TRANSITION}
         className="flex justify-start items-center gap-8 w-full pointer-events-auto"
       >
         <h2 className="text-5xl leading-none text-left font-medium text-light relative z-10">
@@ -75,16 +41,27 @@ export default function Works({ children }: Props) {
           initial={{ scaleX: 0, opacity: 0 }}
           whileInView={{ scaleX: 1, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          transition={LINE_TRANSITION}
           className="w-full h-0.5 mt-2 rounded-full bg-light origin-left"
         />
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full auto-rows-[220px] pointer-events-auto">
-        <WorkCard isMobile={isMobile} direction={-100} delay={0} className="row-span-2 col-span-1 origin-bottom-left" />
-        <WorkCard isMobile={isMobile} direction={0} delay={0.15} className="row-span-1 col-span-1 origin-bottom" />
-        <WorkCard isMobile={isMobile} direction={100} delay={0.3} className="row-span-1 col-span-1 origin-bottom" />
-        <WorkCard isMobile={isMobile} direction={0} delay={0.45} className="row-span-2 col-span-1 origin-bottom-right" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full pointer-events-auto mx-auto">
+        {CARDS.map((card, index) => {
+          const directions = ["left", "center", "right"] as const;
+          const autoDir = directions[index % 3];
+          const autoDelay = (index % 3) * 0.15;
+          
+          return (
+            <WorkCard
+              key={card.image}
+              image={card.image}
+              dir={isMobile() ? "center" : autoDir}
+              type={card.type}
+              delay={autoDelay}
+            />
+          );
+        })}
       </div>
 
       <div className="pointer-events-auto w-full">
@@ -93,3 +70,5 @@ export default function Works({ children }: Props) {
     </div>
   );
 }
+
+export default memo(Works);
