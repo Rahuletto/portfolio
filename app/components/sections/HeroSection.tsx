@@ -2,7 +2,7 @@ import HeroMascot from "@/components/HeroMascot";
 import { motion } from "motion/react";
 
 export default function HeroSection() {
-  const baseDelay = 0.7;
+  const baseDelay = 3.4;
 
   return (
     <section

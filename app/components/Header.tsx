@@ -41,7 +41,7 @@ const Header = () => {
     <motion.nav
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 3, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+      transition={{ delay: 4.0, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
       className="fixed top-0 right-4 md:right-12 lg:right-24 z-50"
     >
       <div

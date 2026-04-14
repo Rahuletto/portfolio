@@ -34,7 +34,7 @@ export default function HeroMascot() {
           nextWaveAt = now + randomDelay();
         } else if (!isWaving && now >= nextWaveAt) {
           imgRef.current.src = WAVE;
-          imgRef.current.style.transform = "scale(1)";
+          imgRef.current.style.transform = "scale(0.98)";
           imgRef.current.style.top = "0px";
           isWaving = true;
           waveEndAt = now + WAVE_DURATION;
@@ -54,7 +54,7 @@ export default function HeroMascot() {
         isHoveredRef.current = true;
         if (imgRef.current) {
           imgRef.current.src = SURPRISED;
-          imgRef.current.style.transform = "scale(1)";
+          imgRef.current.style.transform = "scale(0.98)";
           imgRef.current.style.top = "0px";
         }
       }}

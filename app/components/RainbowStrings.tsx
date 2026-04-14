@@ -133,7 +133,7 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
               initial={{ height: 0 }}
               animate={{ height: "100vh" }}
               transition={{
-                delay: i * 0.1 + 0.4,
+                delay: i * 0.1 + 3.6,
                 duration: 1.4,
                 ease: [0.19, 1, 0.22, 1],
               }}
@@ -154,7 +154,7 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
+        transition={{ delay: 3.6, duration: 1 }}
         className="absolute top-0 left-0 w-full z-20 pt-48 pointer-events-none"
       >
         <Works>{children}</Works>
@@ -166,7 +166,7 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.8 }}
               transition={{
-                delay: 2 + i * 0.1,
+                delay: 4.6 + i * 0.1,
                 duration: 1.2,
                 ease: [0.19, 1, 0.22, 1],
               }}
