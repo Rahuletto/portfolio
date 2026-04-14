@@ -82,7 +82,10 @@ const Marquee = () => {
     ));
 
   return (
-    <div className="absolu w-full overflow-hidden border-y-4 border-dark bg-light text-dark select-none">
+    <div 
+      className="w-full overflow-hidden border-y-4 border-dark bg-light text-dark select-none animate-slide-in-bottom"
+      style={{ animationDelay: "1800ms" }}
+    >
       <div className="py-5 overflow-hidden">
         <div
           ref={trackRef}

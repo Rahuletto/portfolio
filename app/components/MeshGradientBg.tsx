@@ -5,7 +5,7 @@ const MeshGradientBg = () => {
   const { currentColors, seed } = useMeshTheme();
   
   return (
-    <div className="fixed inset-0 -z-10 bg-dark">
+    <div className="fixed inset-0 -z-10 bg-dark animate-fade-in">
       <MeshGradient
         key={`${seed}-${currentColors.join("-")}`}
         className="w-full h-full"

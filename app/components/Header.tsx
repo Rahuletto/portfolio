@@ -58,7 +58,7 @@ const Header = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: [0.19, 1, 0.22, 1] }}
+                transition={{ duration: 0.5, delay: 2.2, ease: [0.19, 1, 0.22, 1] }}
                 className="flex h-14 w-16 md:w-76 items-center justify-center md:justify-between px-4 md:px-6"
               >
                 <span className="hidden md:block text-xl leading-none font-medium">

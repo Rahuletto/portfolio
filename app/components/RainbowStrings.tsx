@@ -129,20 +129,48 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
                   onColorClick?.(color);
                 }
               }}
-              className={`absolute top-0 h-full origin-center transition-opacity duration-300 ${isAtTop ? "cursor-pointer hover:brightness-110 pointer-events-auto" : "pointer-events-none"}`}
+              className={`absolute top-0 origin-top animate-grow-height transition-opacity duration-300 ${isAtTop ? "cursor-pointer hover:brightness-110 pointer-events-auto" : "pointer-events-none"}`}
               style={{
                 left: "50%",
                 width: "52px",
                 backgroundColor: RAINBOW_MAP[color],
                 willChange: "transform, opacity, width",
+                animationDelay: `${i * 120 + 2000}ms`,
               }}
             />
           ))}
         </div>
+
+
       </div>
 
       <div className="absolute top-0 left-0 w-full z-20 pt-48 pointer-events-none">
+
         <Works>{children}</Works>
+
+        <div className="absolute inset-0 top-64 pointer-events-none overflow-hidden z-[11]">
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute inset-0"
+              style={{
+                backdropFilter: `blur(${(i + 1) * 6}px)`,
+                WebkitBackdropFilter: `blur(${(i + 1) * 6}px)`,
+                opacity: 0.8,
+                maskImage: `linear-gradient(to bottom, 
+                  transparent ${i * 8}%, 
+                  black ${i * 8 + 10}%, 
+                  black ${100 - (i * 8 + 10)}%, 
+                  transparent ${100 - i * 8}%)`,
+                WebkitMaskImage: `linear-gradient(to bottom, 
+                  transparent ${i * 8}%, 
+                  black ${i * 8 + 10}%, 
+                  black ${100 - (i * 8 + 10)}%, 
+                  transparent ${100 - i * 8}%)`,
+              }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
