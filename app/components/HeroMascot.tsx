@@ -12,8 +12,6 @@ export default function HeroMascot() {
   const imgRef = useRef<HTMLImageElement>(null);
   const wrapperRef = useRef<HTMLSpanElement>(null);
   const isHoveredRef = useRef(false);
-  const isVisibleRef = useRef(true);
-
   useEffect(() => {
     new Image().src = WAVE;
     new Image().src = SURPRISED;
@@ -24,10 +22,6 @@ export default function HeroMascot() {
     let rafId: number;
 
     const tick = (now: number) => {
-      if (!isVisibleRef.current) {
-        rafId = requestAnimationFrame(tick);
-        return;
-      }
       if (!isHoveredRef.current && imgRef.current) {
         if (isWaving && now >= waveEndAt) {
           imgRef.current.src = IDLE;
@@ -47,7 +41,13 @@ export default function HeroMascot() {
     };
 
     const observer = new IntersectionObserver(
-      ([entry]) => { isVisibleRef.current = entry.isIntersecting; },
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          rafId = requestAnimationFrame(tick);
+        } else {
+          cancelAnimationFrame(rafId);
+        }
+      },
       { threshold: 0 }
     );
     if (wrapperRef.current) observer.observe(wrapperRef.current);
@@ -84,6 +84,7 @@ export default function HeroMascot() {
         ref={imgRef}
         src={IDLE}
         alt="Mascot"
+        fetchPriority="high"
         className="h-30 w-75 object-contain transition-transform relative duration-300"
         style={{ transform: "scale(1.02)", top: "14px" }}
       />

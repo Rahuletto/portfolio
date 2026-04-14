@@ -61,12 +61,7 @@ export const MARQUEE_ITEMS: MarqueeItem[] = [
   { type: "icon", src: ASSETS.ICONS.SPANNER },
 ];
 
-export const MARQUEE_REPEATS = 6;
-export const MARQUEE_SPEED = 1.5;
-export const MARQUEE_MAX_SPEED = 40;
 export const MARQUEE_GAP = 34;
-export const MARQUEE_SCROLL_SCALE = 0.3;
-export const MARQUEE_LERP = 0.03;
 export const MARQUEE_STRETCH = "200%";
 export const WORK_CARD_DIR_MAP = {
   left: -100,

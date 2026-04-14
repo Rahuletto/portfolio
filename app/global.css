@@ -236,3 +236,4 @@ code {
 .animate-curtain-down {
     animation: slide-curtain-down 1.2s cubic-bezier(0.19, 1, 0.22, 1) both;
 }
+

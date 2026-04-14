@@ -18,10 +18,38 @@ const RocketBlast = () => {
 
   useEffect(() => {
     if (frames.length === 0) return;
-    const interval = setInterval(() => {
-      setCurrentFrame((prev) => (prev + 1) % frames.length);
-    }, 1000 / FPS);
-    return () => clearInterval(interval);
+    const el = containerRef.current;
+    if (!el) return;
+
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+    let isVisible = false;
+
+    const start = () => {
+      if (intervalId) return;
+      intervalId = setInterval(() => {
+        setCurrentFrame((prev) => (prev + 1) % frames.length);
+      }, 1000 / FPS);
+    };
+
+    const stop = () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) start();
+      else stop();
+    });
+
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+      stop();
+    };
   }, [frames.length]);
 
   if (frames.length === 0) {
