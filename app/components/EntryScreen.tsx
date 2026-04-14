@@ -3,13 +3,14 @@ import { motion, useMotionValue, useTransform, animate, AnimatePresence } from "
 import { MeshGradient } from "@mesh-gradient/react";
 import { useMeshTheme } from "@/context/MeshThemeContext";
 import { useLenis } from "lenis/react";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 export default function EntryScreen() {
   const { currentColors, seed } = useMeshTheme();
 
   const [isVisible, setIsVisible] = useState(true);
 
-  const scaleOuter = useMotionValue(0.2);
+  const scaleOuter = useMotionValue(0.3);
 
   const clipPathSize = useTransform(scaleOuter, (s) => {
     const halfH = 40 * s;
@@ -18,24 +19,22 @@ export default function EntryScreen() {
     return `inset(calc(50% - ${halfH}px) calc(50% - ${halfW}px) calc(50% - ${halfH}px) calc(50% - ${halfW}px) round ${r}px)`;
   });
 
-  const mascotOpacity = useTransform(scaleOuter, [0.7, 1.5], [1, 0]);
+  const mascotOpacity = useTransform(scaleOuter, [1.2, 1.9], [1, 0]);
 
   const lenis = useLenis();
+
+  useScrollLock(isVisible);
 
   useEffect(() => {
     if (isVisible) {
       if (lenis) lenis.stop();
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
     } else {
       if (lenis) lenis.start();
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
     }
   }, [isVisible, lenis]);
 
   useEffect(() => {
-    animate(scaleOuter, 0.7, { duration: 1.8, ease: [0.76, 0, 0.24, 1] });
+    animate(scaleOuter, 0.9, { duration: 1.8, ease: [0.76, 0, 0.24, 1] });
 
     const expandTimeout = setTimeout(() => {
       animate(scaleOuter, 25, {

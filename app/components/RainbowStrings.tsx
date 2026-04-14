@@ -1,30 +1,12 @@
 import Works from "./Works";
-import { useLayoutEffect, useRef, useCallback, useState, useMemo, memo, type ReactNode } from "react";
-import { type ThemeColor } from "@/config/themes";
+import { useLayoutEffect, useRef, useCallback, useMemo, memo } from "react";
+import { type ThemeColor } from "@/types/theme";
 import { motion } from "motion/react";
+import { clamp, lerp, cubicBezier } from "@/lib/math";
+import { type RainbowStringsProps } from "@/types/common";
+import { RAINBOW_MAP } from "@/lib/constants";
 
-const RAINBOW_MAP: Record<ThemeColor, string> = {
-  purple: "#a860ff",
-  blurple: "#575fff",
-  blue: "#57beff",
-  green: "#84ff57",
-  yellow: "#ffd557",
-  orange: "#ff7057",
-  red: "#ff5757",
-};
-
-const clamp = (v: number, min: number, max: number) =>
-  Math.min(max, Math.max(min, v));
-
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-
-type Props = {
-  children?: ReactNode;
-  className?: string;
-  onColorClick?: (color: ThemeColor) => void;
-};
-
-const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
+const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStringsProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const barRefs = useRef<(HTMLDivElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -56,9 +38,7 @@ const RainbowStrings = ({ children, className = "", onColorClick }: Props) => {
     const centerDist = currentW + currentGap;
 
     const expandPhase = clamp((p - 0.35) / 0.55, 0, 1);
-    const easedExpand = expandPhase < 0.5
-      ? 4 * expandPhase * expandPhase * expandPhase
-      : 1 - Math.pow(-2 * expandPhase + 2, 3) / 2;
+    const easedExpand = cubicBezier(expandPhase);
 
     const fadePhase = clamp((p - 0.7) / 0.2, 0, 1);
     const currentOpacity = 1 - fadePhase;

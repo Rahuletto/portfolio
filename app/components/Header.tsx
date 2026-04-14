@@ -1,41 +1,18 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-
-const navItems = [
-  {
-    id: "developer",
-    label: "Works",
-    icon: "/assets/icons/spanner.svg",
-    alt: "Works",
-  },
-  {
-    id: "hero",
-    label: "Me",
-    icon: "/assets/icons/me.svg",
-    alt: "Me",
-  },
-  {
-    id: "resume",
-    label: "Download Resume",
-    icon: "/assets/icons/star.svg",
-    alt: "Download Resume",
-  },
-] as const;
-
-const handleNavClick = (id: string) => {
-  if (id === "resume") {
-    window.open(
-      "https://docs.google.com/viewer?url=https://raw.githubusercontent.com/Rahuletto/auto-resume/main/resume.pdf",
-      "_blank",
-    );
-    return;
-  }
-  const el = document.getElementById(id);
-  el?.scrollIntoView({ behavior: "smooth" });
-};
+import { ASSETS, NAV_ITEMS } from "@/lib/constants";
+import { scrollToId, openLink } from "@/lib/navigation";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+
+  const handleNavClick = (id: string) => {
+    if (id === "resume") {
+      openLink("https://docs.google.com/viewer?url=https://raw.githubusercontent.com/Rahuletto/auto-resume/main/resume.pdf");
+      return;
+    }
+    scrollToId(id);
+  };
 
   return (
     <motion.nav
@@ -84,7 +61,7 @@ const Header = () => {
                 transition={{ duration: 0.2, ease: [0.19, 1, 0.22, 1] }}
                 className="w-76"
               >
-                {navItems.map((item, index) => (
+                {NAV_ITEMS.map((item, index) => (
                   <motion.button
                     key={item.id}
                     type="button"
@@ -96,7 +73,7 @@ const Header = () => {
                       duration: 0.35,
                       ease: [0.19, 1, 0.22, 1],
                     }}
-                    className={`flex w-full items-center cursor-pointer justify-between px-6 py-3.5 text-left transition-colors duration-200 focus:outline-none ${index !== navItems.length - 1
+                    className={`flex w-full items-center cursor-pointer justify-between px-6 py-3.5 text-left transition-colors duration-200 focus:outline-none ${index !== NAV_ITEMS.length - 1
                       ? "border-b-2 border-[#d8d4ce]"
                       : ""
                       }`}

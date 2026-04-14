@@ -1,20 +1,19 @@
 import { Fragment, useEffect, useRef, memo } from "react";
-
-const items = [
-  { type: "text" as const, content: "DESIGNER" },
-  { type: "icon" as const, src: "/assets/icons/me.svg" },
-  { type: "text" as const, content: "DEVELOPER" },
-  { type: "icon" as const, src: "/assets/icons/spanner.svg" },
-];
-
-const REPEATS = 6;
+import { 
+  MARQUEE_ITEMS, 
+  MARQUEE_REPEATS, 
+  MARQUEE_SPEED, 
+  MARQUEE_GAP,
+  MARQUEE_SCROLL_SCALE,
+  MARQUEE_LERP,
+  MARQUEE_STRETCH
+} from "@/lib/constants";
 
 const Marquee = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const setRef = useRef<HTMLDivElement>(null);
   const xRef = useRef(0);
-  const baseSpeed = 1.5;
-  const speedRef = useRef(baseSpeed);
+  const speedRef = useRef(MARQUEE_SPEED);
   const lastScrollY = useRef(0);
   const rafRef = useRef<number>(0);
 
@@ -23,18 +22,17 @@ const Marquee = () => {
     const setEl = setRef.current;
     if (!track || !setEl) return;
 
-    const gap = 24;
-    const setWidth = setEl.offsetWidth + gap;
+    const setWidth = setEl.offsetWidth + MARQUEE_GAP;
 
     const onScroll = () => {
       const currentY = window.scrollY;
       const delta = currentY - lastScrollY.current;
       lastScrollY.current = currentY;
-      speedRef.current = baseSpeed + delta * 0.3;
+      speedRef.current = MARQUEE_SPEED + delta * MARQUEE_SCROLL_SCALE;
     };
 
     const animate = () => {
-      speedRef.current += (baseSpeed - speedRef.current) * 0.03;
+      speedRef.current += (MARQUEE_SPEED - speedRef.current) * MARQUEE_LERP;
       xRef.current -= speedRef.current;
 
       if (xRef.current <= -setWidth) {
@@ -58,14 +56,14 @@ const Marquee = () => {
   }, []);
 
   const renderSet = () =>
-    Array.from({ length: REPEATS }, (_, r) => (
+    Array.from({ length: MARQUEE_REPEATS }, (_, r) => (
       <Fragment key={r}>
-        {items.map((item, i) =>
+        {MARQUEE_ITEMS.map((item, i) =>
           item.type === "text" ? (
             <span
               key={i}
               className="bold text-3xl md:text-[64px] leading-none whitespace-nowrap"
-              style={{ fontStretch: "200%" }}
+              style={{ fontStretch: MARQUEE_STRETCH }}
             >
               {item.content}
             </span>
@@ -74,7 +72,8 @@ const Marquee = () => {
               key={i}
               src={item.src}
               alt=""
-              className="h-8 w-8 md:h-14 md:w-14 pt-1.5 shrink-0 mx-3 md:mx-6"
+              className="h-8 w-8 md:h-14 md:w-14 pt-1.5 shrink-0"
+              style={{ margin: `0 ${MARQUEE_GAP / 2}px` }}
             />
           ),
         )}
@@ -82,18 +81,26 @@ const Marquee = () => {
     ));
 
   return (
-    <div
-      className="w-full overflow-hidden border-y-4 border-dark bg-light text-dark select-none"
-    >
+    <div className="w-full overflow-hidden border-y-4 border-dark bg-light text-dark select-none">
       <div className="py-5 overflow-hidden">
         <div
           ref={trackRef}
-          className="flex items-center gap-6 w-max will-change-transform"
+          className="flex items-center w-max will-change-transform"
+          style={{ gap: MARQUEE_GAP }}
         >
-          <div ref={setRef} className="flex items-center gap-6 shrink-0">
+          <div 
+            ref={setRef} 
+            className="flex items-center shrink-0"
+            style={{ gap: MARQUEE_GAP }}
+          >
             {renderSet()}
           </div>
-          <div className="flex items-center gap-6 shrink-0">{renderSet()}</div>
+          <div 
+            className="flex items-center shrink-0"
+            style={{ gap: MARQUEE_GAP }}
+          >
+            {renderSet()}
+          </div>
         </div>
       </div>
     </div>

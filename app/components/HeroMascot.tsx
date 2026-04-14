@@ -1,15 +1,12 @@
 import { useEffect, useRef } from "react";
 
-const IDLE = "/assets/mascots/hero/idle.svg";
-const WAVE = "/assets/mascots/hero/wave.svg";
-const SURPRISED = "/assets/mascots/hero/surprised.svg";
+import { ASSETS, TIMES } from "@/lib/constants";
+import { randomRange } from "@/lib/math";
 
-const WAVE_MIN_DELAY = 4000;
-const WAVE_MAX_DELAY = 9000;
-const WAVE_DURATION = 1600;
+const { IDLE, WAVE, SURPRISED } = ASSETS.MASCOTS.HERO;
+const { WAVE_MIN_DELAY, WAVE_MAX_DELAY, WAVE_DURATION } = TIMES;
 
-const randomDelay = () =>
-  WAVE_MIN_DELAY + Math.random() * (WAVE_MAX_DELAY - WAVE_MIN_DELAY);
+const getRandomDelay = () => randomRange(WAVE_MIN_DELAY, WAVE_MAX_DELAY);
 
 export default function HeroMascot() {
   const imgRef = useRef<HTMLImageElement>(null);
@@ -19,7 +16,7 @@ export default function HeroMascot() {
     new Image().src = WAVE;
     new Image().src = SURPRISED;
 
-    let nextWaveAt = performance.now() + randomDelay();
+    let nextWaveAt = performance.now() + getRandomDelay();
     let waveEndAt = 0;
     let isWaving = false;
     let rafId: number;
@@ -31,7 +28,7 @@ export default function HeroMascot() {
           imgRef.current.style.transform = "scale(1.02)";
           imgRef.current.style.top = "14px";
           isWaving = false;
-          nextWaveAt = now + randomDelay();
+          nextWaveAt = now + getRandomDelay();
         } else if (!isWaving && now >= nextWaveAt) {
           imgRef.current.src = WAVE;
           imgRef.current.style.transform = "scale(0.98)";

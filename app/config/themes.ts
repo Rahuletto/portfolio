@@ -1,5 +1,5 @@
 export const PALETTES = {
-  purple: ["#5D3FD3", "#A389D4", "#C5B0E3", "#D9B3FF"],
+  purple: ["#D9B3FF", "#A389D4", "#C5B0E3", "#5D3FD3"],
   blurple: ["#4F46E5", "#6366F1", "#818CF8", "#A5B4FC"],
   blue: ["#1D4ED8", "#3B82F6", "#60A5FA", "#93C5FD"],
   green: ["#0b953e", "#12ba50", "#28c762", "#46c876"],
@@ -7,5 +7,3 @@ export const PALETTES = {
   orange: ["#EA580C", "#f49a51", "#c14807", "#efa177"],
   red: ["#B91C1C", "#EF4444", "#F87171", "#FCA5A5"],
 } as const;
-
-export type ThemeColor = keyof typeof PALETTES;

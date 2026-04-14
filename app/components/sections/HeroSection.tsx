@@ -1,5 +1,6 @@
 import HeroMascot from "@/components/HeroMascot";
 import { motion } from "motion/react";
+import { MotionText } from "@/components/ui/MotionText";
 
 export default function HeroSection() {
   const baseDelay = 3.4;
@@ -23,43 +24,18 @@ export default function HeroSection() {
           Marban is a full-stack developer and a UI designer based in India
         </motion.p>
       </div>
-      <h1 className="text-[9vw] md:text-7xl lg:text-[96px] font-medium leading-[1.3] md:leading-32 flex flex-col items-start">
-        <div className="flex flex-wrap">
-          {["Being", "creative", "is"].map((word, i) => (
-            <div key={word} className="overflow-hidden mr-[0.3em]">
-              <motion.span
-                initial={{ y: "110%", opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{
-                  delay: baseDelay + 0.2 + i * 0.1,
-                  duration: 1,
-                  ease: [0.19, 1, 0.22, 1],
-                }}
-                className="inline-block"
-              >
-                {word}
-              </motion.span>
-            </div>
-          ))}
-        </div>
+      <h1 className="text-[9vw] md:text-7xl lg:text-[96px] font-medium leading-[1.3] md:leading-32 flex flex-col items-start translate-y-[-0.1em]">
+        <MotionText
+          text="Being creative is"
+          delay={baseDelay + 0.2}
+        />
 
         <div className="flex flex-wrap items-center">
-          {["what"].map((word, i) => (
-            <div key={word} className="overflow-hidden mr-[0.3em] relative">
-              <motion.span
-                initial={{ y: "110%", opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{
-                  delay: baseDelay + 0.5 + i * 0.1,
-                  duration: 1,
-                  ease: [0.19, 1, 0.22, 1],
-                }}
-                className="inline-block"
-              >
-                {word}
-              </motion.span>
-            </div>
-          ))}
+          <MotionText
+            text="what"
+            delay={baseDelay + 0.5}
+            className="mr-[0.25em]"
+          />
           <div className="relative">
             <motion.span
               initial={{ y: "110%", opacity: 0 }}
@@ -74,38 +50,18 @@ export default function HeroSection() {
               <HeroMascot />
             </motion.span>
           </div>
-          {["makes", "us"].map((word, i) => (
-            <div key={word} className="overflow-hidden ml-[0.3em] mr-[0.3em]">
-              <motion.span
-                initial={{ y: "110%", opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{
-                  delay: baseDelay + 0.7 + i * 0.1,
-                  duration: 1,
-                  ease: [0.19, 1, 0.22, 1],
-                }}
-                className="inline-block"
-              >
-                {word}
-              </motion.span>
-            </div>
-          ))}
+          <MotionText
+            text={["makes", "us"]}
+            delay={baseDelay + 0.7}
+            className="ml-[0.25em]"
+          />
         </div>
 
-        <div className="overflow-hidden">
-          <motion.span
-            initial={{ y: "110%", opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              delay: baseDelay + 0.9,
-              duration: 1,
-              ease: [0.19, 1, 0.22, 1],
-            }}
-            className="inline-block align-middle relative md:-top-4"
-          >
-            human.
-          </motion.span>
-        </div>
+        <MotionText
+          text="human."
+          delay={baseDelay + 0.9}
+          wordClassName="align-middle relative md:-top-4"
+        />
       </h1>
     </section>
   );

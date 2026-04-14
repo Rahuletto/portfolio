@@ -1,5 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 
+import { checkYOverlap, getScrollProgress } from "@/lib/dom";
+
 const ScrollProgress = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,21 +24,15 @@ const ScrollProgress = () => {
       if (!invertElements.current) {
         invertElements.current = document.querySelectorAll('[data-color="invert"]');
       }
-      let found = false;
-      const sampleY = 16;
-      invertElements.current.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        if (sampleY >= rect.top && sampleY <= rect.bottom) found = true;
-      });
-      stateRef.current.isInverted = found;
+      stateRef.current.isInverted = checkYOverlap(16, invertElements.current);
     };
 
     const draw = () => {
       const { progress, isInverted, width, dpr } = stateRef.current;
       const height = 32 * dpr;
-      
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       const tickCount = Math.floor((width / 8));
       const gap = (width * dpr) / tickCount;
       const tickW = 2 * dpr;
@@ -50,7 +46,7 @@ const ScrollProgress = () => {
 
         ctx.beginPath();
         ctx.roundRect(x - tickW / 2, y, tickW, tickH, tickW / 2);
-        
+
         if (isInverted) {
           ctx.fillStyle = isCompleted ? "rgba(0, 0, 0, 1)" : "rgba(0, 0, 0, 0.3)";
         } else {
@@ -61,9 +57,7 @@ const ScrollProgress = () => {
     };
 
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      stateRef.current.progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      stateRef.current.progress = getScrollProgress() * 100;
       updateInversion();
       draw();
     };
@@ -72,15 +66,15 @@ const ScrollProgress = () => {
       const width = window.innerWidth;
       const dpr = window.devicePixelRatio || 1;
       const height = 32;
-      
+
       stateRef.current.width = width;
       stateRef.current.dpr = dpr;
-      
+
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
-      
+
       invertElements.current = document.querySelectorAll('[data-color="invert"]');
       handleScroll();
     };
