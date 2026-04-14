@@ -80,7 +80,7 @@ export const WORK_CARD_TYPE_MAP = {
   short: "row-span-1 col-span-1 aspect-[324/236]",
 } as const;
 
-export const WORK_CARD_VIEWPORT = { once: true, amount: 0.2, margin: "200px 0px -5% 0px" } as const;
+export const WORK_CARD_VIEWPORT = { once: false, amount: 0.2, margin: "100% 0px -5% 0px" } as const;
 export const WORK_CARD_TRANSITION = { duration: 1.4, ease: [0.16, 1, 0.3, 1] } as const;
 export const WORKS_HEADER_TRANSITION = { duration: 1.2, ease: [0.16, 1, 0.3, 1] } as const;
 export const WORKS_LINE_TRANSITION = { duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 } as const;

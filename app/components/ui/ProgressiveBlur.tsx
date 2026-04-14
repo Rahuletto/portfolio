@@ -12,9 +12,11 @@ const ProgressiveBlur = ({ className = "" }: ProgressiveBlurProps) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 4.6, duration: 2 }}
-        className="absolute inset-x-0 top-0 h-full transform translate-z-0"
+        className="absolute inset-x-0 top-0 h-full transform translate-z-0 will-change-opacity backdrop-blur-2xl"
         style={{
-          background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.6) 15%, rgba(0,0,0,0.6) 85%, transparent)",
+          background: "radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.6) 35%, transparent 70%)",
+          WebkitMaskImage: "radial-gradient(ellipse at center, black 0%, black 50%, transparent 70%)",
+          maskImage: "radial-gradient(ellipse at center, black 0%, black 50%, transparent 70%)",
         }}
       />
     </div>

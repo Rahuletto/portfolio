@@ -352,7 +352,7 @@ const RainbowStrings = ({ children, className = "", onColorClick }: RainbowStrin
         className="relative w-full z-20 py-24 md:py-48 pointer-events-none !pb-64"
       >
         <Works>{children}</Works>
-        <ProgressiveBlur className="z-[11] h-full max-h-[180vh] top-72" />
+        <ProgressiveBlur className="z-[11] h-full max-h-[140vh] top-96" />
       </motion.div >
     </div>
   );
