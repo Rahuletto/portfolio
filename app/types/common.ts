@@ -1,5 +1,5 @@
-import { type ReactNode } from "react";
-import { type ThemeColor } from "./theme";
+import { type ReactNode } from 'react';
+import { type ThemeColor } from './theme';
 
 export interface ChildrenProps {
   children?: ReactNode;

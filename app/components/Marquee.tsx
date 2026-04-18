@@ -1,9 +1,5 @@
-import { useEffect, useRef, useState, memo } from "react";
-import {
-  MARQUEE_ITEMS,
-  MARQUEE_GAP,
-  MARQUEE_STRETCH,
-} from "@/lib/constants";
+import { useEffect, useRef, useState, memo } from 'react';
+import { MARQUEE_ITEMS, MARQUEE_GAP, MARQUEE_STRETCH } from '@/lib/constants';
 
 const BASE_SPEED = 1.5;
 const SCROLL_MULTIPLIER = 0.3;
@@ -13,7 +9,7 @@ const EASE_BACK = 0.03;
 const ItemSet = memo(() => (
   <>
     {MARQUEE_ITEMS.map((item, i) =>
-      item.type === "text" ? (
+      item.type === 'text' ? (
         <span
           key={i}
           className="bold text-3xl md:text-[64px] leading-none whitespace-nowrap"
@@ -29,7 +25,7 @@ const ItemSet = memo(() => (
           className="h-8 w-8 md:h-14 md:w-14 pt-1.5 shrink-0"
           style={{ margin: `0 ${MARQUEE_GAP / 2}px` }}
         />
-      ),
+      )
     )}
   </>
 ));
@@ -68,7 +64,7 @@ const Marquee = () => {
       // delta < 0 = scroll up → reverse
       speed = Math.max(
         -MAX_SPEED,
-        Math.min(MAX_SPEED, BASE_SPEED + delta * SCROLL_MULTIPLIER),
+        Math.min(MAX_SPEED, BASE_SPEED + delta * SCROLL_MULTIPLIER)
       );
     };
 
@@ -85,7 +81,7 @@ const Marquee = () => {
       rafId = requestAnimationFrame(tick);
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     let visible = true;
     const observer = new IntersectionObserver(([entry]) => {
@@ -106,7 +102,7 @@ const Marquee = () => {
     rafId = requestAnimationFrame(tick);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener('scroll', onScroll);
       cancelAnimationFrame(rafId);
       observer.disconnect();
     };
@@ -118,7 +114,7 @@ const Marquee = () => {
         <div
           ref={trackRef}
           className="flex items-center will-change-transform"
-          style={{ gap: MARQUEE_GAP, width: "max-content" }}
+          style={{ gap: MARQUEE_GAP, width: 'max-content' }}
         >
           {Array.from({ length: copies }, (_, i) => (
             <div

@@ -1,5 +1,5 @@
-import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -15,18 +15,18 @@ export default tseslint.config(
   },
   {
     rules: {
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_" },
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
       ],
-      "@typescript-eslint/no-explicit-any": "error",
-      "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-non-null-assertion": "warn",
-      "@typescript-eslint/prefer-nullish-coalescing": "warn",
-      "@typescript-eslint/strict-boolean-expressions": "off",
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'warn',
+      '@typescript-eslint/prefer-nullish-coalescing': 'warn',
+      '@typescript-eslint/strict-boolean-expressions': 'off',
     },
   },
   {
-    ignores: ["node_modules/**", ".manic/**", "_routes.generated.ts"],
+    ignores: ['node_modules/**', '.manic/**', '_routes.generated.ts'],
   }
 );

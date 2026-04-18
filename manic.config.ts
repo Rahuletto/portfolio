@@ -1,12 +1,12 @@
-import { defineConfig } from "manicjs/config";
+import { defineConfig } from 'manicjs/config';
 // import { cloudflare, vercel } from "@manicjs/providers";
-import { apiDocs } from "@manicjs/api-docs";
+import { apiDocs } from '@manicjs/api-docs';
 
 export default defineConfig({
   app: {
-    name: "Portfolio",
+    name: 'Portfolio',
   },
-  mode: "frontend",
+  mode: 'frontend',
 
   server: {
     port: 6070,

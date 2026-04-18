@@ -1,4 +1,4 @@
-import { type PALETTES } from "@/config/themes";
+import { type PALETTES } from '@/config/themes';
 
 export type ThemeColor = keyof typeof PALETTES;
 
@@ -9,9 +9,9 @@ export interface ThemeState {
   seed: number;
 }
 
-export type ThemeAction = 
-  | { type: "SET_THEME"; color: ThemeColor }
-  | { type: "INITIALIZE"; color: ThemeColor };
+export type ThemeAction =
+  | { type: 'SET_THEME'; color: ThemeColor }
+  | { type: 'INITIALIZE'; color: ThemeColor };
 
 export interface MeshThemeContextType extends ThemeState {
   setTheme: (color: ThemeColor) => void;

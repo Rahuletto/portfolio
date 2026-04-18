@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
-import { ASSETS, TIMES } from "@/lib/constants";
-import { randomRange } from "@/lib/math";
+import { useEffect, useRef } from 'react';
+import { ASSETS, TIMES } from '@/lib/constants';
+import { randomRange } from '@/lib/math';
 
 const { IDLE, WAVE, SURPRISED } = ASSETS.MASCOTS.HERO;
 const { WAVE_MIN_DELAY, WAVE_MAX_DELAY, WAVE_DURATION } = TIMES;
@@ -13,7 +13,7 @@ export default function HeroMascot() {
   const isHoveredRef = useRef(false);
   const timeoutRef = useRef<number | null>(null);
   const visibleRef = useRef(true);
-  const scheduleWaveRef = useRef<() => void>(() => { });
+  const scheduleWaveRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     new Image().src = WAVE;
@@ -33,8 +33,8 @@ export default function HeroMascot() {
       }
     };
 
-    const setIdle = () => updateStyle(IDLE, "scale(1.02) translateY(18px)");
-    const setWave = () => updateStyle(WAVE, "scale(0.98) translateY(4px)");
+    const setIdle = () => updateStyle(IDLE, 'scale(1.02) translateY(18px)');
+    const setWave = () => updateStyle(WAVE, 'scale(0.98) translateY(4px)');
 
     const scheduleWave = () => {
       clearPending();
@@ -84,7 +84,7 @@ export default function HeroMascot() {
     }
     if (imgRef.current) {
       imgRef.current.src = SURPRISED;
-      imgRef.current.style.transform = "scale(0.98) translateY(4px)";
+      imgRef.current.style.transform = 'scale(0.98) translateY(4px)';
     }
   };
 
@@ -92,7 +92,7 @@ export default function HeroMascot() {
     isHoveredRef.current = false;
     if (imgRef.current) {
       imgRef.current.src = IDLE;
-      imgRef.current.style.transform = "scale(1.02) translateY(18px)";
+      imgRef.current.style.transform = 'scale(1.02) translateY(18px)';
     }
     if (visibleRef.current) {
       scheduleWaveRef.current();
@@ -112,7 +112,7 @@ export default function HeroMascot() {
         alt="Mascot"
         fetchPriority="high"
         className="h-30 w-75 object-contain relative transition-none pointer-events-none"
-        style={{ transform: "scale(1.02) translateY(18px)" }}
+        style={{ transform: 'scale(1.02) translateY(18px)' }}
       />
     </span>
   );

@@ -1,11 +1,15 @@
-import { memo } from "react";
-import { motion } from "motion/react";
-import WorkCard from "./works/WorkCard";
-import { useViewport } from "@/context/ViewportContext";
-import { type ChildrenProps } from "@/types/common";
-import { WORK_CARDS, WORKS_HEADER_TRANSITION, WORKS_LINE_TRANSITION } from "@/lib/constants";
+import { memo } from 'react';
+import { motion } from 'motion/react';
+import WorkCard from './works/WorkCard';
+import { useViewport } from '@/context/ViewportContext';
+import { type ChildrenProps } from '@/types/common';
+import {
+  WORK_CARDS,
+  WORKS_HEADER_TRANSITION,
+  WORKS_LINE_TRANSITION,
+} from '@/lib/constants';
 
-const DIRECTIONS = ["left", "center", "right"] as const;
+const DIRECTIONS = ['left', 'center', 'right'] as const;
 
 function Works({ children }: ChildrenProps) {
   const { isMobile } = useViewport();
@@ -40,7 +44,7 @@ function Works({ children }: ChildrenProps) {
             <WorkCard
               key={card.image}
               image={card.image}
-              dir={isMobile() ? "center" : autoDir}
+              dir={isMobile() ? 'center' : autoDir}
               type={card.type}
               delay={autoDelay}
               index={index}
@@ -49,9 +53,7 @@ function Works({ children }: ChildrenProps) {
         })}
       </div>
 
-      <div className="pointer-events-auto w-full">
-        {children}
-      </div>
+      <div className="pointer-events-auto w-full">{children}</div>
     </div>
   );
 }

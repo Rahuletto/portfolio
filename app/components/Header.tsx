@@ -1,8 +1,8 @@
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { ASSETS, NAV_ITEMS } from "@/lib/constants";
-import { scrollToId, openLink } from "@/lib/navigation";
-import { useClickOutside } from "@/hooks/useClickOutside";
+import { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ASSETS, NAV_ITEMS } from '@/lib/constants';
+import { scrollToId, openLink } from '@/lib/navigation';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -13,8 +13,10 @@ const Header = () => {
   });
 
   const handleNavClick = (id: string) => {
-    if (id === "resume") {
-      openLink("https://docs.google.com/viewer?url=https://raw.githubusercontent.com/Rahuletto/auto-resume/main/resume.pdf");
+    if (id === 'resume') {
+      openLink(
+        'https://docs.google.com/viewer?url=https://raw.githubusercontent.com/Rahuletto/auto-resume/main/resume.pdf'
+      );
       return;
     }
     scrollToId(id);
@@ -82,10 +84,11 @@ const Header = () => {
                       duration: 0.35,
                       ease: [0.19, 1, 0.22, 1],
                     }}
-                    className={`flex w-full items-center cursor-pointer justify-between px-6 py-3.5 text-left transition-colors duration-200 focus:outline-none ${index !== NAV_ITEMS.length - 1
-                      ? "border-b-2 border-[#d8d4ce]"
-                      : ""
-                      }`}
+                    className={`flex w-full items-center cursor-pointer justify-between px-6 py-3.5 text-left transition-colors duration-200 focus:outline-none ${
+                      index !== NAV_ITEMS.length - 1
+                        ? 'border-b-2 border-[#d8d4ce]'
+                        : ''
+                    }`}
                   >
                     <span className="text-xl leading-none font-medium">
                       {item.label}

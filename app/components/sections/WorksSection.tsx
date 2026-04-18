@@ -1,7 +1,7 @@
-import Marquee from "@/components/Marquee";
-import RainbowStrings from "@/components/RainbowStrings";
-import { useMeshTheme } from "@/context/MeshThemeContext";
-import { motion } from "motion/react";
+import Marquee from '@/components/Marquee';
+import RainbowStrings from '@/components/RainbowStrings';
+import { useMeshTheme } from '@/context/MeshThemeContext';
+import { motion } from 'motion/react';
 
 export default function WorksSection() {
   const { setTheme } = useMeshTheme();
@@ -9,7 +9,7 @@ export default function WorksSection() {
   return (
     <motion.section
       id="developer"
-      initial={{ y: "100vh" }}
+      initial={{ y: '100vh' }}
       animate={{ y: 0 }}
       transition={{ delay: 4.2, duration: 1.4, ease: [0.19, 1, 0.22, 1] }}
       className="bg-dark min-h-screen -mb-64 w-full rounded-t-[32px] lg:rounded-t-[52px] relative z-10"

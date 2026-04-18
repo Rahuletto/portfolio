@@ -1,6 +1,6 @@
-import HeroMascot from "@/components/HeroMascot";
-import { motion } from "motion/react";
-import { MotionText } from "@/components/ui/MotionText";
+import HeroMascot from '@/components/HeroMascot';
+import { motion } from 'motion/react';
+import { MotionText } from '@/components/ui/MotionText';
 
 export default function HeroSection() {
   const baseDelay = 4.0;
@@ -12,7 +12,7 @@ export default function HeroSection() {
     >
       <div className="overflow-hidden mb-4 md:mb-6">
         <motion.p
-          initial={{ y: "110%", opacity: 0 }}
+          initial={{ y: '110%', opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{
             delay: baseDelay,
@@ -25,10 +25,7 @@ export default function HeroSection() {
         </motion.p>
       </div>
       <h1 className="text-[9vw] md:text-7xl lg:text-[96px] font-medium leading-[1.3] md:leading-32 flex flex-col items-start translate-y-[-0.1em]">
-        <MotionText
-          text="Being creative is"
-          delay={baseDelay + 0.2}
-        />
+        <MotionText text="Being creative is" delay={baseDelay + 0.2} />
 
         <div className="flex flex-wrap items-center">
           <MotionText
@@ -38,7 +35,7 @@ export default function HeroSection() {
           />
           <div className="relative">
             <motion.span
-              initial={{ y: "110%", opacity: 0 }}
+              initial={{ y: '110%', opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
                 delay: baseDelay + 0.6,
@@ -51,7 +48,7 @@ export default function HeroSection() {
             </motion.span>
           </div>
           <MotionText
-            text={["makes", "us"]}
+            text={['makes', 'us']}
             delay={baseDelay + 0.7}
             className="ml-[0.25em]"
           />

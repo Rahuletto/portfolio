@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 
 const FPS = 30;
 
@@ -10,10 +10,10 @@ const RocketBlast = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch("/assets/data/rocket-ascii.json")
-      .then((res) => res.json())
-      .then((data) => setFrames(data))
-      .catch((err) => console.error("Failed to load ASCII frames:", err));
+    fetch('/assets/data/rocket-ascii.json')
+      .then(res => res.json())
+      .then(data => setFrames(data))
+      .catch(err => console.error('Failed to load ASCII frames:', err));
   }, []);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const RocketBlast = () => {
     const start = () => {
       if (intervalId) return;
       intervalId = setInterval(() => {
-        setCurrentFrame((prev) => (prev + 1) % frames.length);
+        setCurrentFrame(prev => (prev + 1) % frames.length);
       }, 1000 / FPS);
     };
 
@@ -56,7 +56,7 @@ const RocketBlast = () => {
     return (
       <div className="fixed inset-0 bg-dark z-[-1] flex items-center justify-center">
         <div className="text-white/20 font-mono text-xs uppercase tracking-widest animate-pulse">
-            Establishing Satellite Link...
+          Establishing Satellite Link...
         </div>
       </div>
     );
@@ -71,7 +71,7 @@ const RocketBlast = () => {
         className="font-mono text-[min(0.5vw,0.8vh)] leading-[1.1] whitespace-pre text-white/40 mix-blend-screen transition-opacity duration-1000 select-none"
         style={{
           fontFamily: '"Courier New", Courier, monospace',
-          textShadow: "0 0 10px rgba(255,255,255,0.2)",
+          textShadow: '0 0 10px rgba(255,255,255,0.2)',
         }}
       >
         {frames[currentFrame]}

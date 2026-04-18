@@ -1,7 +1,10 @@
-export const checkYOverlap = (y: number, elements: NodeListOf<Element> | null): boolean => {
+export const checkYOverlap = (
+  y: number,
+  elements: NodeListOf<Element> | null
+): boolean => {
   if (!elements) return false;
   let found = false;
-  elements.forEach((el) => {
+  elements.forEach(el => {
     const rect = el.getBoundingClientRect();
     if (y >= rect.top && y <= rect.bottom) found = true;
   });

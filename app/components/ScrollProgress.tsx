@@ -1,6 +1,6 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from 'react';
 
-import { getScrollProgress } from "@/lib/dom";
+import { getScrollProgress } from '@/lib/dom';
 
 const ScrollProgress = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -9,14 +9,14 @@ const ScrollProgress = () => {
     progress: 0,
     isInverted: false,
     width: 0,
-    dpr: 1
+    dpr: 1,
   });
 
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     const draw = () => {
@@ -25,7 +25,7 @@ const ScrollProgress = () => {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const tickCount = Math.floor((width / 8));
+      const tickCount = Math.floor(width / 8);
       const gap = (width * dpr) / tickCount;
       const tickW = 2 * dpr;
       const tickH = 12 * dpr;
@@ -34,15 +34,19 @@ const ScrollProgress = () => {
       for (let i = 0; i < tickCount; i++) {
         const tickPos = (i / tickCount) * 100;
         const isCompleted = tickPos <= progress;
-        const x = i * gap + (gap / 2);
+        const x = i * gap + gap / 2;
 
         ctx.beginPath();
         ctx.roundRect(x - tickW / 2, y, tickW, tickH, tickW / 2);
 
         if (isInverted) {
-          ctx.fillStyle = isCompleted ? "rgba(0, 0, 0, 1)" : "rgba(0, 0, 0, 0.3)";
+          ctx.fillStyle = isCompleted
+            ? 'rgba(0, 0, 0, 1)'
+            : 'rgba(0, 0, 0, 0.3)';
         } else {
-          ctx.fillStyle = isCompleted ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0.3)";
+          ctx.fillStyle = isCompleted
+            ? 'rgba(255, 255, 255, 1)'
+            : 'rgba(255, 255, 255, 0.3)';
         }
         ctx.fill();
       }
@@ -62,8 +66,8 @@ const ScrollProgress = () => {
     };
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        stateRef.current.isInverted = entries.some((e) => e.isIntersecting);
+      entries => {
+        stateRef.current.isInverted = entries.some(e => e.isIntersecting);
         draw();
       },
       { rootMargin: `-16px 0px -${window.innerHeight - 17}px 0px` }
@@ -71,7 +75,9 @@ const ScrollProgress = () => {
 
     const observeElements = () => {
       observer.disconnect();
-      document.querySelectorAll('[data-color="invert"]').forEach((el) => observer.observe(el));
+      document
+        .querySelectorAll('[data-color="invert"]')
+        .forEach(el => observer.observe(el));
     };
 
     const handleResize = () => {
@@ -91,19 +97,22 @@ const ScrollProgress = () => {
       handleScroll();
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
     handleResize();
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
       observer.disconnect();
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="fixed top-0 left-0 right-0 h-8 px-6 z-45 pointer-events-none">
+    <div
+      ref={containerRef}
+      className="fixed top-0 left-0 right-0 h-8 px-6 z-45 pointer-events-none"
+    >
       <canvas ref={canvasRef} className="block w-full h-full" />
     </div>
   );

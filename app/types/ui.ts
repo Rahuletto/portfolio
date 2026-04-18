@@ -1,4 +1,4 @@
-import { type Transition } from "motion/react";
+import { type Transition } from 'motion/react';
 
 export interface MotionTextProps {
   text: string | string[];
@@ -9,6 +9,6 @@ export interface MotionTextProps {
   transition?: Transition;
 }
 
-export type MarqueeItem = 
-  | { type: "text"; content: string }
-  | { type: "icon"; src: string };
+export type MarqueeItem =
+  | { type: 'text'; content: string }
+  | { type: 'icon'; src: string };

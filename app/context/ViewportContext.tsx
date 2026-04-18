@@ -1,8 +1,16 @@
-import { createContext, useContext, useEffect, useRef, type ReactNode } from "react";
-import { type ViewportContextType } from "@/types/viewport";
-import { MOBILE_QUERY } from "@/lib/constants";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  type ReactNode,
+} from 'react';
+import { type ViewportContextType } from '@/types/viewport';
+import { MOBILE_QUERY } from '@/lib/constants';
 
-const ViewportContext = createContext<ViewportContextType | undefined>(undefined);
+const ViewportContext = createContext<ViewportContextType | undefined>(
+  undefined
+);
 
 export function ViewportProvider({ children }: { children: ReactNode }) {
   const isMobileRef = useRef(MOBILE_QUERY?.matches ?? false);
@@ -12,8 +20,8 @@ export function ViewportProvider({ children }: { children: ReactNode }) {
     const handler = (e: MediaQueryListEvent) => {
       isMobileRef.current = e.matches;
     };
-    MOBILE_QUERY.addEventListener("change", handler);
-    return () => MOBILE_QUERY?.removeEventListener("change", handler);
+    MOBILE_QUERY.addEventListener('change', handler);
+    return () => MOBILE_QUERY?.removeEventListener('change', handler);
   }, []);
 
   const value: ViewportContextType = {
@@ -29,6 +37,7 @@ export function ViewportProvider({ children }: { children: ReactNode }) {
 
 export function useViewport() {
   const ctx = useContext(ViewportContext);
-  if (!ctx) throw new Error("useViewport must be used within a ViewportProvider");
+  if (!ctx)
+    throw new Error('useViewport must be used within a ViewportProvider');
   return ctx;
 }
