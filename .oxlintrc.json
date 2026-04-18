@@ -1,0 +1,21 @@
+{
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/.manic/**",
+    "**/dist/**",
+    "**/build/**"
+  ],
+  "plugins": ["react", "react-hooks", "react-perf"],
+  "categories": {
+    "correctness": "error",
+    "perf": "error",
+    "suspicious": "error",
+    "pedantic": "error"
+  },
+  "rules": {
+    "react/jsx-no-undef": "error",
+    "react/react-in-jsx-scope": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error"
+  }
+}
