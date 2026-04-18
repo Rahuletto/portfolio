@@ -6,18 +6,21 @@
   "scripts": {
     "dev": "manic dev",
     "build": "manic build",
-    "start": "manic start"
+    "start": "manic start",
+    "lint": "manic lint",
+    "format": "manic fmt",
+    "deploy": "manic deploy"
   },
   "dependencies": {
-    "@elysiajs/static": "^1.4.7",
-    "@elysiajs/swagger": "^1.3.1",
+    "@manicjs/api-docs": "^0.2.1",
+    "@manicjs/providers": "^0.4.1",
     "@mesh-gradient/core": "^1.5.0",
     "@mesh-gradient/react": "^1.5.0",
+    "bun-plugin-tailwind": "^0.1.2",
     "clsx": "^2.1.1",
-    "elysia": "latest",
     "lenis": "^1.3.21",
     "lucide-react": "^1.8.0",
-    "manicjs": "latest",
+    "manicjs": "^0.8.2",
     "motion": "^12.38.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -26,6 +29,8 @@
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0"
+    "@types/react-dom": "^19.0.0",
+    "oxfmt": "latest",
+    "oxlint": "latest"
   }
 }
