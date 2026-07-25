@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Degular Demo';
+  src:
+    local('Degular Demo Medium'),
+    local('Degular Medium'),
+    local('Degular Demo'),
+    local('Degular'),
+    local('Degular Display');
+  font-weight: 500;
+  font-display: swap;
+}
+
+:root {
+  --sans: 'Degular Demo', 'Degular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono: 'Degular Demo', 'Degular', 'SFMono-Regular', 'SF Mono', monospace;
+  color: #f4f5f7;
+  background: #050608;
+  font-family: var(--sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: #050608; }
+body { margin: 0; min-width: 320px; font-weight: 500; }
+button, a { font: inherit; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; }
+img, canvas, svg { max-width: 100%; }
+::selection { color: #141314; background: #e05035; }
