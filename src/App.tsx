@@ -24,14 +24,10 @@ const ProjectMedia = lazy(async () => {
   const m = await import('./components/ProjectMedia.tsx')
   return { default: m.ProjectMedia }
 })
-const Manifesto = lazy(async () => {
-  const m = await import('./sections/Manifesto.tsx')
-  return { default: m.Manifesto }
-})
-const SkillsPlaceholderSection = lazy(async () => {
-  const m = await import('./sections/SkillsPlaceholderSection.tsx')
-  return { default: m.SkillsPlaceholderSection }
-})
+// const Manifesto = lazy(async () => {
+//   const m = await import('./sections/Manifesto.tsx')
+//   return { default: m.Manifesto }
+// })
 const GlobalWebGLScene = lazy(async () => {
   const module = await import('./hero/GlobalWebGLScene.tsx')
   return { default: module.GlobalWebGLScene }
@@ -75,17 +71,6 @@ function App() {
         </Suspense>
       </LazySection>
 
-      <LazySection>
-        <Suspense fallback={null}>
-          <Manifesto />
-        </Suspense>
-      </LazySection>
-
-      <LazySection>
-        <Suspense fallback={null}>
-          <SkillsPlaceholderSection />
-        </Suspense>
-      </LazySection>
     </main>
   )
 }
