@@ -15,6 +15,7 @@
 - Run build and lint only. Create no test files.
 - Support `prefers-reduced-motion`.
 - Preserve all unrelated uncommitted work.
+- Preserve every visual effect while adapting internal workload to sustained device performance.
 
 ---
 
@@ -129,7 +130,38 @@ npm run lint
 
 Inspect refresh behavior in browser. Confirm no layout jump, exact reveal center, no premature pointer effects, and no changes to later dotted transition.
 
-### Task 4: Final browser pass and commit
+### Task 4: Extreme WebGL performance pass
+
+**Files:**
+- Create: `src/hero/renderQuality.ts`
+- Modify: `src/hero/GlobalWebGLScene.tsx`
+- Modify: `src/hero/fluidSimulation.ts`
+
+**Interfaces:**
+- Produces: a bounded render-quality policy with pixel ratio, post-process resolution, simulation resolution, MSAA sample count, and frame-budget recovery
+- Consumes: viewport area, `devicePixelRatio`, coarse-pointer state, `navigator.hardwareConcurrency`, optional `navigator.deviceMemory`, and sustained frame time
+
+- [ ] **Step 1: Add deterministic quality policy**
+
+Create a pure policy that begins at the highest safe tier for the device and never removes an effect. Lower tiers adjust only internal resolution, multisampling, and simulation cadence.
+
+- [ ] **Step 2: Add sustained-frame adaptive scaling**
+
+Measure active-render frame time with an exponential moving average. Step down only after sustained frame-budget misses; recover one tier only after a long stable interval. Reallocate targets only when the tier changes, never per frame.
+
+- [ ] **Step 3: Eliminate redundant work**
+
+Keep the existing demand-driven RAF, skip fluid stepping without injection/decay, stop pointer-fluid decay earlier when velocity energy is negligible, and avoid rendering hero-only passes outside hero visibility.
+
+- [ ] **Step 4: Reduce startup contention**
+
+Keep pointer simulation disabled throughout intro. Compile/warm required materials during loader coverage and avoid duplicate target resizes.
+
+- [ ] **Step 5: Verify**
+
+Run build and lint. Use browser performance tooling when available; otherwise record RAF frame-time samples in a temporary debug query mode and inspect desktop/mobile behavior. Confirm all shader passes, refraction, flare, fluid, glass lighting, and background distortion remain enabled.
+
+### Task 5: Final browser pass and commit
 
 **Files:**
 - Review all files listed above.
@@ -149,4 +181,3 @@ Stage only intro implementation files plus deliberate shared-file hunks and comm
 ```bash
 git commit -m "feat: add hero load reveal"
 ```
-
