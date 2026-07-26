@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import './App.css'
+import { GridOverlay } from './components/GridOverlay.tsx'
+import { projects } from './data/projects.ts'
 import { GlobalWebGLScene } from './hero/GlobalWebGLScene.tsx'
 import { useSmoothScroll } from './useSmoothScroll.ts'
 
@@ -9,18 +11,6 @@ type ModelSceneProps = {
   model: string
   variant: 'hello' | 'cursor' | 'finale'
 }
-
-const projects = [
-  { name: 'Agentic AI systems', year: 'Selected work', image: '013-reunimos01.png', hover: '026-reunimos02.png', effect: 0, wide: true },
-  { name: 'Interface systems', year: 'UI / UX', image: '014-inspire_mono_01.png', hover: '028-inspire_mono_02.png', effect: 1 },
-  { name: 'Developer tools', year: 'Full-stack', image: '015-wasm01.png', hover: '028-wasm02.png', effect: 2 },
-  { name: 'Design utilities', year: 'Tools ↗', image: '014-si.png', hover: '033-si02.png', effect: 3, compact: true },
-  { name: 'AI operators', year: 'Automation ↗', image: '016-ds01.png', hover: '030-ds02.png', effect: 1 },
-  { name: 'Product experiences', year: 'Web / Mobile', image: '018-ali01.png', hover: '031-ali02.png', effect: 2, portrait: true },
-  { name: 'Visual systems', year: 'Design', image: '018-sd01.png', hover: '032-sd02.png', effect: 0 },
-  { name: 'Product engineering', year: 'Build', image: '019-c4.png', hover: '019-c4.png', effect: 3 },
-  { name: 'Interaction studies', year: 'Experiments ↗', image: '015-s01.png', hover: '033-s02.png', effect: 1 },
-]
 
 function ProjectMedia({ image, hoverImage, effect }: { image: string; hoverImage: string; effect: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -603,23 +593,7 @@ function App() {
   return (
     <main className="site relative min-h-screen overflow-x-clip antialiased">
       <GlobalWebGLScene />
-      <div className="grid-overlay" aria-hidden="true">
-        <svg className="grid-overlay__desktop" viewBox="0 0 1440 900" preserveAspectRatio="none">
-          <path d="M56.5 0V288M499.5 0V288M941.5 0V288M1384.5 0V288M56.5 312V600M499.5 312V600M941.5 312V600M1384.5 312V600M56.5 624V900M499.5 624V900M941.5 624V900M1384.5 624V900" stroke="rgba(255,255,255,.1)" strokeWidth="1" fill="none" />
-          <path d="M0 300H44.5M68.5 300H487.5M511.5 300H929.5M953.5 300H1372.5M1396.5 300H1440M0 612H44.5M68.5 612H487.5M511.5 612H929.5M953.5 612H1372.5M1396.5 612H1440" stroke="rgba(255,255,255,.1)" strokeWidth="1" fill="none" />
-          <path d="M56.5 294V306M50.5 300H62.5M56.5 606V618M50.5 612H62.5M499.5 294V306M493.5 300H505.5M499.5 606V618M493.5 612H505.5M941.5 294V306M935.5 300H947.5M941.5 606V618M935.5 612H947.5M1384.5 294V306M1378.5 300H1390.5M1384.5 606V618M1378.5 612H1390.5" stroke="#fff" strokeWidth="1" fill="none" opacity=".4" />
-        </svg>
-        <svg className="grid-overlay__tablet" viewBox="0 0 768 1024" preserveAspectRatio="none">
-          <path d="M16.5 0V329.333M384.5 0V329.333M752.5 0V329.333M16.5 353.333V682.667M384.5 353.333V682.667M752.5 353.333V682.667M16.5 706.667V1024M384.5 706.667V1024M752.5 706.667V1024" stroke="rgba(255,255,255,.1)" strokeWidth="1" fill="none" />
-          <path d="M0 341.333H4.5M28.5 341.333H372.5M396.5 341.333H740.5M764.5 341.333H768M0 694.667H4.5M28.5 694.667H372.5M396.5 694.667H740.5M764.5 694.667H768" stroke="rgba(255,255,255,.1)" strokeWidth="1" fill="none" />
-          <path d="M16.5 335.333V347.333M10.5 341.333H22.5M16.5 688.667V700.667M10.5 694.667H22.5M384.5 335.333V347.333M378.5 341.333H390.5M384.5 688.667V700.667M378.5 694.667H390.5M752.5 335.333V347.333M746.5 341.333H758.5M752.5 688.667V700.667M746.5 694.667H758.5" stroke="#fff" strokeWidth="1" fill="none" opacity=".4" />
-        </svg>
-        <svg className="grid-overlay__mobile" viewBox="0 0 390 844" preserveAspectRatio="none">
-          <path d="M16.5 0V269.333M195.5 0V269.333M374.5 0V269.333M16.5 293.333V562.667M195.5 293.333V562.667M374.5 293.333V562.667M16.5 586.667V844M195.5 586.667V844M374.5 586.667V844" stroke="rgba(255,255,255,.1)" strokeWidth="1" fill="none" />
-          <path d="M0 281.333H4.5M28.5 281.333H183.5M207.5 281.333H362.5M386.5 281.333H390M0 574.667H4.5M28.5 574.667H183.5M207.5 574.667H362.5M386.5 574.667H390" stroke="rgba(255,255,255,.1)" strokeWidth="1" fill="none" />
-          <path d="M16.5 275.333V287.333M10.5 281.333H22.5M16.5 568.667V580.667M10.5 574.667H22.5M195.5 275.333V287.333M189.5 281.333H201.5M195.5 568.667V580.667M189.5 574.667H201.5M374.5 275.333V287.333M368.5 281.333H380.5M374.5 568.667V580.667M368.5 574.667H380.5" stroke="#fff" strokeWidth="1" fill="none" opacity=".4" />
-        </svg>
-      </div>
+      <GridOverlay />
 
       <aside className="side-progress" aria-hidden="true"><span /></aside>
       <div className="fixed-meta fixed-meta--left">GMT <b>+0530</b> · INDIA</div>
