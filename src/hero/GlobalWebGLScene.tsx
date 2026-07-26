@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type RefObject } from 'react'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import {
@@ -41,17 +41,30 @@ import {
   type DecorationSprite,
   type LoadedModel,
 } from './modelUtils.ts'
+import {
+  AdaptiveRenderQuality,
+  getInitialRenderQuality,
+} from './renderQuality.ts'
 
 const ACCENT = new THREE.Color(0xe05035)
 const OUTPUT_TINT = new THREE.Color(0x351109)
 
-export function GlobalWebGLScene() {
+type GlobalWebGLSceneProps = {
+  introProgressRef: RefObject<number>
+  interactionReadyRef: RefObject<boolean>
+  onAssetsReady: () => void
+}
+
+export function GlobalWebGLScene({
+  introProgressRef,
+  interactionReadyRef,
+  onAssetsReady,
+}: GlobalWebGLSceneProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const debugView = new URLSearchParams(window.location.search).get('webglDebug')
 
     let renderer: THREE.WebGLRenderer
     try {
@@ -63,11 +76,26 @@ export function GlobalWebGLScene() {
       })
     } catch {
       canvas.dataset.webglUnavailable = 'true'
+      onAssetsReady()
       return
     }
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     renderer.toneMappingExposure = 1.25
+
+    const deviceMemory = (
+      navigator as Navigator & { deviceMemory?: number }
+    ).deviceMemory
+    const initialQuality = getInitialRenderQuality({
+      width: window.innerWidth,
+      height: window.innerHeight,
+      devicePixelRatio: window.devicePixelRatio,
+      hardwareConcurrency: navigator.hardwareConcurrency || 4,
+      deviceMemory,
+      coarsePointer: window.matchMedia('(pointer: coarse)').matches,
+    })
+    const adaptiveQuality = new AdaptiveRenderQuality(initialQuality)
+    let renderQuality = initialQuality
 
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100)
@@ -265,7 +293,7 @@ export function GlobalWebGLScene() {
       magFilter: THREE.LinearFilter,
       depthBuffer: true,
       stencilBuffer: false,
-      samples: 4,
+      samples: initialQuality.samples,
     })
     let hello: LoadedModel | null = null
     let cursor: LoadedModel | null = null
@@ -273,7 +301,7 @@ export function GlobalWebGLScene() {
     let disposed = false
     let wake = () => undefined
 
-    void Promise.all([
+    const modelAssetsPromise = Promise.all([
       loadModel(loader, '/assets/023-hello.gltf'),
       loadModel(loader, '/assets/024-cursor.glb'),
     ]).then(([helloModel, cursorModel]) => {
@@ -287,7 +315,7 @@ export function GlobalWebGLScene() {
       cursor = cursorModel
       applyHeroMaterial(hello, refractionTarget.texture)
       applyHeroMaterial(cursor, refractionTarget.texture)
-      updateGlassFresnelStrength(cursor.root, 0)
+      updateGlassFresnelStrength(cursor.root, 0.72)
       const drawingSize = renderer.getDrawingBufferSize(new THREE.Vector2())
       updateGlassResolution(hello.root, drawingSize.x, drawingSize.y)
       updateGlassResolution(cursor.root, drawingSize.x, drawingSize.y)
@@ -297,12 +325,12 @@ export function GlobalWebGLScene() {
       wake()
     })
 
-    void Promise.all([
-      loadDecoration(textureLoader, '/assets/sticker-star.png', 0.72, -2.15, 2.05, 0.3, 0),
-      loadDecoration(textureLoader, '/assets/sticker-pixel-coin.png', 1.25, 0.18, -0.08, -0.32, 1.4),
+    const decorationAssetsPromise = Promise.all([
+      loadDecoration(textureLoader, '/assets/sticker-pen.png', 0.72, -2.15, 2.05, 0.3, 0),
+      loadDecoration(textureLoader, '/assets/sticker-pixel-coin.png', 0.82, 0.0, 0.45, -0.32, 1.4),
       loadDecoration(textureLoader, '/assets/sticker-eyes.png', 0.62, -2.75, -0.55, 0.3, 2.8),
-      loadDecoration(textureLoader, '/assets/sticker-heart.png', 0.58, 2.95, 0.25, 0.3, 4.1),
-      loadDecoration(textureLoader, '/assets/sticker-star.png', 0.38, 1.9, -1.38, 0.18, 5.2),
+      loadDecoration(textureLoader, '/assets/sticker-2026.png', 0.58, 2.95, 0.25, 0.3, 4.1),
+      loadDecoration(textureLoader, '/assets/sticker-hand.png', 0.38, 1.9, -1.38, 0.18, 5.2),
     ]).then((sprites) => {
       if (disposed) {
         sprites.forEach((sprite) => {
@@ -314,6 +342,16 @@ export function GlobalWebGLScene() {
 
       decorations.push(...sprites)
       scene.add(...sprites)
+      width = 0
+      wake()
+    })
+
+    void Promise.allSettled([
+      modelAssetsPromise,
+      decorationAssetsPromise,
+    ]).then(() => {
+      if (disposed) return
+      onAssetsReady()
       wake()
     })
 
@@ -324,7 +362,7 @@ export function GlobalWebGLScene() {
       magFilter: THREE.LinearFilter,
       depthBuffer: true,
       stencilBuffer: false,
-      samples: 4,
+      samples: initialQuality.samples,
     })
     const fluid = new FluidSimulation(renderer)
     const compositeScene = new THREE.Scene()
@@ -345,15 +383,6 @@ export function GlobalWebGLScene() {
       depthBuffer: false,
       stencilBuffer: false,
     })
-    const flareSourceTarget = new THREE.WebGLRenderTarget(2, 2, {
-      type: THREE.UnsignedByteType,
-      format: THREE.RGBAFormat,
-      minFilter: THREE.LinearFilter,
-      magFilter: THREE.LinearFilter,
-      depthBuffer: true,
-      stencilBuffer: false,
-      samples: 4,
-    })
     const compositeMaterial = new THREE.ShaderMaterial({
       vertexShader: fullscreenVertexShader,
       fragmentShader: compositeFragmentShader,
@@ -361,7 +390,7 @@ export function GlobalWebGLScene() {
         tDiffuse: { value: fluidTarget.texture },
         uVelocity: { value: fluid.velocityTexture },
         uSimSize: { value: new THREE.Vector2(2, 2) },
-        uDisplacementStrength: { value: 1 },
+        uDisplacementStrength: { value: 0.6 },
         uEffectEnabled: { value: 1 },
       },
       depthTest: false,
@@ -377,15 +406,15 @@ export function GlobalWebGLScene() {
       vertexShader: fullscreenVertexShader,
       fragmentShader: starFlareFragmentShader,
       uniforms: {
-        tDiffuse: { value: flareSourceTarget.texture },
+        tDiffuse: { value: sceneTarget.texture },
         uResolution: { value: new THREE.Vector2(2, 2) },
         uEnabled: { value: 1 },
-        uIntensity: { value: 1.0 },
+        uIntensity: { value: 0.15 },
         uThreshold: { value: 0.99 },
-        uStreakScale: { value: 10 },
+        uStreakScale: { value: 6 },
         uHotspotPower: { value: 32 },
-        uGate: { value: 0.88 },
-        uStarRays: { value: 6 },
+        uGate: { value: 0.94 },
+        uStarRays: { value: 4 },
         uTailColor: {
           value: new THREE.Vector3(ACCENT.r, ACCENT.g, ACCENT.b),
         },
@@ -421,12 +450,49 @@ export function GlobalWebGLScene() {
     let cursorYaw = -0.34
     let width = 0
     let height = 0
+    let appliedQualityName = ''
+    let previousRenderAt = 0
     let frame = 0
     let interactionUntil = performance.now() + 1200
     let fluidFramesRemaining = 0
     let glassMotionEnergy = 0
     const startedAt = performance.now()
-    const decorationSizes = [0.72, 1.25, 0.62, 0.58, 0.38]
+    const decorationSizes = [0.72, 0.82, 0.62, 0.58, 0.38]
+    const desktopDecorationLayout = [
+      { x: -2.15, y: 2.05, z: 0.3, size: 0.72 },
+      { x: 0.0, y: 0.45, z: -0.32, size: 0.82 },
+      { x: -2.75, y: -0.55, z: 0.3, size: 0.62 },
+      { x: 2.95, y: 0.25, z: 0.3, size: 0.58 },
+      { x: 1.9, y: -1.38, z: 0.18, size: 0.38 },
+    ]
+    const tabletPortraitDecorationLayout = [
+      { x: 0, y: 1.7, z: 0.3, size: 0.44 },
+      { x: 0.0, y: 0.35, z: -0.32, size: 0.52 },
+      { x: -1.12, y: 0.1, z: 0.3, size: 0.38 },
+      { x: 1.12, y: 0.62, z: 0.3, size: 0.36 },
+      { x: -1.08, y: -1.18, z: 0.18, size: 0.26 },
+    ]
+    const phonePortraitDecorationLayout = [
+      { x: -0.78, y: 1.38, z: 0.3, size: 0.3 },
+      { x: 0.0, y: 0.28, z: -0.32, size: 0.38 },
+      { x: -0.82, y: 0.18, z: 0.3, size: 0.26 },
+      { x: 0.82, y: 0.58, z: 0.3, size: 0.25 },
+      { x: -0.58, y: -0.68, z: 0.18, size: 0.18 },
+    ]
+    const tabletLandscapeDecorationLayout = [
+      { x: 0, y: 1.72, z: 0.3, size: 0.46 },
+      { x: -1.2, y: 1.45, z: 0.3, size: 0.42 },
+      { x: -2.3, y: -0.25, z: 0.3, size: 0.4 },
+      { x: 2.5, y: 0.55, z: 0.3, size: 0.4 },
+      { x: 1.5, y: -1.3, z: 0.18, size: 0.28 },
+    ]
+    const compactLandscapeDecorationLayout = [
+      { x: -1.3, y: 1.35, z: 0.3, size: 0.28 },
+      { x: 0.7, y: 1.25, z: 0.3, size: 0.32 },
+      { x: -2.35, y: -0.48, z: 0.3, size: 0.3 },
+      { x: 2.35, y: 0.48, z: 0.3, size: 0.28 },
+      { x: 1.65, y: -1.05, z: 0.18, size: 0.2 },
+    ]
     const cursorForwardAxis = new THREE.Vector3(-1, 1, 0).normalize()
     const cursorBaseEuler = new THREE.Euler()
     const cursorDrill = new THREE.Quaternion()
@@ -447,31 +513,46 @@ export function GlobalWebGLScene() {
     const updateLayout = () => {
       const nextWidth = Math.max(1, window.innerWidth)
       const nextHeight = Math.max(1, window.innerHeight)
-      if (nextWidth === width && nextHeight === height) return
+      if (
+        nextWidth === width
+        && nextHeight === height
+        && appliedQualityName === renderQuality.name
+      ) return
 
       width = nextWidth
       height = nextHeight
-      const pixelRatioCap = width * height > 2_000_000 ? 1 : 1.25
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, pixelRatioCap))
+      appliedQualityName = renderQuality.name
+      renderer.setPixelRatio(
+        Math.min(window.devicePixelRatio, renderQuality.pixelRatioCap),
+      )
       renderer.setSize(width, height, false)
       const drawingSize = renderer.getDrawingBufferSize(new THREE.Vector2())
+      sceneTarget.samples = renderQuality.samples
+      refractionTarget.samples = renderQuality.samples
       sceneTarget.setSize(drawingSize.x, drawingSize.y)
       refractionTarget.setSize(drawingSize.x, drawingSize.y)
       fluidTarget.setSize(drawingSize.x, drawingSize.y)
       flareTarget.setSize(drawingSize.x, drawingSize.y)
-      flareSourceTarget.setSize(drawingSize.x, drawingSize.y)
       flareMaterial.uniforms.uResolution.value.copy(drawingSize)
       camera.aspect = width / height
       camera.updateProjectionMatrix()
       backgroundMaterial.uniforms.uResolution.value.set(width, height)
 
-      const simulationSize = getSimulationSize(width, height, 209)
+      const simulationSize = getSimulationSize(
+        width,
+        height,
+        renderQuality.simulationLongAxis,
+      )
       fluid.resize(simulationSize)
       compositeMaterial.uniforms.uSimSize.value.set(
         simulationSize.width,
         simulationSize.height,
       )
-      const postSize = getSimulationSize(width, height, 720)
+      const postSize = getSimulationSize(
+        width,
+        height,
+        renderQuality.postLongAxis,
+      )
       backgroundTarget.setSize(postSize.width, postSize.height)
       swirlTarget.setSize(postSize.width, postSize.height)
       waveTarget.setSize(postSize.width, postSize.height)
@@ -501,25 +582,40 @@ export function GlobalWebGLScene() {
       if (cursor) updateGlassResolution(cursor.root, drawingSize.x, drawingSize.y)
 
       const compact = camera.aspect < 0.82
+      const decorationLayout = (
+        width <= 760 && compact
+          ? phonePortraitDecorationLayout
+          : width <= 760
+            ? compactLandscapeDecorationLayout
+            : width <= 1024 && compact
+              ? tabletPortraitDecorationLayout
+              : width <= 1024
+                ? tabletLandscapeDecorationLayout
+                : desktopDecorationLayout
+      )
       decorations.forEach((sprite, index) => {
-        if (index === 1) {
-          sprite.userData.anchorX = compact ? 0.08 : 0.18
-          sprite.userData.anchorY = compact ? 0.02 : -0.08
-          sprite.position.z = -0.32
-        }
-        sprite.visible = heroActive && (!compact || index < 2)
-        sprite.scale.setScalar(compact ? 0.44 : (decorationSizes[index] ?? 0.58))
+        const placement = decorationLayout[index] ?? desktopDecorationLayout[index]
+        if (!placement) return
+        sprite.userData.anchorX = placement.x
+        sprite.userData.anchorY = placement.y
+        sprite.userData.anchorZ = placement.z
+        sprite.userData.layoutSize = placement.size
+        sprite.position.z = placement.z
+        sprite.visible = heroActive
+        sprite.scale.setScalar(placement.size)
       })
     }
 
     const onPointerMove = (event: PointerEvent) => {
+      if (!interactionReadyRef.current) return
+
       const next = normalizePointer(
         event.clientX,
         event.clientY,
         window.innerWidth,
         window.innerHeight,
       )
-      const delta = clampPointerDelta(next, previousPointer, 0.018)
+      const delta = clampPointerDelta(next, previousPointer, 0.1)
       glassMotionEnergy = Math.min(
         1,
         glassMotionEnergy + Math.hypot(delta.x, delta.y) * 18,
@@ -529,13 +625,13 @@ export function GlobalWebGLScene() {
       pendingDelta.x += delta.x
       pendingDelta.y += delta.y
       const pendingMagnitude = Math.hypot(pendingDelta.x, pendingDelta.y)
-      if (pendingMagnitude > 0.022) {
-        const scale = 0.022 / pendingMagnitude
+      if (pendingMagnitude > 0.15) {
+        const scale = 0.15 / pendingMagnitude
         pendingDelta.x *= scale
         pendingDelta.y *= scale
       }
-      interactionUntil = performance.now() + 1100
-      fluidFramesRemaining = 120
+      interactionUntil = performance.now() + 600
+      fluidFramesRemaining = 48
       wake()
     }
 
@@ -595,11 +691,26 @@ export function GlobalWebGLScene() {
       if (!visible) return
 
       const now = performance.now()
+      const introProgress = Math.min(
+        1,
+        Math.max(0, introProgressRef.current),
+      )
+      const introEase = 1 - Math.pow(1 - introProgress, 3)
+      const introAnimating = introProgress < 0.999
       const interactionActive = (
         now < interactionUntil
         || fluidFramesRemaining > 0
         || Math.abs(targetScrollProgress - scrollProgress) > 0.0005
+        || introAnimating
       )
+      if (
+        interactionReadyRef.current
+        && previousRenderAt > 0
+      ) {
+        const nextQuality = adaptiveQuality.sample(now - previousRenderAt)
+        if (nextQuality) renderQuality = nextQuality
+      }
+      previousRenderAt = now
 
       const elapsed = (now - startedAt) / 1000
       const halfFovTangent = Math.tan(
@@ -613,16 +724,23 @@ export function GlobalWebGLScene() {
         9 + (pointer.y - 0.5) * 15,
         0.5 + (pointer.x - 0.5) * 2,
       )
-      glassLight.lerp(glassLightTarget, 0.18)
+      glassLight.lerp(glassLightTarget, 0.7)
       glassMotionEnergy *= 0.92
       const glassSpecularStrength = 1.2 + glassMotionEnergy * 0.8
       scrollProgress = reducedMotion ? 0 : targetScrollProgress
       const heroDepthOffset = scrollProgress * 5
       decorations.forEach((sprite, index) => {
-        const compact = camera.aspect < 0.82
         const heroVisualActive = heroActive && scrollProgress < 0.985
-        sprite.visible = heroVisualActive && (!compact || index < 2)
-        sprite.scale.setScalar(compact ? 0.44 : (decorationSizes[index] ?? 0.58))
+        sprite.visible = heroVisualActive
+        const decorationIntro = THREE.MathUtils.lerp(
+          0.72,
+          1,
+          Math.max(0, Math.min(1, (introEase - index * 0.025) / 0.9)),
+        )
+        sprite.scale.setScalar(
+          (sprite.userData.layoutSize ?? decorationSizes[index] ?? 0.58)
+          * decorationIntro,
+        )
         const drift = reducedMotion
           ? 0
           : Math.sin(elapsed * 0.48 + sprite.userData.phase)
@@ -630,7 +748,11 @@ export function GlobalWebGLScene() {
           sprite.userData.anchorX
           + (pointer.x - 0.5) * (0.05 + index * 0.012)
         )
-        sprite.position.z = sprite.userData.anchorZ - heroDepthOffset
+        sprite.position.z = (
+          sprite.userData.anchorZ
+          - heroDepthOffset
+          + THREE.MathUtils.lerp(-0.8, 0, introEase)
+        )
         const spriteScrollOffset = scrollProgress * viewHeightAt(sprite.position.z)
         sprite.position.y = (
           sprite.userData.anchorY
@@ -638,16 +760,34 @@ export function GlobalWebGLScene() {
           + (pointer.y - 0.5) * 0.045
           + spriteScrollOffset
         )
-        sprite.material.rotation = drift * 0.035
+        sprite.material.rotation = (
+          Math.sin(elapsed * 0.4 + sprite.userData.phase) * 0.12
+          + (pointer.x - 0.5) * 0.08
+        )
       })
 
       if (hello && cursor) {
         const layout = getHeroLayout(camera.aspect)
-        const helloZ = layout.helloPosition.z - scrollProgress * 5.2
-        const cursorZ = layout.cursorPosition.z - scrollProgress * 4.6
+        const introDepth = THREE.MathUtils.lerp(-1.15, 0, introEase)
+        const helloIntroScale = THREE.MathUtils.lerp(0.68, 1, introEase)
+        const cursorIntroScale = THREE.MathUtils.lerp(0.76, 1, introEase)
+        const helloZ = (
+          layout.helloPosition.z
+          - scrollProgress * 5.2
+          + introDepth
+        )
+        const cursorZ = (
+          layout.cursorPosition.z
+          - scrollProgress * 4.6
+          + introDepth * 0.82
+        )
         placeModel(
           hello,
-          layout.helloSize * (1 - scrollProgress * 0.22),
+          (
+            layout.helloSize
+            * (1 - scrollProgress * 0.22)
+            * helloIntroScale
+          ),
           {
             x: layout.helloPosition.x,
             y: (
@@ -657,7 +797,11 @@ export function GlobalWebGLScene() {
             z: helloZ,
           },
         )
-        placeModel(cursor, layout.cursorSize * (1 - scrollProgress * 0.28), {
+        placeModel(cursor, (
+          layout.cursorSize
+          * (1 - scrollProgress * 0.28)
+          * cursorIntroScale
+        ), {
           x: layout.cursorPosition.x + (pointer.x - 0.5) * 0.14,
           y: (
             layout.cursorPosition.y
@@ -681,13 +825,13 @@ export function GlobalWebGLScene() {
           + scrollProgress * 0.52
           + (pointer.y - 0.5) * 0.22
           - cursorPitch
-        ) * 0.055
+        ) * 0.45
         cursorYaw += (
           -0.34
           + scrollProgress * 1.1
           + (pointer.x - 0.5) * 0.3
           - cursorYaw
-        ) * 0.055
+        ) * 0.45
         cursorBaseEuler.set(cursorPitch, cursorYaw, -0.48)
         cursor.root.quaternion.setFromEuler(cursorBaseEuler)
         cursorDrill.setFromAxisAngle(
@@ -698,7 +842,14 @@ export function GlobalWebGLScene() {
         updateGlassLight(hello.root, glassLight)
         updateGlassLight(cursor.root, glassLight)
         updateGlassSpecularStrength(hello.root, glassSpecularStrength)
+        updateGlassSpecularStrength(cursor.root, glassSpecularStrength * 1.4)
       }
+
+      const waveLoop = Math.sin(elapsed * 0.6)
+      const glowX = 0.5 + (pointer.x - 0.5) * 0.3 + Math.cos(elapsed * 0.4) * 0.06
+      const glowY = 0.5 + (pointer.y - 0.5) * 0.3 + waveLoop * 0.05
+      backgroundMaterial.uniforms.uPos.value.set(glowX, glowY)
+      backgroundMaterial.uniforms.uAngle.value = waveLoop * 0.08 + (pointer.x - 0.5) * 0.12
 
       swirlMaterial.uniforms.uTime.value = elapsed
       swirlMaterial.uniforms.uPos.value.set(pointer.x, pointer.y)
@@ -737,17 +888,14 @@ export function GlobalWebGLScene() {
         renderer.autoClear = true
       }
 
+      const heroVisualActive = heroActive && scrollProgress < 0.985
       if (hello) hello.root.visible = false
       if (cursor) cursor.root.visible = false
-      renderBackdropAndScene(refractionTarget)
-      const heroVisualActive = heroActive && scrollProgress < 0.985
+      if (heroVisualActive) renderBackdropAndScene(refractionTarget)
       if (hello) hello.root.visible = heroVisualActive
       if (cursor) cursor.root.visible = heroVisualActive
 
       renderBackdropAndScene(sceneTarget)
-      if (cursor) cursor.root.visible = false
-      renderBackdropAndScene(flareSourceTarget)
-      if (cursor) cursor.root.visible = heroVisualActive
 
       const inject = shouldInjectPointer({
         reducedMotion,
@@ -768,9 +916,13 @@ export function GlobalWebGLScene() {
       pendingDelta.x = 0
       pendingDelta.y = 0
 
-      compositeMesh.material = flareMaterial
       renderer.setRenderTarget(flareTarget)
-      renderer.render(compositeScene, compositeCamera)
+      if (heroVisualActive) {
+        compositeMesh.material = flareMaterial
+        renderer.render(compositeScene, compositeCamera)
+      } else {
+        renderer.clear()
+      }
 
       compositeMesh.material = finalMaterial
       renderer.setRenderTarget(fluidTarget)
@@ -779,24 +931,6 @@ export function GlobalWebGLScene() {
       compositeMaterial.uniforms.uVelocity.value = fluid.velocityTexture
       compositeMaterial.uniforms.uEffectEnabled.value = reducedMotion ? 0 : 1
       compositeMaterial.uniforms.tDiffuse.value = fluidTarget.texture
-      if (debugView) {
-        const debugTextures: Record<string, THREE.Texture> = {
-          background: backgroundTarget.texture,
-          swirl: swirlTarget.texture,
-          wave: waveTarget.texture,
-          voronoi: voronoiTarget.texture,
-          bokeh: bokehTarget.texture,
-          source: refractionTarget.texture,
-          base: sceneTarget.texture,
-          flareSource: flareSourceTarget.texture,
-          flare: flareTarget.texture,
-          composite: fluidTarget.texture,
-        }
-        compositeMaterial.uniforms.tDiffuse.value = (
-          debugTextures[debugView] ?? fluidTarget.texture
-        )
-        compositeMaterial.uniforms.uEffectEnabled.value = 0
-      }
       compositeMesh.material = compositeMaterial
       renderer.setRenderTarget(null)
       renderer.render(compositeScene, compositeCamera)
@@ -830,7 +964,6 @@ export function GlobalWebGLScene() {
       bokehTarget.dispose()
       fluidTarget.dispose()
       flareTarget.dispose()
-      flareSourceTarget.dispose()
       compositeMesh.geometry.dispose()
       compositeMaterial.dispose()
       flareMaterial.dispose()
@@ -861,12 +994,12 @@ export function GlobalWebGLScene() {
       })
       renderer.dispose()
     }
-  }, [])
+  }, [interactionReadyRef, introProgressRef, onAssetsReady])
 
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 -z-[1] block size-full"
+      className="pointer-events-none fixed inset-0 -z-10 block size-full"
       aria-hidden="true"
     />
   )

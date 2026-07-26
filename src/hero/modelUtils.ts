@@ -80,13 +80,13 @@ function createGlassMaterial(
       uChromaticAberration: { value: 0.14 },
       uRefractPower: { value: 0.72 },
       uFresnelPower: { value: 3 },
-      uShininess: { value: 100 },
+      uShininess: { value: 120 },
       uDiffuseness: { value: 0.05 },
       uBrightness: { value: 0.6 },
       uContrast: { value: 0.98 },
       uGamma: { value: 1 },
-      uSpecularStrength: { value: 1.2 },
-      uFresnelStrength: { value: 0.72 },
+      uSpecularStrength: { value: 1.4 },
+      uFresnelStrength: { value: 0.75 },
       uTintEnabled: { value: 1 },
       uTintMix: { value: 1 },
       uTintThicknessMinAlpha: { value: 1 },
@@ -174,6 +174,11 @@ export async function loadDecoration(
 ): Promise<DecorationSprite> {
   const texture = await loader.loadAsync(url)
   texture.colorSpace = THREE.SRGBColorSpace
+  texture.minFilter = THREE.LinearMipmapLinearFilter
+  texture.magFilter = THREE.LinearFilter
+  texture.generateMipmaps = true
+  texture.anisotropy = 8
+  texture.needsUpdate = true
   const material = new THREE.SpriteMaterial({
     map: texture,
     transparent: true,

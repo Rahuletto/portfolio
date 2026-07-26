@@ -72,6 +72,8 @@ export const backgroundCompositeFragmentShader = `
   uniform vec3 uOutputColor;
   uniform int uLoaded;
   uniform float uOutputMix;
+  uniform float uGridIntensity;
+  uniform vec2 uGridResolution;
 
   vec3 overlay(vec3 base, vec3 blend) {
     return mix(
