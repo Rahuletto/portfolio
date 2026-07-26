@@ -1,11 +1,13 @@
 import { lazy, Suspense } from 'react'
 import './App.css'
 import { GridOverlay } from './components/GridOverlay.tsx'
+import { LazySection } from './components/LazySection.tsx'
 import { SideScrollbar } from './components/SideScrollbar.tsx'
 import { HeroIntroOverlay } from './intro/HeroIntroOverlay.tsx'
 import { useHeroIntro } from './intro/useHeroIntro.ts'
 import { HeroSection } from './sections/HeroSection.tsx'
 import { useSmoothScroll } from './useSmoothScroll.ts'
+
 const BackgroundDotTransition = lazy(async () => {
   const m = await import('./components/BackgroundDotTransition.tsx')
   return { default: m.BackgroundDotTransition }
@@ -57,17 +59,33 @@ function App() {
         <BackgroundDotTransition />
       </Suspense>
       <GridOverlay />
-
       <SideScrollbar />
-
       <HeroSection />
 
-      <Suspense fallback={null}>
-        <AboutSection />
-        <ProjectsSection Media={ProjectMedia} />
-        <Manifesto />
-        <SkillsPlaceholderSection />
-      </Suspense>
+      {/* Below-fold sections — each mounts independently as user scrolls near it */}
+      <LazySection>
+        <Suspense fallback={null}>
+          <AboutSection />
+        </Suspense>
+      </LazySection>
+
+      <LazySection>
+        <Suspense fallback={null}>
+          <ProjectsSection Media={ProjectMedia} />
+        </Suspense>
+      </LazySection>
+
+      <LazySection>
+        <Suspense fallback={null}>
+          <Manifesto />
+        </Suspense>
+      </LazySection>
+
+      <LazySection>
+        <Suspense fallback={null}>
+          <SkillsPlaceholderSection />
+        </Suspense>
+      </LazySection>
     </main>
   )
 }
