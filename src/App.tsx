@@ -55,6 +55,7 @@ function App() {
       <HeroIntroOverlay
         phase={intro.phase}
         loadProgress={intro.loadProgress}
+        loadProgressRef={intro.loadProgressRef}
         revealProgress={intro.revealProgress}
         introProgressRef={intro.introProgressRef}
       />

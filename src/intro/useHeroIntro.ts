@@ -9,6 +9,7 @@ export type HeroIntroPhase =
 export type HeroIntroState = {
   phase: HeroIntroPhase
   loadProgress: number
+  loadProgressRef: React.RefObject<number>
   revealProgress: number
   introProgressRef: React.RefObject<number>
   interactionReadyRef: React.RefObject<boolean>
@@ -27,6 +28,7 @@ export function useHeroIntro(): HeroIntroState {
   const [phase, setPhase] = useState<HeroIntroPhase>('loading')
   const [loadProgress, setLoadProgress] = useState(0)
   const [revealProgress, setRevealProgress] = useState(0)
+  const loadProgressRef = useRef(0)
   const introProgressRef = useRef(0)
   const interactionReadyRef = useRef(false)
   const displayedLoadRef = useRef(0)
@@ -52,6 +54,7 @@ export function useHeroIntro(): HeroIntroState {
       const elapsed = now - startedAt
       const next = Math.min(0.94, 1 - Math.exp(-elapsed / 780))
       displayedLoadRef.current = Math.max(displayedLoadRef.current, next)
+      loadProgressRef.current = displayedLoadRef.current
       setLoadProgress(displayedLoadRef.current)
       frame = requestAnimationFrame(update)
     }
@@ -127,6 +130,7 @@ export function useHeroIntro(): HeroIntroState {
   return {
     phase,
     loadProgress,
+    loadProgressRef,
     revealProgress,
     introProgressRef,
     interactionReadyRef,
