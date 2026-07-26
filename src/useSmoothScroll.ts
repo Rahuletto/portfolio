@@ -26,6 +26,18 @@ export function useSmoothScroll(): void {
       frame = requestAnimationFrame(animate)
     }
 
+    const onScrollTo = (event: Event) => {
+      const detail = (event as CustomEvent<number | { target: number; immediate?: boolean }>).detail
+      const target = typeof detail === 'number' ? detail : detail?.target
+      const immediate = typeof detail === 'object' ? !!detail.immediate : false
+      if (typeof target !== 'number' || !Number.isFinite(target)) return
+      lenis.scrollTo(target, {
+        immediate,
+        duration: immediate ? 0 : 0.75,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      })
+    }
+
     const onAnchorClick = (event: MouseEvent) => {
       const target = event.target
       if (!(target instanceof Element)) return
@@ -46,11 +58,13 @@ export function useSmoothScroll(): void {
     }
 
     document.addEventListener('click', onAnchorClick)
+    window.addEventListener('portfolio:scroll-to', onScrollTo)
     frame = requestAnimationFrame(animate)
 
     return () => {
       cancelAnimationFrame(frame)
       document.removeEventListener('click', onAnchorClick)
+      window.removeEventListener('portfolio:scroll-to', onScrollTo)
       lenis.off('scroll', onLenisScroll)
       lenis.destroy()
     }
