@@ -47,15 +47,16 @@ export function useScrollReveal<T extends HTMLElement>(
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        active = entry?.isIntersecting ?? false
-        if (active) {
-          element.dataset.revealVisible = 'true'
+        const isIntersecting = entry?.isIntersecting ?? false
+        active = isIntersecting
+        element.dataset.revealVisible = isIntersecting ? 'true' : 'false'
+        if (isIntersecting) {
           schedule()
         }
       },
       {
-        rootMargin: '30% 0px 30%',
-        threshold: 0.01,
+        rootMargin: '-5% 0px -5%',
+        threshold: 0.08,
       },
     )
 

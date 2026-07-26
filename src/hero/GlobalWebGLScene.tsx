@@ -301,59 +301,67 @@ export function GlobalWebGLScene({
     let disposed = false
     let wake = () => undefined
 
-    const modelAssetsPromise = Promise.all([
-      loadModel(loader, '/assets/023-hello.gltf'),
-      loadModel(loader, '/assets/024-cursor.glb'),
-    ]).then(([helloModel, cursorModel]) => {
-      if (disposed) {
-        helloModel.root.clear()
-        cursorModel.root.clear()
-        return
-      }
+    const yieldMainThread = (ms = 40) => new Promise((r) => setTimeout(r, ms))
 
-      hello = helloModel
-      cursor = cursorModel
-      applyHeroMaterial(hello, refractionTarget.texture)
-      applyHeroMaterial(cursor, refractionTarget.texture)
-      updateGlassFresnelStrength(cursor.root, 0.72)
-      const drawingSize = renderer.getDrawingBufferSize(new THREE.Vector2())
-      updateGlassResolution(hello.root, drawingSize.x, drawingSize.y)
-      updateGlassResolution(cursor.root, drawingSize.x, drawingSize.y)
-      hello.root.rotation.set(-0.08, -0.18, -0.03)
-      cursor.root.rotation.set(0.16, -0.34, -0.48)
-      scene.add(hello.root, cursor.root)
-      wake()
-    })
-
-    const decorationAssetsPromise = Promise.all([
-      loadDecoration(textureLoader, '/assets/sticker-pen.png', 0.72, -2.15, 2.05, 0.3, 0),
-      loadDecoration(textureLoader, '/assets/sticker-pixel-coin.png', 0.82, 0.0, 0.45, -0.32, 1.4),
-      loadDecoration(textureLoader, '/assets/sticker-eyes.png', 0.62, -2.75, -0.55, 0.3, 2.8),
-      loadDecoration(textureLoader, '/assets/sticker-2026.png', 0.58, 2.95, 0.25, 0.3, 4.1),
-      loadDecoration(textureLoader, '/assets/sticker-hand.png', 0.38, 1.9, -1.38, 0.18, 5.2),
-    ]).then((sprites) => {
-      if (disposed) {
-        sprites.forEach((sprite) => {
-          sprite.material.map?.dispose()
-          sprite.material.dispose()
-        })
-        return
-      }
-
-      decorations.push(...sprites)
-      scene.add(...sprites)
-      width = 0
-      wake()
-    })
-
-    void Promise.allSettled([
-      modelAssetsPromise,
-      decorationAssetsPromise,
-    ]).then(() => {
+    const loadAssetsAsync = async () => {
+      // Let signature intro render for 150ms with 100% CPU capacity before WebGL model parsing
+      await yieldMainThread(150)
       if (disposed) return
-      onAssetsReady()
-      wake()
-    })
+
+      try {
+        const helloModel = await loadModel(loader, '/assets/023-hello.gltf')
+        if (disposed) return
+        hello = helloModel
+        applyHeroMaterial(hello, refractionTarget.texture)
+        hello.root.rotation.set(-0.08, -0.18, -0.03)
+        scene.add(hello.root)
+        wake()
+
+        await yieldMainThread(30)
+        if (disposed) return
+
+        const cursorModel = await loadModel(loader, '/assets/024-cursor.glb')
+        if (disposed) return
+        cursor = cursorModel
+        applyHeroMaterial(cursor, refractionTarget.texture)
+        updateGlassFresnelStrength(cursor.root, 0.72)
+        cursor.root.rotation.set(0.16, -0.34, -0.48)
+        scene.add(cursor.root)
+
+        const drawingSize = renderer.getDrawingBufferSize(new THREE.Vector2())
+        updateGlassResolution(hello.root, drawingSize.x, drawingSize.y)
+        updateGlassResolution(cursor.root, drawingSize.x, drawingSize.y)
+        wake()
+
+        await yieldMainThread(30)
+        if (disposed) return
+
+        const stickerFiles = [
+          { path: '/assets/sticker-pen.png', size: 0.52, x: -2.05, y: 1.35, z: 0.85, spin: 0 },
+          { path: '/assets/sticker-pixel-coin.png', size: 0.72, x: 0.0, y: 0.65, z: -0.65, spin: 1.4 },
+          { path: '/assets/sticker-eyes.png', size: 0.46, x: -2.35, y: 0.05, z: 0.85, spin: 2.8 },
+          { path: '/assets/sticker-2026.png', size: 0.46, x: 2.35, y: -0.25, z: 0.85, spin: 4.1 },
+          { path: '/assets/sticker-hand.png', size: 0.28, x: 1.55, y: -1.35, z: 0.85, spin: 5.2 },
+        ]
+
+        for (const item of stickerFiles) {
+          if (disposed) break
+          const sprite = await loadDecoration(textureLoader, item.path, item.size, item.x, item.y, item.z, item.spin)
+          decorations.push(sprite)
+          scene.add(sprite)
+          await yieldMainThread(20)
+        }
+      } catch (err) {
+        console.warn('Hero asset load note:', err)
+      }
+
+      if (!disposed) {
+        onAssetsReady()
+        wake()
+      }
+    }
+
+    void loadAssetsAsync()
 
     const sceneTarget = new THREE.WebGLRenderTarget(2, 2, {
       type: THREE.UnsignedByteType,
@@ -409,11 +417,11 @@ export function GlobalWebGLScene({
         tDiffuse: { value: sceneTarget.texture },
         uResolution: { value: new THREE.Vector2(2, 2) },
         uEnabled: { value: 1 },
-        uIntensity: { value: 0.15 },
-        uThreshold: { value: 0.99 },
-        uStreakScale: { value: 6 },
-        uHotspotPower: { value: 32 },
-        uGate: { value: 0.94 },
+        uIntensity: { value: 0.45 },
+        uThreshold: { value: 0.72 },
+        uStreakScale: { value: 8 },
+        uHotspotPower: { value: 24 },
+        uGate: { value: 0.5 },
         uStarRays: { value: 4 },
         uTailColor: {
           value: new THREE.Vector3(ACCENT.r, ACCENT.g, ACCENT.b),
@@ -457,41 +465,41 @@ export function GlobalWebGLScene({
     let fluidFramesRemaining = 0
     let glassMotionEnergy = 0
     const startedAt = performance.now()
-    const decorationSizes = [0.72, 0.82, 0.62, 0.58, 0.38]
+    const decorationSizes = [0.52, 0.72, 0.46, 0.46, 0.28]
     const desktopDecorationLayout = [
-      { x: -2.15, y: 2.05, z: 0.3, size: 0.72 },
-      { x: 0.0, y: 0.45, z: -0.32, size: 0.82 },
-      { x: -2.75, y: -0.55, z: 0.3, size: 0.62 },
-      { x: 2.95, y: 0.25, z: 0.3, size: 0.58 },
-      { x: 1.9, y: -1.38, z: 0.18, size: 0.38 },
+      { x: -2.05, y: 1.35, z: 0.85, size: 0.52 },
+      { x: 0.0, y: 0.65, z: -0.65, size: 0.72 },
+      { x: -2.35, y: 0.05, z: 0.85, size: 0.46 },
+      { x: 2.35, y: -0.25, z: 0.85, size: 0.46 },
+      { x: 1.55, y: -1.35, z: 0.85, size: 0.28 },
     ]
     const tabletPortraitDecorationLayout = [
-      { x: 0, y: 1.7, z: 0.3, size: 0.44 },
-      { x: 0.0, y: 0.35, z: -0.32, size: 0.52 },
-      { x: -1.12, y: 0.1, z: 0.3, size: 0.38 },
-      { x: 1.12, y: 0.62, z: 0.3, size: 0.36 },
-      { x: -1.08, y: -1.18, z: 0.18, size: 0.26 },
+      { x: -1.35, y: 1.35, z: 0.85, size: 0.40 },
+      { x: 0.0, y: 0.55, z: -0.65, size: 0.48 },
+      { x: -1.55, y: 0.05, z: 0.85, size: 0.36 },
+      { x: 1.55, y: -0.25, z: 0.85, size: 0.34 },
+      { x: 1.05, y: -1.25, z: 0.85, size: 0.24 },
     ]
     const phonePortraitDecorationLayout = [
-      { x: -0.78, y: 1.38, z: 0.3, size: 0.3 },
-      { x: 0.0, y: 0.28, z: -0.32, size: 0.38 },
-      { x: -0.82, y: 0.18, z: 0.3, size: 0.26 },
-      { x: 0.82, y: 0.58, z: 0.3, size: 0.25 },
-      { x: -0.58, y: -0.68, z: 0.18, size: 0.18 },
+      { x: -0.75, y: 1.25, z: 0.85, size: 0.26 },
+      { x: 0.0, y: 0.48, z: -0.65, size: 0.34 },
+      { x: -0.95, y: 0.05, z: 0.85, size: 0.24 },
+      { x: 0.95, y: -0.25, z: 0.85, size: 0.22 },
+      { x: 0.65, y: -1.15, z: 0.85, size: 0.16 },
     ]
     const tabletLandscapeDecorationLayout = [
-      { x: 0, y: 1.72, z: 0.3, size: 0.46 },
-      { x: -1.2, y: 1.45, z: 0.3, size: 0.42 },
-      { x: -2.3, y: -0.25, z: 0.3, size: 0.4 },
-      { x: 2.5, y: 0.55, z: 0.3, size: 0.4 },
-      { x: 1.5, y: -1.3, z: 0.18, size: 0.28 },
+      { x: -2.05, y: 1.35, z: 0.85, size: 0.42 },
+      { x: 0.0, y: 0.55, z: -0.65, size: 0.58 },
+      { x: -2.35, y: 0.05, z: 0.85, size: 0.40 },
+      { x: 2.35, y: -0.25, z: 0.85, size: 0.40 },
+      { x: 1.55, y: -1.35, z: 0.85, size: 0.28 },
     ]
     const compactLandscapeDecorationLayout = [
-      { x: -1.3, y: 1.35, z: 0.3, size: 0.28 },
-      { x: 0.7, y: 1.25, z: 0.3, size: 0.32 },
-      { x: -2.35, y: -0.48, z: 0.3, size: 0.3 },
-      { x: 2.35, y: 0.48, z: 0.3, size: 0.28 },
-      { x: 1.65, y: -1.05, z: 0.18, size: 0.2 },
+      { x: -2.05, y: 1.25, z: 0.85, size: 0.28 },
+      { x: 0.0, y: 0.48, z: -0.65, size: 0.42 },
+      { x: -2.35, y: 0.05, z: 0.85, size: 0.30 },
+      { x: 2.35, y: -0.25, z: 0.85, size: 0.28 },
+      { x: 1.55, y: -1.25, z: 0.85, size: 0.20 },
     ]
     const cursorForwardAxis = new THREE.Vector3(-1, 1, 0).normalize()
     const cursorBaseEuler = new THREE.Euler()
@@ -712,6 +720,12 @@ export function GlobalWebGLScene({
       }
       previousRenderAt = now
 
+      // Pause WebGL rendering during loading screen so signature loader gets 100% CPU/GPU frame capacity
+      if (introProgressRef.current < 0.05) {
+        frame = requestAnimationFrame(render)
+        return
+      }
+
       const elapsed = (now - startedAt) / 1000
       const halfFovTangent = Math.tan(
         THREE.MathUtils.degToRad(camera.fov * 0.5),
@@ -732,18 +746,39 @@ export function GlobalWebGLScene({
       decorations.forEach((sprite, index) => {
         const heroVisualActive = heroActive && scrollProgress < 0.985
         sprite.visible = heroVisualActive
-        const decorationIntro = THREE.MathUtils.lerp(
-          0.72,
-          1,
-          Math.max(0, Math.min(1, (introEase - index * 0.025) / 0.9)),
+
+        // Staggered spring pop-in reveal calculation (Delayed cascade after loader exit)
+        const baseDelay = 0.15
+        const stickerDelay = baseDelay + index * 0.16
+        const windowSize = 0.25
+        const rawProgress = Math.max(
+          0,
+          Math.min(1, (introEase - stickerDelay) / windowSize),
         )
-        sprite.scale.setScalar(
-          (sprite.userData.layoutSize ?? decorationSizes[index] ?? 0.58)
-          * decorationIntro,
-        )
+        const springPop = rawProgress === 0
+          ? 0
+          : rawProgress >= 1
+            ? 1
+            : Math.sin(rawProgress * Math.PI * 0.5) * (1 + 0.38 * Math.sin(rawProgress * Math.PI))
+
+        const baseSize = sprite.userData.layoutSize ?? decorationSizes[index] ?? 0.48
+        sprite.scale.setScalar(baseSize * springPop)
+
+        // Subtle rotation settlement on pop
+        const popRotation = (1 - rawProgress) * (index % 2 === 0 ? 0.45 : -0.45)
+        if (sprite.material) {
+          sprite.material.rotation = (sprite.userData.baseRotation ?? 0) + popRotation
+        }
+
+        // Out-of-sync floating drift
+        const floatSpeed = 0.42 + (index % 3) * 0.15
         const drift = reducedMotion
           ? 0
-          : Math.sin(elapsed * 0.48 + sprite.userData.phase)
+          : Math.sin(elapsed * floatSpeed + sprite.userData.phase)
+
+        // Drop-in Y position offset during spring pop
+        const dropOffset = (1 - rawProgress) * 0.35
+
         sprite.position.x = (
           sprite.userData.anchorX
           + (pointer.x - 0.5) * (0.05 + index * 0.012)
@@ -756,6 +791,7 @@ export function GlobalWebGLScene({
         const spriteScrollOffset = scrollProgress * viewHeightAt(sprite.position.z)
         sprite.position.y = (
           sprite.userData.anchorY
+          + dropOffset
           + drift * 0.045
           + (pointer.y - 0.5) * 0.045
           + spriteScrollOffset

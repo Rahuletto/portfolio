@@ -16,9 +16,9 @@ export type HeroIntroState = {
   reportAssetsReady: () => void
 }
 
-const LOAD_FINISH_MS = 250
+const LOAD_FINISH_MS = 550
 const LOADER_EXIT_MS = 650
-const REVEAL_MS = 1200
+const REVEAL_MS = 1600
 const REDUCED_REVEAL_MS = 160
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value))

@@ -47,6 +47,9 @@
 .hero-intro[data-phase="complete"] .hero-intro__loader {
   visibility: hidden;
   opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 550ms cubic-bezier(.16, 1, .3, 1), transform 550ms cubic-bezier(.16, 1, .3, 1), visibility 550ms step-end;
+  will-change: opacity, transform;
 }
 
 .hero-intro[data-phase="complete"] {
@@ -143,16 +146,29 @@
 
 .project[data-reveal-ready='true'] {
   opacity: 0;
-  transform: translate3d(var(--project-drift, 0), 28px, 0);
+  transform: translate3d(var(--project-drift, 0), 42px, 0) scale(0.97);
   transition:
     opacity 680ms cubic-bezier(.22, 1, .36, 1) var(--project-delay, 0ms),
     transform 980ms cubic-bezier(.16, 1, .3, 1) var(--project-delay, 0ms);
   will-change: transform, opacity;
 }
 
+/* Staggered cascading reveal delays */
+.projects-grid > .project:nth-child(1) { --project-delay: 0ms; }
+.projects-grid > .project:nth-child(2) { --project-delay: 140ms; }
+.projects-grid > .project:nth-child(3) { --project-delay: 280ms; }
+.projects-grid > .project:nth-child(4) { --project-delay: 420ms; }
+.projects-grid > .project:nth-child(5) { --project-delay: 560ms; }
+.projects-grid > .project:nth-child(6) { --project-delay: 700ms; }
+
 .project[data-reveal-visible='true'] {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.project[data-reveal-visible='false'] {
+  opacity: 0;
+  transform: translate3d(var(--project-drift, 0), 42px, 0) scale(0.97);
 }
 
 .project[data-reveal-ready='true'] .project-media {
@@ -162,6 +178,10 @@
 
 .project[data-reveal-visible='true'] .project-media {
   clip-path: inset(0 0 0 0);
+}
+
+.project[data-reveal-visible='false'] .project-media {
+  clip-path: inset(0 0 100% 0);
 }
 
 .project .project-shader {
@@ -183,28 +203,58 @@
   transform: translate3d(0, 0, 0);
 }
 
-.about[data-reveal-ready='true'] .about-art,
-.about[data-reveal-ready='true'] .about-copy {
+.project[data-reveal-visible='false'] .project-meta {
   opacity: 0;
-  transition:
-    opacity 720ms ease-out,
-    transform 1100ms cubic-bezier(.16, 1, .3, 1);
-  will-change: transform, opacity;
+  transform: translate3d(0, 13px, 0);
 }
 
 .about[data-reveal-ready='true'] .about-art {
-  transform: translate3d(-28px, 42px, 0) rotate(-2deg);
+  opacity: 0;
+  transform: translate3d(-32px, 48px, 0) scale(0.95) rotate(-2deg);
+  transition:
+    opacity 720ms cubic-bezier(.16, 1, .3, 1) 0ms,
+    transform 1100ms cubic-bezier(.16, 1, .3, 1) 0ms;
+  will-change: transform, opacity;
 }
 
-.about[data-reveal-ready='true'] .about-copy {
-  transform: translate3d(32px, 54px, 0);
-  transition-delay: 90ms;
+.about[data-reveal-ready='true'] .about-line--1 {
+  opacity: 0;
+  transform: translate3d(0, 42px, 0);
+  transition:
+    opacity 720ms cubic-bezier(.16, 1, .3, 1) 180ms,
+    transform 980ms cubic-bezier(.16, 1, .3, 1) 180ms;
+  will-change: transform, opacity;
 }
 
-.about[data-reveal-visible='true'] .about-art,
-.about[data-reveal-visible='true'] .about-copy {
+.about[data-reveal-ready='true'] .about-line--2 {
+  opacity: 0;
+  transform: translate3d(0, 42px, 0);
+  transition:
+    opacity 720ms cubic-bezier(.16, 1, .3, 1) 360ms,
+    transform 980ms cubic-bezier(.16, 1, .3, 1) 360ms;
+  will-change: transform, opacity;
+}
+
+.about[data-reveal-visible='true'] .about-art {
   opacity: 1;
-  transform: translate3d(0, 0, 0) rotate(0);
+  transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+}
+
+.about[data-reveal-visible='true'] .about-line--1,
+.about[data-reveal-visible='true'] .about-line--2 {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.about[data-reveal-visible='false'] .about-art {
+  opacity: 0;
+  transform: translate3d(-32px, 48px, 0) scale(0.95) rotate(-2deg);
+}
+
+.about[data-reveal-visible='false'] .about-line--1,
+.about[data-reveal-visible='false'] .about-line--2 {
+  opacity: 0;
+  transform: translate3d(0, 42px, 0);
 }
 
 .manifesto[data-reveal-ready='true'] .manifesto-sticky {
@@ -259,11 +309,9 @@
 
 @media (min-width: 761px) and (max-width: 1024px) {
   .hero-meta {
-    top: clamp(112px, 14svh, 170px);
+    top: clamp(80px, 10svh, 120px);
     right: clamp(32px, 4.8vw, 50px);
     left: clamp(32px, 4.8vw, 50px);
-    grid-template-columns: minmax(0, 1.25fr) minmax(250px, .75fr);
-    gap: clamp(32px, 5vw, 58px);
   }
 
   .hero-copy--eyebrow {
@@ -361,17 +409,17 @@
   }
 
   .hero-meta {
-    top: clamp(72px, 13svh, 118px);
+    top: clamp(48px, 8svh, 84px);
     right: max(18px, env(safe-area-inset-right));
     left: max(18px, env(safe-area-inset-left));
   }
 
   .hero-copy--intro {
-    width: 49%;
-    max-width: 240px;
-    margin-left: auto;
-    font-size: clamp(11px, 3vw, 13px);
-    line-height: 1.26;
+    width: 100%;
+    max-width: min(520px, calc(100vw - 36px));
+    margin-left: 0;
+    font-size: clamp(19px, 5.2vw, 26px);
+    line-height: 1.32;
   }
 
   .hero-copy--intro > span {
@@ -472,9 +520,6 @@
 @media (max-width: 760px) and (max-height: 600px) and (orientation: landscape) {
   .hero-meta {
     top: 38px;
-    display: grid;
-    grid-template-columns: 1fr minmax(230px, .95fr);
-    gap: 28px;
   }
 
   .hero-copy--eyebrow {
@@ -483,11 +528,10 @@
   }
 
   .hero-copy--intro {
-    width: auto;
-    max-width: 250px;
+    width: 100%;
+    max-width: min(520px, calc(100vw - 36px));
     margin-left: 0;
-    font-size: 10px;
-    justify-self: end;
+    font-size: clamp(17px, 4vw, 22px);
   }
 
   .hero-title {
@@ -569,4 +613,41 @@
   .project .project-shader {
     transform: none;
   }
+}
+
+/* Red X-Ray Thermal Cyber Scanner Effect -------------------------------- */
+@keyframes redLaserSweep {
+  0% {
+    top: 2%;
+    opacity: 0.2;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 96%;
+    opacity: 0.2;
+  }
+}
+
+.xray-filter {
+  filter: contrast(240%) brightness(120%) sepia(100%) hue-rotate(310deg) saturate(800%) invert(18%);
+}
+
+.xray-scanline {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 42, 0, 0.2),
+    rgba(255, 42, 0, 0.2) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.group:hover .xray-laser {
+  animation: redLaserSweep 1.5s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  box-shadow: 0 0 14px #ff2a00, 0 0 28px #ff2a00, 0 0 45px #ff2a00;
 }

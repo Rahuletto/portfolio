@@ -5,7 +5,7 @@ export function HeroSection() {
         <h2 className="hero-copy hero-copy--eyebrow m-0 overflow-hidden text-[clamp(17px,1.4vw,26px)] leading-none font-medium tracking-[-.025em] max-[760px]:hidden">
           <span className="block">Designer and Developer</span>
         </h2>
-        <p className="hero-copy hero-copy--intro m-0 max-w-[410px] text-[clamp(18px,1.55vw,29px)] leading-[1.32] font-[450] tracking-[-.02em] max-[760px]:ml-0 max-[760px]:text-left max-[760px]:max-w-[340px] max-[760px]:text-[17px] max-[760px]:leading-[1.35]">
+        <p className="hero-copy hero-copy--intro m-0 max-w-[410px] text-[clamp(18px,1.55vw,29px)] leading-[1.32] font-[450] tracking-[-.02em] max-[760px]:ml-0 max-[760px]:text-left max-[760px]:max-w-[calc(100vw-36px)] max-[760px]:text-[clamp(18px,5vw,24px)] max-[760px]:leading-[1.32]">
           <span className="block overflow-hidden"><span className="block">I’m Marban, a full-stack developer,</span></span>
           <span className="block overflow-hidden"><span className="block">UI/UX designer, and Agentic AI</span></span>
           <span className="block overflow-hidden"><span className="block">developer building tools that make</span></span>

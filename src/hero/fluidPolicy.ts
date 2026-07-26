@@ -64,7 +64,7 @@ export function getHeroLayout(aspect: number): HeroLayout {
   if (aspect < 0.8) {
     return {
       helloSize: 2.08,
-      helloPosition: { x: 0, y: 0.12, z: 0 },
+      helloPosition: { x: 0, y: 0.28, z: 0 },
       cursorSize: 0.38,
       cursorPosition: { x: 0.78, y: -1.22, z: 0.45 },
     }
@@ -73,7 +73,7 @@ export function getHeroLayout(aspect: number): HeroLayout {
   if (aspect < 1.5) {
     return {
       helloSize: 4.1,
-      helloPosition: { x: 0.08, y: -0.02, z: 0 },
+      helloPosition: { x: 0.08, y: 0.22, z: 0 },
       cursorSize: 0.52,
       cursorPosition: { x: 2.05, y: -1.1, z: 0.45 },
     }
@@ -81,7 +81,7 @@ export function getHeroLayout(aspect: number): HeroLayout {
 
   return {
     helloSize: 4.6,
-    helloPosition: { x: 0.2, y: -0.02, z: 0 },
+    helloPosition: { x: 0.2, y: 0.24, z: 0 },
     cursorSize: 0.58,
     cursorPosition: { x: 2.45, y: -1.15, z: 0.45 },
   }

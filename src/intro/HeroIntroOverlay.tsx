@@ -46,7 +46,7 @@ export function HeroIntroOverlay({
       const eased = Math.pow(clamped, 0.88)
 
       if (rect) {
-        rect.setAttribute('width', (144 * eased).toFixed(2))
+        rect.setAttribute('width', (156 * eased).toFixed(2))
       }
 
       if (dots) {

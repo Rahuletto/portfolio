@@ -65,7 +65,6 @@ function App() {
       <GridOverlay />
 
       <SideScrollbar />
-      <div className="fixed-meta pointer-events-none fixed bottom-[26px] left-[5.8vw] z-50 font-mono text-[13px]/none tracking-[.06em] text-white mix-blend-difference max-[760px]:bottom-[18px] max-[760px]:left-[18px] max-[760px]:text-[11px]">GMT <b className="text-[#e05035]">+0530</b> · INDIA</div>
 
       <HeroSection />
 

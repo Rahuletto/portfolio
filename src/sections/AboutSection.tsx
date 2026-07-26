@@ -10,16 +10,41 @@ export function AboutSection() {
       data-scroll-reveal
       ref={sectionRef}
     >
-      <div className="about-art reveal relative aspect-[433/388] w-full max-w-[560px] justify-self-start overflow-visible max-[900px]:max-w-[420px] max-[900px]:justify-self-center max-[900px]:mx-auto max-[760px]:w-[88%]" aria-hidden="true">
-        <img
-          className="block size-full object-contain"
-          src="/assets/about-vector.svg"
-          alt=""
-        />
+      <div className="about-art reveal group relative aspect-[433/388] w-full max-w-[560px] cursor-pointer justify-self-start overflow-visible max-[900px]:mx-auto max-[900px]:max-w-[420px] max-[900px]:justify-self-center max-[760px]:w-[88%]" aria-label="Rahul Marban portrait artwork">
+        <div className="relative size-full overflow-visible transition-all duration-500 ease-out group-hover:scale-[1.03]">
+          {/* Photo Frame Container */}
+          <div className="relative aspect-[369/368] w-[85.2%] overflow-hidden rounded-[54px] bg-[#1a1919]">
+            {/* Base Photo Image */}
+            <img
+              className="block size-full object-cover"
+              src="/assets/marban-photo.png"
+              alt="Rahul Marban portrait artwork"
+            />
+
+            {/* Red X-Ray Thermal Layer & CRT Scanlines (Photo Frame Only) */}
+            <div className="pointer-events-none absolute inset-0 size-full opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100">
+              <img
+                className="xray-filter block size-full object-cover"
+                src="/assets/marban-photo.png"
+                alt=""
+              />
+              <div className="xray-scanline pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            </div>
+          </div>
+
+          {/* Standalone White Signature Pill Badge (Bottom Right, 100% Unfiltered) */}
+          <div className="pointer-events-none absolute bottom-0 right-0 z-20 w-[48.4%] aspect-[210/66] transition-transform duration-300 group-hover:scale-[1.04]">
+            <img
+              className="block size-full object-contain"
+              src="/assets/about-pill.svg"
+              alt="Rahul Marban signature"
+            />
+          </div>
+        </div>
       </div>
-      <div className="about-copy reveal w-full max-w-[880px] text-[clamp(23px,3.4vw,52px)] leading-[1.12] tracking-[-.045em] max-[900px]:mx-auto max-[900px]:text-center max-[760px]:text-[6.8vw]">
-        <p className="mb-[.65em]">I’m Rahul Marban, a self-taught full-stack developer building on the web since 2020.</p>
-        <p className="text-[#8e93a0]">My work spans <span className="text-[#f4f5f7]">developer tools, AI, and web applications</span>, always with the goal of solving real problems through simple, well-crafted software.</p>
+      <div className="about-copy reveal-group w-full max-w-[880px] text-[clamp(23px,3.4vw,52px)] leading-[1.12] tracking-[-.045em] max-[900px]:mx-auto max-[900px]:text-center max-[760px]:text-[6.8vw]">
+        <p className="about-line about-line--1 mb-[.65em]">I’m Rahul Marban, a self-taught full-stack developer building on the web since 2020.</p>
+        <p className="about-line about-line--2 text-[#8e93a0]">My work spans <span className="text-[#f4f5f7]">developer tools, AI, web recon, and web applications</span>, always with the goal of solving real problems through simple, well-crafted software.</p>
       </div>
     </section>
   )
