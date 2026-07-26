@@ -163,7 +163,6 @@ export const compositeFragmentShader = `
     vec2 displacement = velocity / max(uSimSize, vec2(1.0))
       * uDisplacementStrength
       * enabled;
-    float magnitude = length(displacement);
 
     const int samples = 4;
     vec4 color = vec4(0.0);
@@ -176,7 +175,7 @@ export const compositeFragmentShader = `
         cos((t - vec3(0.0, 0.5, 1.0)) * 3.14159 * 0.5)
       );
       vec2 sampleUv = clamp(
-        vUv - displacement * 0.3 * (t + 0.3) * magnitude,
+        vUv - displacement * 0.3 * (t + 0.3),
         0.0,
         1.0
       );
@@ -189,6 +188,11 @@ export const compositeFragmentShader = `
     color.rgb /= max(weightSum, vec3(0.0001));
     color.a /= max((weightSum.r + weightSum.g + weightSum.b) / 3.0, 0.0001);
 
-    gl_FragColor = vec4(linearToSrgb(max(color.rgb, 0.0)), color.a);
+    const vec3 trailColor = vec3(0.651, 0.196, 0.106);
+    float trailMask = clamp(length(velocity) * 0.01, 0.0, 1.0) * enabled;
+    vec3 result = mix(color.rgb, color.rgb + trailColor * 0.1, trailMask);
+    result += trailColor * (trailMask * 0.05);
+
+    gl_FragColor = vec4(linearToSrgb(max(result, 0.0)), color.a);
   }
 `

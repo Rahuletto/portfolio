@@ -25,28 +25,38 @@ export type FluidStepInput = {
   inject: boolean
 }
 
-const PRESSURE_ITERATIONS = 4
+const PRESSURE_ITERATIONS = 1
 
 export function simulationSizeChanged(current: Size, next: Size): boolean {
   return current.width !== next.width || current.height !== next.height
 }
 
-function makeTarget(width: number, height: number): THREE.WebGLRenderTarget {
+function makeTarget(
+  width: number,
+  height: number,
+  minFilter: THREE.MinificationTextureFilter = THREE.NearestFilter,
+  magFilter: THREE.MagnificationTextureFilter = THREE.NearestFilter,
+): THREE.WebGLRenderTarget {
   return new THREE.WebGLRenderTarget(width, height, {
     type: THREE.HalfFloatType,
     format: THREE.RGBAFormat,
-    minFilter: THREE.NearestFilter,
-    magFilter: THREE.NearestFilter,
+    minFilter,
+    magFilter,
     depthBuffer: false,
     stencilBuffer: false,
     generateMipmaps: false,
   })
 }
 
-function makePingPong(width: number, height: number): PingPongTarget {
+function makePingPong(
+  width: number,
+  height: number,
+  minFilter: THREE.MinificationTextureFilter = THREE.NearestFilter,
+  magFilter: THREE.MagnificationTextureFilter = THREE.NearestFilter,
+): PingPongTarget {
   const target = {
-    read: makeTarget(width, height),
-    write: makeTarget(width, height),
+    read: makeTarget(width, height, minFilter, magFilter),
+    write: makeTarget(width, height, minFilter, magFilter),
     swap() {
       const previousRead = target.read
       target.read = target.write
@@ -82,7 +92,7 @@ export class FluidSimulation {
   private readonly mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial>
   private readonly texelSize = new THREE.Vector2(0.5, 0.5)
   private size: Size = { width: 2, height: 2 }
-  private velocity = makePingPong(2, 2)
+  private velocity = makePingPong(2, 2, THREE.LinearFilter, THREE.LinearFilter)
   private pressure = makePingPong(2, 2)
   private curl = makeTarget(2, 2)
   private divergence = makeTarget(2, 2)
@@ -100,8 +110,8 @@ export class FluidSimulation {
     uPointer: { value: new THREE.Vector2(0.5, 0.5) },
     uPointerDelta: { value: new THREE.Vector2() },
     uCurlStrength: { value: 0 },
-    uSplatRadius: { value: 0.003 },
-    uSplatForce: { value: 3000 },
+    uSplatRadius: { value: 0.0008 },
+    uSplatForce: { value: 24000 },
     uInject: { value: 0 },
   })
 
@@ -127,7 +137,7 @@ export class FluidSimulation {
   private readonly advectionMaterial = makeMaterial(advectionFragmentShader, {
     uProjectedVelocity: { value: null },
     uTexelSize: { value: this.texelSize },
-    uDissipation: { value: 3 },
+    uDissipation: { value: 14.0 },
   })
 
   constructor(renderer: THREE.WebGLRenderer) {
@@ -154,7 +164,12 @@ export class FluidSimulation {
 
     this.size = next
     this.texelSize.set(1 / next.width, 1 / next.height)
-    this.velocity = makePingPong(next.width, next.height)
+    this.velocity = makePingPong(
+      next.width,
+      next.height,
+      THREE.LinearFilter,
+      THREE.LinearFilter,
+    )
     this.pressure = makePingPong(next.width, next.height)
     this.curl = makeTarget(next.width, next.height)
     this.divergence = makeTarget(next.width, next.height)
