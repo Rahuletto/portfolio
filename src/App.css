@@ -6,56 +6,41 @@
   --accent: #e05035;
 }
 
+/* ── Intro overlay: signature splash — pure CSS, zero JS ─────────── */
 .hero-intro {
-  --intro-load-progress: 0;
-  --intro-reveal-progress: 0;
+  transition: opacity 600ms cubic-bezier(.22, 1, .36, 1), visibility 600ms step-end;
 }
 
-.hero-intro__loader {
-  opacity: 1;
-  transition:
-    opacity 650ms cubic-bezier(.22, 1, .36, 1),
-    visibility 650ms step-end;
+/*
+  Padding gives overflow-visible SVG paths room to breathe
+  so the clip-path wipe never trims the ascenders/descenders.
+  Animation: left→right wipe on mount, ~1.8 s matching typical load.
+*/
+.hero-intro__sig-wrap {
+  padding: 24px 36px;
+  animation: sig-wipe 1.8s cubic-bezier(0.76, 0, 0.24, 1) both;
+  will-change: clip-path;
 }
 
-.hero-intro__bar {
-  transform: scaleX(var(--intro-load-progress));
-  transition: transform 90ms linear;
-  will-change: transform;
+@keyframes sig-wipe {
+  from { clip-path: inset(0 100% 0 0 round 0px); }
+  to   { clip-path: inset(0 0%   0 0 round 0px); }
 }
 
-.hero-intro__dots {
-  --intro-radius: calc(var(--intro-reveal-progress) * 72vmax);
-  background-image: radial-gradient(
-    circle,
-    #141314 0 5px,
-    transparent 5.2px
-  );
-  background-position: 0 0;
-  background-size: 8px 8px;
-  mask-image: radial-gradient(
-    circle at 50% 50%,
-    transparent 0 var(--intro-radius),
-    #000 calc(var(--intro-radius) + 3vmax)
-  );
-  contain: paint;
-  will-change: mask-image;
-}
-
-.hero-intro[data-phase="loader-exit"] .hero-intro__loader,
-.hero-intro[data-phase="revealing"] .hero-intro__loader,
-.hero-intro[data-phase="complete"] .hero-intro__loader {
-  visibility: hidden;
+/* Fade the signature out once the site is ready to show */
+.hero-intro[data-phase="revealing"] .hero-intro__sig-wrap,
+.hero-intro[data-phase="complete"]  .hero-intro__sig-wrap {
   opacity: 0;
-  transform: scale(0.97);
-  transition: opacity 550ms cubic-bezier(.16, 1, .3, 1), transform 550ms cubic-bezier(.16, 1, .3, 1), visibility 550ms step-end;
-  will-change: opacity, transform;
+  transition: opacity 550ms cubic-bezier(.22, 1, .36, 1);
 }
 
+/* Kill the whole overlay when done */
 .hero-intro[data-phase="complete"] {
+  opacity: 0;
   pointer-events: none;
   visibility: hidden;
 }
+
 
 .hero-copy > span,
 .hero-copy--intro > span > span,

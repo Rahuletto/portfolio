@@ -52,13 +52,7 @@ function App() {
           onAssetsReady={intro.reportAssetsReady}
         />
       </Suspense>
-      <HeroIntroOverlay
-        phase={intro.phase}
-        loadProgress={intro.loadProgress}
-        loadProgressRef={intro.loadProgressRef}
-        revealProgress={intro.revealProgress}
-        introProgressRef={intro.introProgressRef}
-      />
+      <HeroIntroOverlay phase={intro.phase} />
       <Suspense fallback={null}>
         <BackgroundDotTransition />
       </Suspense>
