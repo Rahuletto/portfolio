@@ -94,7 +94,7 @@ function createGlassMaterial(
       uSceneRefractionEnabled: { value: 1 },
       uRgbRefraction: { value: 1 },
       uDark: { value: 1 },
-      uLoop: { value: 3 },
+      uLoop: { value: 2 },
     },
     side: THREE.FrontSide,
     toneMapped: false,
@@ -112,7 +112,7 @@ export function applyHeroMaterial(
   })
 }
 
-function forEachGlassMaterial(
+export function forEachGlassMaterial(
   root: THREE.Object3D,
   update: (material: THREE.ShaderMaterial) => void,
 ): void {

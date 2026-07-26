@@ -120,12 +120,6 @@
 /* (side-progress replaced by SideScrollbar component) */
 
 .project-shader canvas.is-ready { opacity: 1; }
-.project--compact .project-shader { aspect-ratio: 1; }
-.project--portrait .project-shader { aspect-ratio: 1064 / 1496; }
-.project--portrait .project-media img {
-  object-fit: contain;
-  background: #eee;
-}
 
 /* Scroll choreography ---------------------------------------------------- */
 

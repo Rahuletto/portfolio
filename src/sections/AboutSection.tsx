@@ -22,13 +22,13 @@ export function AboutSection() {
             />
 
             {/* Red X-Ray Thermal Layer & CRT Scanlines (Photo Frame Only) */}
-            <div className="pointer-events-none absolute inset-0 size-full opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100">
+            <div className="pointer-events-none absolute inset-0 size-full opacity-100 transition-opacity duration-500 ease-out group-hover:opacity-0">
               <img
                 className="xray-filter block size-full object-cover"
                 src="/assets/marban-photo.png"
                 alt=""
               />
-              <div className="xray-scanline pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <div className="xray-scanline pointer-events-none absolute inset-0 size-full" />
             </div>
           </div>
 

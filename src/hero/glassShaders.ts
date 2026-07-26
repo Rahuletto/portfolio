@@ -98,7 +98,7 @@ export const glassFragmentShader = `
         vec3 refractG = refract(eyeDirection, normal, 1.0 / uIorG);
         vec3 refractB = refract(eyeDirection, normal, 1.0 / uIorB);
 
-        for (int index = 0; index < 3; index++) {
+        for (int index = 0; index < 2; index++) {
           float slide = float(index) / float(uLoop) * 0.1 + noise;
           float offset = (uRefractPower + slide) * uChromaticAberration;
           color.r += texture2D(uTexture, uv + refractR.xy * offset).r;
@@ -113,7 +113,7 @@ export const glassFragmentShader = `
         vec3 refractB = refract(eyeDirection, normal, 1.0 / uIorB);
         vec3 refractP = refract(eyeDirection, normal, 1.0 / uIorP);
 
-        for (int index = 0; index < 3; index++) {
+        for (int index = 0; index < 2; index++) {
           float slide = float(index) / float(uLoop) * 0.1 + noise;
           float offsetR = (uRefractPower + slide) * uChromaticAberration;
           float offsetY = (uRefractPower + slide) * uChromaticAberration;

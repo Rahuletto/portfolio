@@ -31,6 +31,7 @@ import {
 } from './postShaders.ts'
 import {
   applyHeroMaterial,
+  forEachGlassMaterial,
   loadDecoration,
   loadModel,
   placeModel,
@@ -309,9 +310,10 @@ export function GlobalWebGLScene({
       if (disposed) return
 
       try {
-        const helloModel = await loadModel(loader, '/assets/023-hello.gltf')
+        const helloModel = await loadModel(loader, '/assets/3d/023-hello.gltf')
         if (disposed) return
         hello = helloModel
+        lastGlassQuality = null
         applyHeroMaterial(hello, refractionTarget.texture)
         hello.root.rotation.set(-0.08, -0.18, -0.03)
         scene.add(hello.root)
@@ -320,7 +322,7 @@ export function GlobalWebGLScene({
         await yieldMainThread(30)
         if (disposed) return
 
-        const cursorModel = await loadModel(loader, '/assets/024-cursor.glb')
+        const cursorModel = await loadModel(loader, '/assets/3d/024-cursor.glb')
         if (disposed) return
         cursor = cursorModel
         applyHeroMaterial(cursor, refractionTarget.texture)
@@ -337,11 +339,11 @@ export function GlobalWebGLScene({
         if (disposed) return
 
         const stickerFiles = [
-          { path: '/assets/sticker-pen.png', size: 0.52, x: -2.05, y: 1.35, z: 0.85, spin: 0 },
-          { path: '/assets/sticker-pixel-coin.png', size: 0.72, x: 0.0, y: 0.65, z: -0.65, spin: 1.4 },
-          { path: '/assets/sticker-eyes.png', size: 0.46, x: -2.35, y: 0.05, z: 0.85, spin: 2.8 },
-          { path: '/assets/sticker-2026.png', size: 0.46, x: 2.35, y: -0.25, z: 0.85, spin: 4.1 },
-          { path: '/assets/sticker-hand.png', size: 0.28, x: 1.55, y: -1.35, z: 0.85, spin: 5.2 },
+          { path: '/assets/stickers/sticker-pen.png', size: 0.52, x: -2.05, y: 1.35, z: 0.85, spin: 0 },
+          { path: '/assets/stickers/sticker-pixel-coin.png', size: 0.72, x: 0.0, y: 0.65, z: -0.65, spin: 1.4 },
+          { path: '/assets/stickers/sticker-eyes.png', size: 0.46, x: -2.35, y: 0.05, z: 0.85, spin: 2.8 },
+          { path: '/assets/stickers/sticker-2026.png', size: 0.46, x: 2.35, y: -0.25, z: 0.85, spin: 4.1 },
+          { path: '/assets/stickers/sticker-hand.png', size: 0.28, x: 1.55, y: -1.35, z: 0.85, spin: 5.2 },
         ]
 
         for (const item of stickerFiles) {
@@ -461,6 +463,7 @@ export function GlobalWebGLScene({
     let appliedQualityName = ''
     let previousRenderAt = 0
     let frame = 0
+    let lastGlassQuality: string | null = null
     let interactionUntil = performance.now() + 1200
     let fluidFramesRemaining = 0
     let glassMotionEnergy = 0
@@ -541,6 +544,10 @@ export function GlobalWebGLScene({
       refractionTarget.setSize(drawingSize.x, drawingSize.y)
       fluidTarget.setSize(drawingSize.x, drawingSize.y)
       flareTarget.setSize(drawingSize.x, drawingSize.y)
+      flareMaterial.uniforms.tDiffuse.value = sceneTarget.texture
+      finalMaterial.uniforms.tBase.value = sceneTarget.texture
+      finalMaterial.uniforms.tFlare.value = flareTarget.texture
+      compositeMaterial.uniforms.tDiffuse.value = fluidTarget.texture
       flareMaterial.uniforms.uResolution.value.copy(drawingSize)
       camera.aspect = width / height
       camera.updateProjectionMatrix()
@@ -566,6 +573,10 @@ export function GlobalWebGLScene({
       waveTarget.setSize(postSize.width, postSize.height)
       voronoiTarget.setSize(postSize.width, postSize.height)
       bokehTarget.setSize(postSize.width, postSize.height)
+      swirlMaterial.uniforms.tInput.value = backgroundTarget.texture
+      waveMaterial.uniforms.tInput.value = swirlTarget.texture
+      voronoiMaterial.uniforms.tInput.value = waveTarget.texture
+      bokehMaterial.uniforms.tInput.value = voronoiTarget.texture
       swirlMaterial.uniforms.uResolution.value.set(
         postSize.width,
         postSize.height,
@@ -720,10 +731,24 @@ export function GlobalWebGLScene({
       }
       previousRenderAt = now
 
+      const lowQuality = renderQuality.name === 'low'
+
       // Pause WebGL rendering during loading screen so signature loader gets 100% CPU/GPU frame capacity
       if (introProgressRef.current < 0.05) {
         frame = requestAnimationFrame(render)
         return
+      }
+
+      if (renderQuality.name !== lastGlassQuality) {
+        lastGlassQuality = renderQuality.name
+        const refractionEnabled = lowQuality ? 0 : 1
+        const updateGlass = (root: THREE.Object3D) => {
+          forEachGlassMaterial(root, (material) => {
+            material.uniforms.uSceneRefractionEnabled.value = refractionEnabled
+          })
+        }
+        if (hello) updateGlass(hello.root)
+        if (cursor) updateGlass(cursor.root)
       }
 
       const elapsed = (now - startedAt) / 1000
@@ -802,6 +827,11 @@ export function GlobalWebGLScene({
         )
       })
 
+      const idlePhase = elapsed * 0.45
+      const idleFloatY = Math.sin(idlePhase) * 0.03
+      const idleFloatPitch = Math.sin(idlePhase * 0.7) * 0.03
+      const idleFloatYaw = Math.cos(idlePhase * 0.6) * 0.025
+
       if (hello && cursor) {
         const layout = getHeroLayout(camera.aspect)
         const introDepth = THREE.MathUtils.lerp(-1.15, 0, introEase)
@@ -842,6 +872,7 @@ export function GlobalWebGLScene({
           y: (
             layout.cursorPosition.y
             + (pointer.y - 0.5) * 0.1
+            + idleFloatY
             + scrollProgress * viewHeightAt(cursorZ)
           ),
           z: cursorZ,
@@ -860,12 +891,14 @@ export function GlobalWebGLScene({
           0.16
           + scrollProgress * 0.52
           + (pointer.y - 0.5) * 0.22
+          + idleFloatPitch
           - cursorPitch
         ) * 0.45
         cursorYaw += (
           -0.34
           + scrollProgress * 1.1
           + (pointer.x - 0.5) * 0.3
+          + idleFloatYaw
           - cursorYaw
         ) * 0.45
         cursorBaseEuler.set(cursorPitch, cursorYaw, -0.48)
@@ -925,9 +958,12 @@ export function GlobalWebGLScene({
       }
 
       const heroVisualActive = heroActive && scrollProgress < 0.985
-      if (hello) hello.root.visible = false
-      if (cursor) cursor.root.visible = false
-      if (heroVisualActive) renderBackdropAndScene(refractionTarget)
+      const skipRefraction = lowQuality || !heroVisualActive
+      if (!skipRefraction) {
+        if (hello) hello.root.visible = false
+        if (cursor) cursor.root.visible = false
+        renderBackdropAndScene(refractionTarget)
+      }
       if (hello) hello.root.visible = heroVisualActive
       if (cursor) cursor.root.visible = heroVisualActive
 

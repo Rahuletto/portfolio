@@ -18,23 +18,23 @@ type DeviceProfile = {
 const QUALITY_TIERS: readonly RenderQuality[] = [
   {
     name: 'high',
-    pixelRatioCap: 2.0,
-    postLongAxis: 720,
-    simulationLongAxis: 200,
-    samples: 4,
-  },
-  {
-    name: 'balanced',
     pixelRatioCap: 1.5,
     postLongAxis: 600,
-    simulationLongAxis: 180,
+    simulationLongAxis: 160,
     samples: 2,
   },
   {
-    name: 'low',
+    name: 'balanced',
     pixelRatioCap: 1.25,
     postLongAxis: 480,
-    simulationLongAxis: 144,
+    simulationLongAxis: 140,
+    samples: 1,
+  },
+  {
+    name: 'low',
+    pixelRatioCap: 1.0,
+    postLongAxis: 400,
+    simulationLongAxis: 120,
     samples: 0,
   },
 ]
@@ -42,15 +42,15 @@ const QUALITY_TIERS: readonly RenderQuality[] = [
 export function getInitialRenderQuality(profile: DeviceProfile): RenderQuality {
   const viewportPixels = profile.width * profile.height
   const constrained = (
-    profile.hardwareConcurrency <= 4
-    || (profile.deviceMemory ?? 8) <= 4
+    profile.hardwareConcurrency <= 6
+    || (profile.deviceMemory ?? 8) <= 6
   )
 
-  if (constrained || viewportPixels > 4_000_000) {
+  if (constrained || profile.coarsePointer || viewportPixels > 3_000_000) {
     return QUALITY_TIERS[2]
   }
 
-  if (profile.coarsePointer || viewportPixels > 2_200_000) {
+  if (viewportPixels > 1_800_000) {
     return QUALITY_TIERS[1]
   }
 
@@ -99,24 +99,24 @@ export class AdaptiveRenderQuality {
     }
 
     if (
-      this.slowFrameCount >= 48
+      this.slowFrameCount >= 12
       && this.tierIndex < QUALITY_TIERS.length - 1
     ) {
       this.tierIndex += 1
       this.slowFrameCount = 0
       this.stableFrameCount = 0
-      this.cooldownFrames = 120
+      this.cooldownFrames = 60
       return this.current
     }
 
     if (
-      this.stableFrameCount >= 420
+      this.stableFrameCount >= 300
       && this.tierIndex > this.bestTierIndex
     ) {
       this.tierIndex -= 1
       this.slowFrameCount = 0
       this.stableFrameCount = 0
-      this.cooldownFrames = 120
+      this.cooldownFrames = 60
       return this.current
     }
 

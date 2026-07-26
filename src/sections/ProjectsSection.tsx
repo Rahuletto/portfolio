@@ -18,10 +18,10 @@ function projectLayout(
 ): string {
   if (project.compact) return 'col-start-6 col-span-3 max-[760px]:col-start-auto max-[760px]:col-span-1'
   if (project.portrait) return 'col-start-2 col-span-4 max-[760px]:col-start-auto max-[760px]:col-span-2'
-  if (project.wide) return 'col-start-5 col-span-8 max-[760px]:col-start-auto max-[760px]:col-span-2'
+  if (project.wide) return 'col-start-5 col-span-6 max-[760px]:col-start-auto max-[760px]:col-span-2'
   if ((index + 1) % 4 === 0) return 'col-start-7 col-span-4 max-[760px]:col-start-auto max-[760px]:col-span-2'
   if ((index + 1) % 3 === 0) return 'col-start-2 col-span-5 max-[760px]:col-start-auto max-[760px]:col-span-1'
-  return 'col-span-6 max-[760px]:col-span-2'
+  return 'col-span-4 max-[760px]:col-span-2'
 }
 
 function projectResponsiveLayout(
@@ -51,13 +51,19 @@ function ProjectCard({
     '--project-drift': `${index % 2 === 0 ? 18 : -18}px`,
   } as CSSProperties
 
+  const href = project.url
+
   return (
     <article
-      className={`project group ${projectLayout(index, project)} ${project.compact ? 'project--compact' : ''} ${project.portrait ? 'project--portrait' : ''}`}
+      className={`project group ${projectLayout(index, project)} ${href ? 'cursor-pointer' : ''}`}
       data-layout={projectResponsiveLayout(index, project)}
       data-scroll-reveal
       ref={projectRef}
       style={motionStyle}
+      onClick={href ? () => window.open(href, '_blank', 'noreferrer') : undefined}
+      role={href ? 'link' : undefined}
+      tabIndex={href ? 0 : undefined}
+      onKeyDown={href ? (e: React.KeyboardEvent) => { if (e.key === 'Enter') window.open(href, '_blank', 'noreferrer') } : undefined}
     >
       <div className="project-media relative overflow-hidden bg-[#111]">
         <Media
@@ -65,13 +71,17 @@ function ProjectCard({
           hoverImage={project.hover}
           effect={project.effect}
         />
-        {project.name !== 'Product experiences' && (
+        {!['Samsung Prism', 'NextTechLab', 'Manic'].includes(project.name) && (
           <span className="absolute top-0 right-0 z-[2] bg-[#e05035] px-[7px] py-[5px] font-mono text-[10px]/none text-[#141314] uppercase">Selected project</span>
         )}
       </div>
-      <div className="project-meta flex justify-between gap-[18px] pt-3 font-mono text-[12px]/[1.2] uppercase max-[760px]:block max-[760px]:text-[9px]/[1.4]">
+      <div className="project-meta flex items-center justify-between pt-3 font-mono text-[12px]/[1.2] uppercase max-[760px]:text-[9px]/[1.4]">
         <h3 className="m-0 font-[inherit]">{project.name}</h3>
-        <p className="m-0 whitespace-nowrap text-[#8e93a0] max-[760px]:mt-[3px]">{project.year}</p>
+        {project.url && (
+          <a className="inline-flex items-center gap-1 bg-white px-2 py-0.5 text-[10px]/none no-underline" style={{ color: '#141314' }} href={project.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
+            OPEN <span className="text-[11px]">→</span>
+          </a>
+        )}
       </div>
     </article>
   )

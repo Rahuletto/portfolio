@@ -12,9 +12,8 @@ export function Starburst({ progressRef }: { progressRef: { current: number } })
     })
     if (!canvas || !gl) return
 
-    const vertex = `attribute vec2 p; void main(){gl_Position=vec4(p,0.,1.);}`
-    gl.getExtension('OES_standard_derivatives')
-    const fragment = `
+    const vertexShaderSrc = `attribute vec2 p; void main(){gl_Position=vec4(p,0.,1.);}`
+    const fragShaderSrc = `
       #extension GL_OES_standard_derivatives : enable
       precision highp float;
       uniform vec2 resolution;
@@ -111,16 +110,48 @@ export function Starburst({ progressRef }: { progressRef: { current: number } })
         float alpha=clamp(max(max(color.r,color.g),color.b),0.0,1.0);
         gl_FragColor=vec4(color,alpha);
       }`
-    const compile = (type: number, source: string) => {
-      const shader = gl.createShader(type)!
+    gl.getExtension('OES_standard_derivatives')
+
+    const compileShader = (type: number, source: string): WebGLShader | null => {
+      const shader = gl.createShader(type)
+      if (!shader) return null
       gl.shaderSource(shader, source)
       gl.compileShader(shader)
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        const log = gl.getShaderInfoLog(shader)
+        if (log) console.warn('Starburst shader compile error:', log)
+        gl.deleteShader(shader)
+        return null
+      }
       return shader
     }
-    const program = gl.createProgram()!
-    gl.attachShader(program, compile(gl.VERTEX_SHADER, vertex))
-    gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragment))
+
+    const program = gl.createProgram()
+    if (!program) return () => undefined
+
+    const vs = compileShader(gl.VERTEX_SHADER, vertexShaderSrc)
+    const fs = compileShader(gl.FRAGMENT_SHADER, fragShaderSrc)
+
+    if (!vs || !fs) {
+      if (vs) gl.deleteShader(vs)
+      if (fs) gl.deleteShader(fs)
+      gl.deleteProgram(program)
+      return () => undefined
+    }
+
+    gl.attachShader(program, vs)
+    gl.attachShader(program, fs)
     gl.linkProgram(program)
+    gl.deleteShader(vs)
+    gl.deleteShader(fs)
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      const log = gl.getProgramInfoLog(program)
+      if (log) console.warn('Starburst program link error:', log)
+      gl.deleteProgram(program)
+      return () => undefined
+    }
+
     gl.useProgram(program)
     const buffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
