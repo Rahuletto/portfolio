@@ -150,6 +150,5 @@ export function Starburst({ progressRef }: { progressRef: { current: number } })
     }
   }, [progressRef])
 
-  return <canvas ref={canvasRef} className="burst-canvas" aria-hidden="true" />
+  return <canvas ref={canvasRef} className="absolute inset-0 -z-[2] size-full" aria-hidden="true" />
 }
-

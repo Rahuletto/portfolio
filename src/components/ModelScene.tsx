@@ -136,5 +136,17 @@ export function ModelScene({ model, variant }: ModelSceneProps) {
     }
   }, [model, variant])
 
-  return <canvas ref={canvasRef} className={`model-canvas model-canvas--${variant}`} aria-hidden="true" />
+  const variantClass = variant === 'finale'
+    ? 'opacity-[.72] [transform:scale(1.25)_translateY(10%)] max-[760px]:[transform:scale(1.5)_translateY(14%)]'
+    : variant === 'cursor'
+      ? 'z-[1]'
+      : 'translate-y-[2%]'
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className={`pointer-events-none absolute inset-0 -z-[1] size-full ${variantClass}`}
+      aria-hidden="true"
+    />
+  )
 }

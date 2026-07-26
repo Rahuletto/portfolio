@@ -866,7 +866,7 @@ export function GlobalWebGLScene() {
   return (
     <canvas
       ref={canvasRef}
-      className="global-webgl"
+      className="pointer-events-none fixed inset-0 -z-[1] block size-full"
       aria-hidden="true"
     />
   )

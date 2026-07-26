@@ -233,10 +233,9 @@ export function ProjectMedia({ image, hoverImage, effect }: { image: string; hov
   }, [effect, hoverImage, image])
 
   return (
-    <div className="project-shader" ref={wrapRef}>
-      <img src={`/assets/${image}`} alt="" loading="lazy" />
-      <canvas ref={canvasRef} aria-hidden="true" />
+    <div className="project-shader relative aspect-[1.45] w-full overflow-hidden max-[760px]:aspect-[1.25]" ref={wrapRef}>
+      <img className="absolute inset-0 block size-full object-cover" src={`/assets/${image}`} alt="" loading="lazy" />
+      <canvas className="absolute inset-0 z-[1] block size-full object-cover opacity-0 transition-opacity duration-[350ms]" ref={canvasRef} aria-hidden="true" />
     </div>
   )
 }
-
