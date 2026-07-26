@@ -12,14 +12,17 @@ export function BackgroundDotTransition() {
     if (!layer || !startAnchor || !endAnchor) return
 
     let frame = 0
+    let previousProgress = -1
     const update = () => {
       frame = 0
       const viewportHeight = window.innerHeight
       const start = startAnchor.offsetTop
-        + startAnchor.offsetHeight * 0.5
+        + startAnchor.offsetHeight * 0.75
         - viewportHeight * 0.5
-      const end = endAnchor.offsetTop - viewportHeight * 0.75
+      const end = endAnchor.offsetTop - viewportHeight * 0.3
       const progress = clamp01((window.scrollY - start) / Math.max(end - start, 1))
+      if (Math.abs(progress - previousProgress) < 0.001) return
+      previousProgress = progress
       layer.style.setProperty('--dot-progress', progress.toFixed(4))
     }
     const requestUpdate = () => {

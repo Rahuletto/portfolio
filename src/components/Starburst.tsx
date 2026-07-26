@@ -42,9 +42,9 @@ export function Starburst({ progressRef }: { progressRef: { current: number } })
       vec3 hyperspace(vec2 fragCoord){
         vec2 R=resolution;
         float baseScale=max(1.0,min(R.x,R.y));
-        vec2 origin=vec2(R.x*.585,R.y*.525);
+        vec2 origin=R*.5;
         vec2 u=(fragCoord-origin)*2.0/baseScale;
-        float t=smoothstep(0.0,1.0,clamp(progress/.24,0.0,1.0));
+        float t=smoothstep(0.0,1.0,clamp(progress/.68,0.0,1.0));
 
         const float cellDensity=100.0;
         vec2 polar=vec2(atan(u.y,u.x)/3.0,length(u));
@@ -70,17 +70,21 @@ export function Starburst({ progressRef }: { progressRef: { current: number } })
         star*=thinMask*keepMask;
 
         float radialBoost=pow(smoothstep(.1,1.0,polar.y),1.25);
-        float intensity=mix(0.0,6.5,t*1.2);
+        float intensity=mix(0.0,1.25,t);
         float stripeBlend=hash21(vec2(angleId,19.713));
-        vec3 colorA=vec3(.878,.314,.208);
-        vec3 colorB=vec3(1.0,.405,.25);
-        vec3 stripeColor=mix(colorA,colorB,stripeBlend);
+        vec3 colorA=vec3(.0,.94,1.0);
+        vec3 colorB=vec3(.42,.98,1.0);
+        vec3 colorC=vec3(.04,.38,1.0);
+        vec3 colorD=vec3(.68,.06,1.0);
+        vec3 cyanBlue=mix(colorA,colorB,smoothstep(0.0,.58,stripeBlend));
+        vec3 blueViolet=mix(colorC,colorD,smoothstep(.55,1.0,stripeBlend));
+        vec3 stripeColor=mix(cyanBlue,blueViolet,step(.72,stripeBlend));
 
         vec3 hsvA=rgb2hsv(max(colorA,vec3(1e-5)));
         vec3 hsvB=rgb2hsv(max(colorB,vec3(1e-5)));
         float dh=abs(hsvA.x-hsvB.x);
         dh=min(dh,1.0-dh);
-        float hueBand=clamp(dh*1.25+.018,.025,.09);
+        float hueBand=clamp(dh*2.0+.035,.05,.16);
         vec3 hsv=rgb2hsv(max(stripeColor,vec3(1e-5)));
         float idHash=hash21(vec2(angleId,6.18));
         float idHash2=hash21(vec2(angleId,91.7));
@@ -90,7 +94,9 @@ export function Starburst({ progressRef }: { progressRef: { current: number } })
         hsv.y=clamp(hsv.y*mix(.96,1.06,idHash2),0.0,1.0);
         hsv.z=clamp(hsv.z*mix(.97,1.05,idHash),0.0,1.0);
         stripeColor=hsv2rgb(hsv);
-        float pulse=mix(.78,1.0,smoothstep(.14,.5,channelMix));
+        float hotRay=smoothstep(.8,.98,idHash2);
+        float pulse=mix(.72,1.08,smoothstep(.14,.5,channelMix));
+        pulse*=1.0+hotRay*.55;
         return intensity*radialBoost*stripeColor*pulse*star;
       }
 

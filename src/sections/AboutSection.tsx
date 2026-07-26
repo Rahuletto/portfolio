@@ -1,19 +1,25 @@
+import { useScrollReveal } from '../hooks/useScrollReveal.ts'
+
 export function AboutSection() {
+  const sectionRef = useScrollReveal<HTMLElement>()
+
   return (
     <section
-      className="about relative z-[1] grid min-h-[115svh] grid-cols-[4fr_7fr] items-center gap-[8vw] px-[4vw] pt-[20vh] pb-[12vh] max-[760px]:min-h-0 max-[760px]:grid-cols-1 max-[760px]:gap-[10vh] max-[760px]:px-[18px] max-[760px]:py-[16vh]"
+      className="about relative z-[1] grid min-h-[110svh] grid-cols-[5fr_7fr] items-center gap-[6vw] px-[5.8vw] pt-[18vh] pb-[14vh] max-[900px]:grid-cols-1 max-[900px]:gap-[8vh] max-[760px]:min-h-0 max-[760px]:px-[18px] max-[760px]:py-[14vh]"
       data-dot-transition-start
+      data-scroll-reveal
+      ref={sectionRef}
     >
-      <div className="reveal relative aspect-[433/388] w-[min(100%,500px)] overflow-visible max-[760px]:w-[84%]" aria-hidden="true">
+      <div className="about-art reveal relative aspect-[433/388] w-full max-w-[560px] justify-self-start overflow-visible max-[900px]:max-w-[420px] max-[900px]:justify-self-center max-[900px]:mx-auto max-[760px]:w-[88%]" aria-hidden="true">
         <img
           className="block size-full object-contain"
           src="/assets/about-vector.svg"
           alt=""
         />
       </div>
-      <div className="reveal max-w-[900px] text-[clamp(27px,4.2vw,67px)] leading-[1.08] tracking-[-.055em] max-[760px]:text-[7.3vw]">
-        <p className="mb-[.7em]">I’m Marban, a full-stack developer, UI/UX designer, and Agentic AI developer building tools that make work more efficient.</p>
-        <p className="mb-[.7em] text-[#8e93a0]">I move from <u className="text-[#f4f5f7] underline decoration-1 underline-offset-[.1em]">product thinking</u> and interface design to <u className="text-[#f4f5f7] underline decoration-1 underline-offset-[.1em]">production code</u>, creating thoughtful systems where people and AI work better together.</p>
+      <div className="about-copy reveal w-full max-w-[880px] text-[clamp(23px,3.4vw,52px)] leading-[1.12] tracking-[-.045em] max-[900px]:mx-auto max-[900px]:text-center max-[760px]:text-[6.8vw]">
+        <p className="mb-[.65em]">I’m Rahul Marban, a self-taught full-stack developer building on the web since 2020.</p>
+        <p className="text-[#8e93a0]">My work spans <span className="text-[#f4f5f7]">developer tools, AI, and web applications</span>, always with the goal of solving real problems through simple, well-crafted software.</p>
       </div>
     </section>
   )

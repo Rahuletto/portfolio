@@ -1,11 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Starburst } from '../components/Starburst.tsx'
+import { useScrollReveal } from '../hooks/useScrollReveal.ts'
 import { ManifestoSection } from './ManifestoSection.tsx'
 
 export function Manifesto() {
   const sectionRef = useRef<HTMLElement>(null)
   const progressRef = useRef(0)
-  const [stage, setStage] = useState(0)
+  useScrollReveal(sectionRef)
 
   useEffect(() => {
     let frame = 0
@@ -17,7 +18,6 @@ export function Manifesto() {
       const progress = Math.min(1, Math.max(0, -rect.top / distance))
       progressRef.current = progress
       section.style.setProperty('--manifest-progress', progress.toFixed(4))
-      setStage(progress < 0.22 ? 0 : progress < 0.46 ? 1 : progress < 0.72 ? 2 : 3)
     }
     const onScroll = () => {
       cancelAnimationFrame(frame)
@@ -36,10 +36,8 @@ export function Manifesto() {
   return (
     <ManifestoSection
       sectionRef={sectionRef}
-      stage={stage}
       Starburst={Starburst}
       progressRef={progressRef}
     />
   )
 }
-
