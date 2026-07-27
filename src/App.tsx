@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react'
 import './App.css'
 import { GridOverlay } from './components/GridOverlay.tsx'
 import { LazySection } from './components/LazySection.tsx'
-import { SideScrollbar } from './components/SideScrollbar.tsx'
+// import { SideScrollbar } from './components/SideScrollbar.tsx'
 import { HeroIntroOverlay } from './intro/HeroIntroOverlay.tsx'
 import { useHeroIntro } from './intro/useHeroIntro.ts'
 import { HeroSection } from './sections/HeroSection.tsx'
@@ -28,10 +28,14 @@ const GlobalWebGLScene = lazy(async () => {
   const module = await import('./hero/GlobalWebGLScene.tsx')
   return { default: module.GlobalWebGLScene }
 })
+const DebugPerformancePanel = lazy(async () => {
+  const module = await import('./components/DebugPerformancePanel.tsx')
+  return { default: module.DebugPerformancePanel }
+})
 
 function App() {
   const intro = useHeroIntro()
-  useSmoothScroll(intro.phase === 'complete')
+  useSmoothScroll(intro.phase === 'revealing' || intro.phase === 'complete')
 
   return (
     <main
@@ -51,17 +55,21 @@ function App() {
         <BackgroundDotTransition />
       </Suspense>
       <GridOverlay />
-      <SideScrollbar />
+      {/* <SideScrollbar /> */}
       <HeroSection />
 
+      <Suspense fallback={null}>
+        <DebugPerformancePanel />
+      </Suspense>
+
       {/* Below-fold sections — each mounts independently as user scrolls near it */}
-      <LazySection>
+      <LazySection minHeight="110svh" rootMargin="350px">
         <Suspense fallback={null}>
           <AboutSection />
         </Suspense>
       </LazySection>
 
-      <LazySection>
+      <LazySection minHeight="120svh" rootMargin="350px">
         <Suspense fallback={null}>
           <ProjectsSection Media={ProjectMedia} />
         </Suspense>

@@ -244,20 +244,6 @@
   transform: translate3d(0, 42px, 0);
 }
 
-.manifesto[data-reveal-ready='true'] .manifesto-sticky {
-  opacity: .72;
-  transform: scale(.975);
-  transform-origin: 50% 50%;
-  transition:
-    opacity 900ms ease-out,
-    transform 1200ms cubic-bezier(.16, 1, .3, 1);
-}
-
-.manifesto[data-reveal-visible='true'] .manifesto-sticky {
-  opacity: 1;
-  transform: scale(1);
-}
-
 .skills-section[data-reveal-ready='true'] {
   opacity: 0;
   transform: translate3d(0, 32px, 0);
@@ -348,10 +334,6 @@
     gap: 12px;
   }
 
-  .manifesto {
-    height: 140svh;
-  }
-
   .fixed-meta {
     bottom: max(22px, env(safe-area-inset-bottom));
     left: clamp(32px, 4.8vw, 50px);
@@ -440,10 +422,6 @@
 
   .project-meta {
     padding-top: 12px;
-  }
-
-  .manifesto {
-    height: 132svh;
   }
 
   .fixed-meta {
@@ -557,7 +535,6 @@
   .project[data-reveal-ready='true'] .project-meta,
   .about[data-reveal-ready='true'] .about-art,
   .about[data-reveal-ready='true'] .about-copy,
-  .manifesto[data-reveal-ready='true'] .manifesto-sticky,
   .skills-section[data-reveal-ready='true'] {
     opacity: 1;
     transform: none;
@@ -573,23 +550,6 @@
 }
 
 /* Red X-Ray Thermal Cyber Scanner Effect -------------------------------- */
-@keyframes redLaserSweep {
-  0% {
-    top: 2%;
-    opacity: 0.2;
-  }
-  15% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    top: 96%;
-    opacity: 0.2;
-  }
-}
-
 .xray-filter {
   filter: contrast(240%) brightness(120%) sepia(100%) hue-rotate(310deg) saturate(800%) invert(18%);
   will-change: opacity;
@@ -605,7 +565,4 @@
   );
 }
 
-.group:hover .xray-laser {
-  animation: redLaserSweep 1.5s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
-  box-shadow: 0 0 14px #ff2a00, 0 0 28px #ff2a00, 0 0 45px #ff2a00;
-}
+

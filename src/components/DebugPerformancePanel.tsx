@@ -46,6 +46,7 @@ export function DebugPerformancePanel() {
   const [domCount, setDomCount] = useState(0)
   const [isPausedAll, setIsPausedAll] = useState(false)
   const [lowGpuMode, setLowGpuMode] = useState(false)
+  const [taskPerfStats, setTaskPerfStats] = useState<import('../engine/animEngine.ts').TaskPerfStats[]>([])
 
   // ── Recording & Profiling State ─────────────────────────────────────────────
   const [isRecording, setIsRecording] = useState(false)
@@ -173,6 +174,7 @@ export function DebugPerformancePanel() {
         const taskCount = (enginePrivate.tasks?.size || 0) + (enginePrivate.lerpTasks?.size || 0)
         setActiveTasks(taskCount)
         setTickerState(enginePrivate.rafId !== 0 ? 'RUNNING' : 'SLEEPING')
+        setTaskPerfStats(animEngine.getTaskStats())
       }
 
       frameId = requestAnimationFrame(measure)
@@ -256,6 +258,7 @@ export function DebugPerformancePanel() {
 
   // ── Recording Controls ───────────────────────────────────────────────────
   const startRecording = () => {
+    animEngine.resetTaskStats()
     recordingRef.current = {
       active: true,
       startTime: performance.now(),
@@ -444,6 +447,30 @@ export function DebugPerformancePanel() {
                 <div className="truncate text-zinc-400" title={webglInfo.renderer}>
                   GPU: <span className="text-zinc-200">{webglInfo.renderer}</span>
                 </div>
+              </div>
+            )}
+          </div>
+
+          {/* Detailed Per-Task Execution Profiler */}
+          <div className="mb-3 rounded-xl border border-white/10 bg-white/5 p-2.5 text-[10px]">
+            <div className="mb-1.5 flex justify-between border-b border-white/10 pb-1 font-bold text-white">
+              <span>TASK ID (ANIM ENGINE)</span>
+              <span>CALLS | TIME</span>
+            </div>
+            {taskPerfStats.length === 0 ? (
+              <div className="py-1 text-center italic text-zinc-500">No active tasks executing</div>
+            ) : (
+              <div className="max-h-[110px] overflow-y-auto space-y-1 pr-1">
+                {taskPerfStats.map((stat) => (
+                  <div key={stat.id} className="flex justify-between items-center font-mono">
+                    <span className="truncate max-w-[190px] text-zinc-300" title={stat.id}>
+                      {stat.id}
+                    </span>
+                    <span className={`font-bold ${stat.executionTimeMs > 16.7 ? 'text-red-400 animate-pulse' : stat.executionTimeMs > 5 ? 'text-yellow-400' : 'text-green-400'}`}>
+                      {stat.callCount}x | {stat.executionTimeMs} ms
+                    </span>
+                  </div>
+                ))}
               </div>
             )}
           </div>

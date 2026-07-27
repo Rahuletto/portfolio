@@ -217,7 +217,7 @@ export const bokehFragmentShader = `
   uniform float uTrackMouse;
 
   #define PI2 6.28318530718
-  #define ITERATIONS 32.0
+  #define ITERATIONS 12.0
   #define GOLDEN_ANGLE 2.39996323
 
   vec2 sampleSpiral(float theta, inout float radius) {

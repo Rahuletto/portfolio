@@ -3,6 +3,7 @@ import {
   useRef,
   type RefObject,
 } from 'react'
+import { animEngine } from '../engine/animEngine.ts'
 import { getElementScrollProgress } from './scrollProgress.ts'
 
 export function useScrollReveal<T extends HTMLElement>(
@@ -16,7 +17,7 @@ export function useScrollReveal<T extends HTMLElement>(
     if (!element) return
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-    let frame = 0
+    let removeTask: (() => void) | null = null
     let active = true
     let cachedTop = 0
     let cachedHeight = 0
@@ -33,7 +34,6 @@ export function useScrollReveal<T extends HTMLElement>(
     }
 
     const update = () => {
-      frame = 0
       if (!active && !reducedMotion.matches) return
 
       if (cachedHeight === 0) measure()
@@ -54,9 +54,16 @@ export function useScrollReveal<T extends HTMLElement>(
       }
     }
 
+    const taskId = 'reveal_' + (element.id || Math.random().toString(36).slice(2, 8))
+
     const schedule = () => {
-      if (frame !== 0) return
-      frame = requestAnimationFrame(update)
+      if (!removeTask) {
+        removeTask = animEngine.addTask(taskId, () => {
+          update()
+          removeTask = null
+          return false
+        })
+      }
     }
 
     const onResize = () => {
@@ -90,7 +97,7 @@ export function useScrollReveal<T extends HTMLElement>(
     update()
 
     return () => {
-      cancelAnimationFrame(frame)
+      if (removeTask) removeTask()
       observer.disconnect()
       window.removeEventListener('scroll', schedule)
       window.removeEventListener('portfolio:scroll', schedule)

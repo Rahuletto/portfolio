@@ -23,9 +23,17 @@ export type LerpTaskConfig = {
   onComplete?: () => void
 }
 
+export type TaskPerfStats = {
+  id: string
+  executionTimeMs: number
+  callCount: number
+  lastCallMs: number
+}
+
 class AnimEngine {
   private tasks = new Map<string, AnimTaskCallback>()
   private lerpTasks = new Map<string, LerpTaskConfig>()
+  private taskStats = new Map<string, TaskPerfStats>()
   private rafId = 0
   private lastTime = 0
   private isPaused = false
@@ -43,6 +51,18 @@ class AnimEngine {
       window.addEventListener('blur', () => this.pause())
       window.addEventListener('focus', () => this.resume())
     }
+  }
+
+  public getTaskStats(): TaskPerfStats[] {
+    return Array.from(this.taskStats.values()).sort((a, b) => b.executionTimeMs - a.executionTimeMs)
+  }
+
+  public resetTaskStats(): void {
+    this.taskStats.clear()
+  }
+
+  public getActiveTaskIds(): string[] {
+    return [...Array.from(this.tasks.keys()), ...Array.from(this.lerpTasks.keys())]
   }
 
   /**
@@ -153,7 +173,16 @@ class AnimEngine {
 
     // 1. Run custom tasks
     for (const [id, callback] of Array.from(this.tasks.entries())) {
+      const t0 = performance.now()
       const keep = callback(dt, now)
+      const dur = performance.now() - t0
+
+      const stats = this.taskStats.get(id) || { id, executionTimeMs: 0, callCount: 0, lastCallMs: 0 }
+      stats.executionTimeMs = Number(dur.toFixed(2))
+      stats.callCount += 1
+      stats.lastCallMs = now
+      this.taskStats.set(id, stats)
+
       if (keep === false) {
         this.tasks.delete(id)
       }

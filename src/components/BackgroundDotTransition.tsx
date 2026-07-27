@@ -37,8 +37,9 @@ export function BackgroundDotTransition() {
         cur = cur.offsetParent as HTMLElement | null
       }
 
-      cachedStart = startTop + startAnchor.offsetHeight * 0.5 - viewportHeight * 0.5
-      cachedEnd = endTop + endAnchor.offsetHeight - viewportHeight * 0.3
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - viewportHeight)
+      cachedStart = Math.max(0, startTop - viewportHeight * 0.2)
+      cachedEnd = Math.min(maxScroll, endTop + endAnchor.offsetHeight - viewportHeight)
       return true
     }
 

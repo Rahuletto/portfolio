@@ -180,7 +180,9 @@ export function Starburst({ progressRef }: { progressRef: { current: number } })
     }
 
     const removeTask = animEngine.addTask('starburst', () => {
-      draw()
+      if (progressRef.current > 0.001) {
+        draw()
+      }
       return true
     })
 

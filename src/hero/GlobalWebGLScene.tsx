@@ -1,5 +1,6 @@
 import { useEffect, useRef, type RefObject } from 'react'
 import * as THREE from 'three'
+import { animEngine } from '../engine/animEngine.ts'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import {
   clampPointerDelta,
@@ -339,8 +340,8 @@ export function GlobalWebGLScene({
         if (disposed) return
 
         const stickerFiles = [
-          { path: '/assets/stickers/sticker-pen.png', size: 0.52, x: -2.05, y: 1.35, z: 0.85, spin: 0 },
-          { path: '/assets/stickers/sticker-pixel-coin.png', size: 0.72, x: 0.0, y: 0.65, z: -0.65, spin: 1.4 },
+          { path: '/assets/stickers/sticker-pen.png', size: 0.52, x: -1.45, y: 0.95, z: 0.85, spin: 0 },
+          { path: '/assets/stickers/sticker-heart.png', size: 0.72, x: 0.0, y: 0.65, z: -0.65, spin: 1.4 },
           { path: '/assets/stickers/sticker-eyes.png', size: 0.46, x: -2.35, y: 0.05, z: 0.85, spin: 2.8 },
           { path: '/assets/stickers/sticker-2026.png', size: 0.46, x: 2.35, y: -0.25, z: 0.85, spin: 4.1 },
           { path: '/assets/stickers/sticker-hand.png', size: 0.28, x: 1.55, y: -1.35, z: 0.85, spin: 5.2 },
@@ -462,43 +463,41 @@ export function GlobalWebGLScene({
     let height = 0
     let appliedQualityName = ''
     let previousRenderAt = 0
-    let frame = 0
     let lastGlassQuality: string | null = null
-    let interactionUntil = performance.now() + 1200
     let fluidFramesRemaining = 0
     let glassMotionEnergy = 0
     const startedAt = performance.now()
     const decorationSizes = [0.52, 0.72, 0.46, 0.46, 0.28]
     const desktopDecorationLayout = [
-      { x: -2.05, y: 1.35, z: 0.85, size: 0.52 },
+      { x: -1.45, y: 0.95, z: 0.85, size: 0.52 },
       { x: 0.0, y: 0.65, z: -0.65, size: 0.72 },
       { x: -2.35, y: 0.05, z: 0.85, size: 0.46 },
       { x: 2.35, y: -0.25, z: 0.85, size: 0.46 },
       { x: 1.55, y: -1.35, z: 0.85, size: 0.28 },
     ]
     const tabletPortraitDecorationLayout = [
-      { x: -1.35, y: 1.35, z: 0.85, size: 0.40 },
+      { x: -0.95, y: 0.95, z: 0.85, size: 0.40 },
       { x: 0.0, y: 0.55, z: -0.65, size: 0.48 },
       { x: -1.55, y: 0.05, z: 0.85, size: 0.36 },
       { x: 1.55, y: -0.25, z: 0.85, size: 0.34 },
       { x: 1.05, y: -1.25, z: 0.85, size: 0.24 },
     ]
     const phonePortraitDecorationLayout = [
-      { x: -0.75, y: 1.25, z: 0.85, size: 0.26 },
+      { x: -0.45, y: 0.85, z: 0.85, size: 0.26 },
       { x: 0.0, y: 0.48, z: -0.65, size: 0.34 },
       { x: -0.95, y: 0.05, z: 0.85, size: 0.24 },
       { x: 0.95, y: -0.25, z: 0.85, size: 0.22 },
       { x: 0.65, y: -1.15, z: 0.85, size: 0.16 },
     ]
     const tabletLandscapeDecorationLayout = [
-      { x: -2.05, y: 1.35, z: 0.85, size: 0.42 },
+      { x: -1.45, y: 0.95, z: 0.85, size: 0.42 },
       { x: 0.0, y: 0.55, z: -0.65, size: 0.58 },
       { x: -2.35, y: 0.05, z: 0.85, size: 0.40 },
       { x: 2.35, y: -0.25, z: 0.85, size: 0.40 },
       { x: 1.55, y: -1.35, z: 0.85, size: 0.28 },
     ]
     const compactLandscapeDecorationLayout = [
-      { x: -2.05, y: 1.25, z: 0.85, size: 0.28 },
+      { x: -1.45, y: 0.85, z: 0.85, size: 0.28 },
       { x: 0.0, y: 0.48, z: -0.65, size: 0.42 },
       { x: -2.35, y: 0.05, z: 0.85, size: 0.30 },
       { x: 2.35, y: -0.25, z: 0.85, size: 0.28 },
@@ -514,7 +513,6 @@ export function GlobalWebGLScene({
     const heroObserver = new IntersectionObserver(
       ([entry]) => {
         heroActive = entry?.isIntersecting ?? false
-        interactionUntil = performance.now() + 300
         wake()
       },
       { rootMargin: '120px' },
@@ -649,7 +647,6 @@ export function GlobalWebGLScene({
         pendingDelta.x *= scale
         pendingDelta.y *= scale
       }
-      interactionUntil = performance.now() + 600
       fluidFramesRemaining = 48
       wake()
     }
@@ -657,7 +654,6 @@ export function GlobalWebGLScene({
     const onVisibilityChange = () => {
       visible = !document.hidden
       if (visible) {
-        interactionUntil = performance.now() + 300
         wake()
       }
     }
@@ -667,7 +663,6 @@ export function GlobalWebGLScene({
         1,
         Math.max(0, window.scrollY / Math.max(heroHeight, 1)),
       )
-      interactionUntil = performance.now() + 900
       wake()
     }
     const onSmoothScroll = (event: Event) => {
@@ -678,11 +673,9 @@ export function GlobalWebGLScene({
         1,
         Math.max(0, scroll / Math.max(heroHeight, 1)),
       )
-      interactionUntil = performance.now() + 120
       wake()
     }
     const onResize = () => {
-      interactionUntil = performance.now() + 300
       wake()
     }
     const onReducedMotion = (event: MediaQueryListEvent) => {
@@ -703,25 +696,17 @@ export function GlobalWebGLScene({
     coarsePointerQuery.addEventListener('change', onCoarsePointer)
     onScroll()
 
-    const render = () => {
-      frame = 0
+    const render = (now: number = performance.now()) => {
       updateLayout()
 
-      if (!visible) return
+      if (!visible || disposed) return
+      if (!heroActive && targetScrollProgress >= 0.99) return
 
-      const now = performance.now()
       const introProgress = Math.min(
         1,
         Math.max(0, introProgressRef.current),
       )
       const introEase = 1 - Math.pow(1 - introProgress, 3)
-      const introAnimating = introProgress < 0.999
-      const interactionActive = (
-        now < interactionUntil
-        || fluidFramesRemaining > 0
-        || Math.abs(targetScrollProgress - scrollProgress) > 0.0005
-        || introAnimating
-      )
       if (
         interactionReadyRef.current
         && previousRenderAt > 0
@@ -735,7 +720,6 @@ export function GlobalWebGLScene({
 
       // Pause WebGL rendering during loading screen so signature loader gets 100% CPU/GPU frame capacity
       if (introProgressRef.current < 0.05) {
-        frame = requestAnimationFrame(render)
         return
       }
 
@@ -1006,18 +990,28 @@ export function GlobalWebGLScene({
       compositeMesh.material = compositeMaterial
       renderer.setRenderTarget(null)
       renderer.render(compositeScene, compositeCamera)
+    }
 
-      if (interactionActive) wake()
+    const registerHeroTask = () => {
+      animEngine.addTask('heroScene', (_dt, now) => {
+        if (!heroActive || targetScrollProgress >= 0.99 || !visible) {
+          return false
+        }
+        render(now)
+        return true
+      })
     }
+
+    registerHeroTask()
     wake = () => {
-      if (!visible || disposed || frame !== 0) return
-      frame = requestAnimationFrame(render)
+      if (!disposed && heroActive && targetScrollProgress < 0.99 && visible) {
+        registerHeroTask()
+      }
     }
-    wake()
 
     return () => {
       disposed = true
-      cancelAnimationFrame(frame)
+      animEngine.removeTask('heroScene')
       window.removeEventListener('pointermove', onPointerMove)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('portfolio:scroll', onSmoothScroll)

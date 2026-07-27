@@ -87,9 +87,9 @@ export function useHeroIntro(): HeroIntroState {
     return () => removeTask()
   }, [assetsReady])
 
-  // Lock scroll during intro
+  // Lock scroll during intro preloader loading
   useEffect(() => {
-    if (phase === 'complete') return
+    if (phase === 'revealing' || phase === 'complete') return
     const prevHtml = document.documentElement.style.overflow
     const prevBody = document.body.style.overflow
     document.documentElement.style.overflow = 'hidden'

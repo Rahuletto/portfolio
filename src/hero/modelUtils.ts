@@ -52,13 +52,7 @@ export function placeModel(
 
 function createGlassMaterial(
   texture: THREE.Texture,
-  mesh: THREE.Mesh,
 ): THREE.ShaderMaterial {
-  mesh.geometry.computeBoundingBox()
-  const localBounds = mesh.geometry.boundingBox
-  const localYMin = localBounds?.min.y ?? -0.5
-  const localYMax = localBounds?.max.y ?? 0.5
-
   return new THREE.ShaderMaterial({
     vertexShader: glassVertexShader,
     fragmentShader: glassFragmentShader,
@@ -68,7 +62,7 @@ function createGlassMaterial(
       uLight: { value: new THREE.Vector3(4, 9, 0.5) },
       uTintColorA: { value: new THREE.Vector4(1, 0.6, 0.34, 1) },
       uTintColorB: { value: new THREE.Vector4(0.82, 0.46, 0.32, 1) },
-      uTintLocalYRange: { value: new THREE.Vector2(localYMin, localYMax) },
+      uTintLocalYRange: { value: new THREE.Vector2(-0.5, 0.5) },
       uFresnelSideDir: { value: new THREE.Vector3(-1, 1, -1) },
       uIorR: { value: 1.15 },
       uIorY: { value: 1.16 },
@@ -105,9 +99,10 @@ export function applyHeroMaterial(
   model: LoadedModel,
   texture: THREE.Texture,
 ): void {
+  const sharedMaterial = createGlassMaterial(texture)
   model.root.traverse((child) => {
     if (child instanceof THREE.Mesh) {
-      child.material = createGlassMaterial(texture, child)
+      child.material = sharedMaterial
     }
   })
 }
@@ -116,11 +111,14 @@ export function forEachGlassMaterial(
   root: THREE.Object3D,
   update: (material: THREE.ShaderMaterial) => void,
 ): void {
+  const updatedMaterials = new Set<THREE.ShaderMaterial>()
   root.traverse((child) => {
     if (
       child instanceof THREE.Mesh
       && child.material instanceof THREE.ShaderMaterial
+      && !updatedMaterials.has(child.material)
     ) {
+      updatedMaterials.add(child.material)
       update(child.material)
     }
   })

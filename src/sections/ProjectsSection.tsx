@@ -1,4 +1,5 @@
 import type { ComponentType, CSSProperties } from 'react'
+import { LazyItem } from '../components/LazySection.tsx'
 import { projects } from '../data/projects.ts'
 import { useScrollReveal } from '../hooks/useScrollReveal.ts'
 
@@ -65,7 +66,7 @@ function ProjectCard({
 
   return (
     <article
-      className={`project group ${projectLayout(index, project)} ${href ? 'cursor-pointer' : ''}`}
+      className={`project group ${href ? 'cursor-pointer' : ''}`}
       data-layout={projectResponsiveLayout(index, project)}
       data-scroll-reveal
       ref={projectRef}
@@ -123,12 +124,13 @@ export function ProjectsSection({ Media }: ProjectsSectionProps) {
       ref={sectionRef}
     >
       {projects.map((project, index) => (
-        <ProjectCard
-          Media={Media}
-          index={index}
-          key={project.name}
-          project={project}
-        />
+        <LazyItem className={projectLayout(index, project)} key={project.name} rootMargin="300px">
+          <ProjectCard
+            Media={Media}
+            index={index}
+            project={project}
+          />
+        </LazyItem>
       ))}
     </section>
   )
