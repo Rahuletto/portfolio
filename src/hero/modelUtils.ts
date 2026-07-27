@@ -11,22 +11,33 @@ export type LoadedModel = {
 export type DecorationSprite = THREE.Sprite & {
   material: THREE.SpriteMaterial
   userData: {
-    anchorX: number
-    anchorY: number
-    anchorZ: number
     phase: number
+    sizeFrac: number
+    offsetX: number
+    offsetY: number
+    portraitX: number
+    portraitY: number
+    behind: boolean
   }
 }
 
 export function loadModel(loader: GLTFLoader, url: string): Promise<LoadedModel> {
   return loader.loadAsync(url).then((gltf) => {
-    const root = gltf.scene
-    const bounds = new THREE.Box3().setFromObject(root)
+    const rawScene = gltf.scene
+    const bounds = new THREE.Box3().setFromObject(rawScene)
+    const naturalCenter = bounds.getCenter(new THREE.Vector3())
+    const naturalSize = bounds.getSize(new THREE.Vector3())
+
+    // Shift geometry inside root group so pivot (0,0,0) is at exact center of bounding box
+    rawScene.position.sub(naturalCenter)
+
+    const root = new THREE.Group()
+    root.add(rawScene)
 
     return {
       root,
-      naturalSize: bounds.getSize(new THREE.Vector3()),
-      naturalCenter: bounds.getCenter(new THREE.Vector3()),
+      naturalSize,
+      naturalCenter,
     }
   })
 }
@@ -44,10 +55,7 @@ export function placeModel(
   )
 
   model.root.scale.setScalar(scale)
-  model.root.position
-    .copy(model.naturalCenter)
-    .multiplyScalar(-scale)
-    .add(new THREE.Vector3(target.x, target.y, target.z))
+  model.root.position.set(target.x, target.y, target.z)
 }
 
 function createGlassMaterial(
@@ -165,14 +173,18 @@ export function updateGlassFresnelStrength(
 
 export async function loadDecoration(
   loader: THREE.TextureLoader,
-  url: string,
-  size: number,
-  x: number,
-  y: number,
-  z: number,
-  phase: number,
+  item: {
+    path: string
+    sizeFrac: number
+    offsetX: number
+    offsetY: number
+    pX: number
+    pY: number
+    spin: number
+    behind?: boolean
+  },
 ): Promise<DecorationSprite> {
-  const texture = await loader.loadAsync(url)
+  const texture = await loader.loadAsync(item.path)
   texture.colorSpace = THREE.SRGBColorSpace
   texture.minFilter = THREE.LinearMipmapLinearFilter
   texture.magFilter = THREE.LinearFilter
@@ -185,9 +197,24 @@ export async function loadDecoration(
     depthWrite: false,
     toneMapped: false,
   })
+  const behindZ = -1.15
+  const frontZ = 0.85
+  const z = item.behind ? behindZ : frontZ
+  const baseSize = item.sizeFrac * 4.6
   const sprite = new THREE.Sprite(material) as DecorationSprite
-  sprite.scale.set(size, size, 1)
-  sprite.position.set(x, y, z)
-  sprite.userData = { anchorX: x, anchorY: y, anchorZ: z, phase }
+  sprite.scale.set(baseSize, baseSize, 1)
+  sprite.position.set(item.offsetX, item.offsetY, z)
+  if (item.behind) {
+    sprite.renderOrder = -1
+  }
+  sprite.userData = {
+    phase: item.spin,
+    sizeFrac: item.sizeFrac,
+    offsetX: item.offsetX,
+    offsetY: item.offsetY,
+    portraitX: item.pX,
+    portraitY: item.pY,
+    behind: !!item.behind,
+  }
   return sprite
 }

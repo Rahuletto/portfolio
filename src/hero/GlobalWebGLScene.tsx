@@ -310,7 +310,7 @@ export function GlobalWebGLScene({
       if (disposed) return
 
       try {
-        const helloModel = await loadModel(loader, '/assets/3d/023-hello.gltf')
+        const helloModel = await loadModel(loader, '/assets/3d/sign.glb')
         if (disposed) return
         hello = helloModel
         lastGlassQuality = null
@@ -338,17 +338,24 @@ export function GlobalWebGLScene({
         await yieldMainThread(30)
         if (disposed) return
 
+        // Stickers are placed at world-space offsets from the glass model's
+        // center, scaled proportionally with the model size so they stay
+        // spread across the screen on every breakpoint. behind = sticker sits
+        // behind the glass and peeks out from an edge; front = floats above.
+        // Portrait offsets (pX/pY) spread stickers vertically on tall screens.
+        // spin = base material rotation in radians for per-sticker tilt.
         const stickerFiles = [
-          { path: '/assets/stickers/sticker-pen.png', size: 0.52, x: -1.75, y: 1.05, z: 0.85, spin: 0 },
-          { path: '/assets/stickers/sticker-heart.png', size: 0.72, x: 0.0, y: 0.65, z: -0.65, spin: 1.4 },
-          { path: '/assets/stickers/sticker-eyes.png', size: 0.46, x: -2.35, y: 0.05, z: 0.85, spin: 2.8 },
-          { path: '/assets/stickers/sticker-2026.png', size: 0.46, x: 2.35, y: -0.25, z: 0.85, spin: 4.1 },
-          { path: '/assets/stickers/sticker-hand.png', size: 0.28, x: 1.55, y: -1.35, z: 0.85, spin: 5.2 },
+          { path: '/assets/stickers/sticker-pen.png',    sizeFrac: 0.12, offsetX: -1.95, offsetY:  0.82, pX: -0.72, pY:  1.3,  behind: false, spin: -0.25 },
+          { path: '/assets/stickers/sticker-eyes.png',   sizeFrac: 0.11, offsetX: -2.55, offsetY: -0.85, pX:  0.78, pY:  0.6,  behind: false, spin: 0.3  },
+          { path: '/assets/stickers/sticker-heart.png',  sizeFrac: 0.17, offsetX: -0.7,  offsetY:  0.01,  pX: -0.5,  pY:  0.8,  behind: true,  spin: 0.1  },
+          { path: '/assets/stickers/sticker-star.webp',  sizeFrac: 0.15, offsetX:  0.85, offsetY:  0.75, pX:  0.42, pY:  0.8,  behind: true,  spin: 0.1  },
+          { path: '/assets/stickers/sticker-2026.png',   sizeFrac: 0.11, offsetX:  2.05, offsetY: -0.38, pX:  0.92, pY: -0.95, behind: false, spin: -0.15 },
+          { path: '/assets/stickers/sticker-hand.png',   sizeFrac: 0.20, offsetX:  0.85, offsetY: -2.1,  pX: -0.85, pY: -2.32, behind: false, spin: 0.4  },
         ]
 
         for (const item of stickerFiles) {
           if (disposed) break
-          const sprite = await loadDecoration(textureLoader, item.path, item.size, item.x, item.y, item.z, item.spin)
+          const sprite = await loadDecoration(textureLoader, item)
           decorations.push(sprite)
           scene.add(sprite)
           await yieldMainThread(20)
@@ -468,42 +475,6 @@ export function GlobalWebGLScene({
     let fluidFramesRemaining = 0
     let glassMotionEnergy = 0
     const startedAt = performance.now()
-    const decorationSizes = [0.52, 0.72, 0.46, 0.46, 0.28]
-    const desktopDecorationLayout = [
-      { x: -2.05, y: 1.35, z: 0.85, size: 0.52 },
-      { x: 0.0, y: 0.65, z: -0.65, size: 0.72 },
-      { x: -2.35, y: 0.05, z: 0.85, size: 0.46 },
-      { x: 2.35, y: -0.25, z: 0.85, size: 0.46 },
-      { x: 1.55, y: -1.35, z: 0.85, size: 0.28 },
-    ]
-    const tabletPortraitDecorationLayout = [
-      { x: -1.35, y: 1.35, z: 0.85, size: 0.40 },
-      { x: 0.0, y: 0.55, z: -0.65, size: 0.48 },
-      { x: -1.55, y: 0.05, z: 0.85, size: 0.36 },
-      { x: 1.55, y: -0.25, z: 0.85, size: 0.34 },
-      { x: 1.05, y: -1.25, z: 0.85, size: 0.24 },
-    ]
-    const phonePortraitDecorationLayout = [
-      { x: -0.75, y: 1.25, z: 0.85, size: 0.26 },
-      { x: 0.0, y: 0.48, z: -0.65, size: 0.34 },
-      { x: -0.95, y: 0.05, z: 0.85, size: 0.24 },
-      { x: 0.95, y: -0.25, z: 0.85, size: 0.22 },
-      { x: 0.65, y: -1.15, z: 0.85, size: 0.16 },
-    ]
-    const tabletLandscapeDecorationLayout = [
-      { x: -2.05, y: 1.35, z: 0.85, size: 0.42 },
-      { x: 0.0, y: 0.55, z: -0.65, size: 0.58 },
-      { x: -2.35, y: 0.05, z: 0.85, size: 0.40 },
-      { x: 2.35, y: -0.25, z: 0.85, size: 0.40 },
-      { x: 1.55, y: -1.35, z: 0.85, size: 0.28 },
-    ]
-    const compactLandscapeDecorationLayout = [
-      { x: -2.05, y: 1.25, z: 0.85, size: 0.28 },
-      { x: 0.0, y: 0.48, z: -0.65, size: 0.42 },
-      { x: -2.35, y: 0.05, z: 0.85, size: 0.30 },
-      { x: 2.35, y: -0.25, z: 0.85, size: 0.28 },
-      { x: 1.55, y: -1.25, z: 0.85, size: 0.20 },
-    ]
     const cursorForwardAxis = new THREE.Vector3(-1, 1, 0).normalize()
     const cursorBaseEuler = new THREE.Euler()
     const cursorDrill = new THREE.Quaternion()
@@ -599,30 +570,6 @@ export function GlobalWebGLScene({
       if (cursor) placeModel(cursor, layout.cursorSize, layout.cursorPosition)
       if (hello) updateGlassResolution(hello.root, drawingSize.x, drawingSize.y)
       if (cursor) updateGlassResolution(cursor.root, drawingSize.x, drawingSize.y)
-
-      const compact = camera.aspect < 0.82
-      const decorationLayout = (
-        width <= 760 && compact
-          ? phonePortraitDecorationLayout
-          : width <= 760
-            ? compactLandscapeDecorationLayout
-            : width <= 1024 && compact
-              ? tabletPortraitDecorationLayout
-              : width <= 1024
-                ? tabletLandscapeDecorationLayout
-                : desktopDecorationLayout
-      )
-      decorations.forEach((sprite, index) => {
-        const placement = decorationLayout[index] ?? desktopDecorationLayout[index]
-        if (!placement) return
-        sprite.userData.anchorX = placement.x
-        sprite.userData.anchorY = placement.y
-        sprite.userData.anchorZ = placement.z
-        sprite.userData.layoutSize = placement.size
-        sprite.position.z = placement.z
-        sprite.visible = heroActive
-        sprite.scale.setScalar(placement.size)
-      })
     }
 
     const onPointerMove = (event: PointerEvent) => {
@@ -770,7 +717,7 @@ export function GlobalWebGLScene({
       const heroDepthOffset = scrollProgress * 5
       decorations.forEach((sprite, index) => {
         const heroVisualActive = heroActive && scrollProgress < 0.985
-        sprite.visible = heroVisualActive
+        sprite.visible = heroVisualActive && !!hello
 
         // Staggered spring pop-in reveal calculation (Delayed cascade after loader exit)
         const baseDelay = 0.15
@@ -786,13 +733,21 @@ export function GlobalWebGLScene({
             ? 1
             : Math.sin(rawProgress * Math.PI * 0.5) * (1 + 0.38 * Math.sin(rawProgress * Math.PI))
 
-        const baseSize = sprite.userData.layoutSize ?? decorationSizes[index] ?? 0.48
-        sprite.scale.setScalar(baseSize * springPop)
+        // Stickers track the glass model's live position and spread across the
+        // view frustum so they fill the screen on every breakpoint. On portrait
+        // (tall) screens, portrait offsets spread stickers vertically instead
+        // of bunching them in a horizontal band.
+        const stickerLayout = getHeroLayout(camera.aspect)
+        const modelCenterX = stickerLayout.helloPosition.x
+        const isPortrait = camera.aspect < 0.8
+
+        const targetSize = stickerLayout.helloSize * sprite.userData.sizeFrac
+        sprite.scale.setScalar(targetSize * springPop)
 
         // Subtle rotation settlement on pop
         const popRotation = (1 - rawProgress) * (index % 2 === 0 ? 0.45 : -0.45)
         if (sprite.material) {
-          sprite.material.rotation = (sprite.userData.baseRotation ?? 0) + popRotation
+          sprite.material.rotation = sprite.userData.phase + popRotation
         }
 
         // Out-of-sync floating drift
@@ -804,25 +759,53 @@ export function GlobalWebGLScene({
         // Drop-in Y position offset during spring pop
         const dropOffset = (1 - rawProgress) * 0.35
 
-        sprite.position.x = (
-          sprite.userData.anchorX
-          + (pointer.x - 0.5) * (0.05 + index * 0.012)
-        )
+        // Depth layer: behind stickers render past the glass and peek out;
+        // front stickers float above the glass.
+        const baseZ = sprite.userData.behind ? -1.15 : 0.85
         sprite.position.z = (
-          sprite.userData.anchorZ
+          baseZ
           - heroDepthOffset
           + THREE.MathUtils.lerp(-0.8, 0, introEase)
         )
+
+        // Compute the live view frustum at the sprite's depth, then place
+        // stickers as fractions of that frustum so the spread adapts to the
+        // actual screen size on every breakpoint. Horizontal is clamped to
+        // stay on-screen; vertical follows the model's scroll parallax.
+        const viewHalfW = viewHeightAt(sprite.position.z) * camera.aspect * 0.5
+        const viewHalfH = viewHeightAt(sprite.position.z) * 0.5
+        const marginX = targetSize * 0.55
+        const marginY = targetSize * 0.55
+        const driftX = (pointer.x - 0.5) * (0.05 + index * 0.012)
+        const driftY = drift * 0.045 + (pointer.y - 0.5) * 0.045
         const spriteScrollOffset = scrollProgress * viewHeightAt(sprite.position.z)
+
+        // Reference frustum half-extents for normalizing offsets to fractions.
+        // Landscape uses the desktop reference; portrait uses a taller one so
+        // vertical offsets map to more screen space.
+        const REF_HALF_W = isPortrait ? 1.05 : 3.2
+        const REF_HALF_H = isPortrait ? 1.45 : 1.9
+        const srcX = isPortrait ? sprite.userData.portraitX : sprite.userData.offsetX
+        const srcY = isPortrait ? sprite.userData.portraitY : sprite.userData.offsetY
+        const fracX = srcX / REF_HALF_W
+        const fracY = srcY / REF_HALF_H
+
+        sprite.position.x = Math.max(
+          -viewHalfW + marginX,
+          Math.min(viewHalfW - marginX, modelCenterX + fracX * (viewHalfW - marginX) + driftX),
+        )
+
         sprite.position.y = (
-          sprite.userData.anchorY
+          stickerLayout.helloPosition.y
+          + fracY * (viewHalfH - marginY)
           + dropOffset
-          + drift * 0.045
-          + (pointer.y - 0.5) * 0.045
+          + driftY
           + spriteScrollOffset
         )
+
         sprite.material.rotation = (
-          Math.sin(elapsed * 0.4 + sprite.userData.phase) * 0.12
+          sprite.userData.phase
+          + Math.sin(elapsed * 0.4 + sprite.userData.phase) * 0.12
           + (pointer.x - 0.5) * 0.08
         )
       })
