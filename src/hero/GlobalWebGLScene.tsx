@@ -863,9 +863,14 @@ export function GlobalWebGLScene({
             z: helloZ,
           },
         )
+        const tearProgress = Math.max(0, Math.min(1, (scrollProgress - 0.52) / 0.38))
+        const tearEase = Math.sin(tearProgress * Math.PI * 0.5)
+        const tearSpinAngle = tearProgress * Math.PI * 8.0
+
         placeModel(cursor, (
           layout.cursorSize
           * (1 - scrollProgress * 0.28)
+          * (1 + tearProgress * 0.35)
           * cursorIntroScale
         ), {
           x: layout.cursorPosition.x + (pointer.x - 0.5) * 0.14,
@@ -874,6 +879,7 @@ export function GlobalWebGLScene({
             + (pointer.y - 0.5) * 0.1
             + idleFloatY
             + scrollProgress * viewHeightAt(cursorZ)
+            - tearEase * viewHeightAt(cursorZ) * 1.25
           ),
           z: cursorZ,
         })
@@ -897,6 +903,7 @@ export function GlobalWebGLScene({
         cursorYaw += (
           -0.34
           + scrollProgress * 1.1
+          + tearSpinAngle
           + (pointer.x - 0.5) * 0.3
           + idleFloatYaw
           - cursorYaw
@@ -905,7 +912,7 @@ export function GlobalWebGLScene({
         cursor.root.quaternion.setFromEuler(cursorBaseEuler)
         cursorDrill.setFromAxisAngle(
           cursorForwardAxis,
-          scrollProgress * Math.PI * 3.2,
+          (scrollProgress + tearProgress * 3.0) * Math.PI * 3.2,
         )
         cursor.root.quaternion.multiply(cursorDrill)
         updateGlassLight(hello.root, glassLight)

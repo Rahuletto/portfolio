@@ -24,6 +24,10 @@ const ProjectMedia = lazy(async () => {
   const m = await import('./components/ProjectMedia.tsx')
   return { default: m.ProjectMedia }
 })
+const OutroSection = lazy(async () => {
+  const m = await import('./sections/OutroSection.tsx')
+  return { default: m.OutroSection }
+})
 const GlobalWebGLScene = lazy(async () => {
   const module = await import('./hero/GlobalWebGLScene.tsx')
   return { default: module.GlobalWebGLScene }
@@ -64,6 +68,12 @@ function App() {
       <LazySection>
         <Suspense fallback={null}>
           <ProjectsSection Media={ProjectMedia} />
+        </Suspense>
+      </LazySection>
+
+      <LazySection>
+        <Suspense fallback={null}>
+          <OutroSection />
         </Suspense>
       </LazySection>
 

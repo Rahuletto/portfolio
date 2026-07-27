@@ -13,13 +13,16 @@ export function BackgroundDotTransition() {
     let previousProgress = -1
     let cachedStart = 0
     let cachedEnd = 0
+    let cachedTear = 0
     let startAnchor: HTMLElement | null = null
     let endAnchor: HTMLElement | null = null
+    let tearAnchor: HTMLElement | null = null
     let removeTask: (() => void) | null = null
 
     const recalculateAnchors = () => {
       if (!startAnchor) startAnchor = document.querySelector<HTMLElement>('[data-dot-transition-start]')
       if (!endAnchor) endAnchor = document.querySelector<HTMLElement>('[data-dot-transition-end]')
+      if (!tearAnchor) tearAnchor = document.querySelector<HTMLElement>('[data-dot-transition-tear]')
       if (!startAnchor || !endAnchor) return false
 
       const viewportHeight = window.innerHeight
@@ -38,7 +41,18 @@ export function BackgroundDotTransition() {
       }
 
       cachedStart = startTop + startAnchor.offsetHeight * 0.5 - viewportHeight * 0.5
-      cachedEnd = endTop + endAnchor.offsetHeight - viewportHeight * 0.3
+      cachedEnd = endTop + endAnchor.offsetHeight * 0.2 - viewportHeight * 0.3
+
+      if (tearAnchor) {
+        let tearTop = 0
+        cur = tearAnchor
+        while (cur) {
+          tearTop += cur.offsetTop
+          cur = cur.offsetParent as HTMLElement | null
+        }
+        cachedTear = tearTop + tearAnchor.offsetHeight * 0.6 - viewportHeight * 0.4
+      }
+
       return true
     }
 
@@ -48,7 +62,20 @@ export function BackgroundDotTransition() {
         if (!ok) return
       }
 
-      const progress = clamp01((window.scrollY - cachedStart) / Math.max(cachedEnd - cachedStart, 1))
+      const scrollY = window.scrollY
+      let progress = 0
+
+      if (scrollY <= cachedStart) {
+        progress = 0
+      } else if (scrollY <= cachedEnd) {
+        progress = clamp01((scrollY - cachedStart) / Math.max(cachedEnd - cachedStart, 1))
+      } else if (cachedTear > cachedEnd && scrollY > cachedEnd) {
+        const tearT = clamp01((scrollY - cachedEnd) / Math.max(cachedTear - cachedEnd, 1))
+        progress = 1 - tearT
+      } else {
+        progress = 1
+      }
+
       if (Math.abs(progress - previousProgress) < 0.001) return
       previousProgress = progress
       layer.style.setProperty('--dot-progress', progress.toFixed(4))
@@ -59,7 +86,7 @@ export function BackgroundDotTransition() {
         removeTask = animEngine.addTask('dotTransition', () => {
           update()
           removeTask = null
-          return false // auto remove after 1 frame update
+          return false
         })
       }
     }
@@ -69,7 +96,6 @@ export function BackgroundDotTransition() {
       onScroll()
     }
 
-    // Use MutationObserver so if lazy-loaded sections mount later, anchors are automatically detected
     const mo = new MutationObserver(() => {
       if (recalculateAnchors()) {
         onScroll()
