@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { Starburst } from '../components/Starburst.tsx'
 import { useScrollReveal } from '../hooks/useScrollReveal.ts'
 import { ManifestoSection } from './ManifestoSection.tsx'
+import { animEngine } from '../engine/animEngine.ts'
 
 export function Manifesto() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -9,7 +10,8 @@ export function Manifesto() {
   useScrollReveal(sectionRef)
 
   useEffect(() => {
-    let frame = 0
+    let removeTask: (() => void) | null = null
+
     const update = () => {
       const section = sectionRef.current
       if (!section) return
@@ -19,15 +21,22 @@ export function Manifesto() {
       progressRef.current = progress
       section.style.setProperty('--manifest-progress', progress.toFixed(4))
     }
+
     const onScroll = () => {
-      cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(update)
+      if (!removeTask) {
+        removeTask = animEngine.addTask('manifestoUpdate', () => {
+          update()
+          removeTask = null
+          return false
+        })
+      }
     }
+
     update()
     window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
+    window.addEventListener('resize', onScroll, { passive: true })
     return () => {
-      cancelAnimationFrame(frame)
+      if (removeTask) removeTask()
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
     }

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
+const PROXIMITY_RANGE = 120
 const FADE_DELAY = 1400
 
 export function SideScrollbar() {
@@ -8,73 +9,119 @@ export function SideScrollbar() {
   const [visible, setVisible] = useState(false)
   const draggingRef = useRef(false)
   const hideTimerRef = useRef(0)
+  const nearRef = useRef(false)
 
   useEffect(() => {
     const track = trackRef.current
     const thumb = thumbRef.current
     if (!track || !thumb) return
 
-    let maxScroll = 1
-    const updateMaxScroll = () => {
-      maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight)
+    const maxScroll = () =>
+      Math.max(1, document.documentElement.scrollHeight - window.innerHeight)
+
+    const setThumbPosition = (scrollPx: number) => {
+      const maxS = maxScroll()
+      const progress = Math.min(1, Math.max(0, scrollPx / maxS))
+      const trackHeight = track.clientHeight
+      const thumbHeight = 36
+      const maxThumbY = Math.max(0, trackHeight - thumbHeight)
+      const y = progress * maxThumbY
+      thumb.style.transform = `translate3d(0, ${y.toFixed(2)}px, 0)`
     }
 
-    const updateThumb = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop
-      const progress = Math.min(1, Math.max(0, scrollY / maxScroll))
-      const trackHeight = 200
-      const thumbHeight = 36
-      const y = progress * (trackHeight - thumbHeight)
-      thumb.style.transform = `translate3d(0, ${y.toFixed(2)}px, 0)`
-
+    const show = () => {
       setVisible(true)
       clearTimeout(hideTimerRef.current)
       hideTimerRef.current = window.setTimeout(() => {
-        if (!draggingRef.current) setVisible(false)
+        if (!draggingRef.current && !nearRef.current) setVisible(false)
       }, FADE_DELAY)
     }
 
-    const scrollToPointer = (clientY: number) => {
-      const rect = track.getBoundingClientRect()
-      const thumbHeight = 36
-      const relativeY = clientY - rect.top - thumbHeight / 2
-      const progress = Math.min(1, Math.max(0, relativeY / (rect.height - thumbHeight)))
-      const targetScroll = progress * maxScroll
-
-      window.scrollTo({ top: targetScroll, behavior: 'auto' })
-      updateThumb()
+    const onNativeScroll = () => {
+      setThumbPosition(window.scrollY || document.documentElement.scrollTop)
+      show()
     }
 
-    const onPointerDown = (e: PointerEvent) => {
-      e.preventDefault()
+    const onSmoothScroll = (event: Event) => {
+      const scroll = (event as CustomEvent<number>).detail
+      if (typeof scroll === 'number' && Number.isFinite(scroll)) {
+        setThumbPosition(scroll)
+        show()
+      }
+    }
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (draggingRef.current) return
+      const trackRect = track.getBoundingClientRect()
+      const distance = Math.abs(
+        event.clientX - trackRect.left - trackRect.width / 2,
+      )
+      const wasNear = nearRef.current
+      nearRef.current = distance < PROXIMITY_RANGE
+      if (nearRef.current) {
+        show()
+      } else if (wasNear) {
+        clearTimeout(hideTimerRef.current)
+        hideTimerRef.current = window.setTimeout(() => {
+          if (!draggingRef.current && !nearRef.current) setVisible(false)
+        }, FADE_DELAY)
+      }
+    }
+
+    const scrollToPointer = (clientY: number) => {
+      const trackRect = track.getBoundingClientRect()
+      const trackHeight = trackRect.height
+      const thumbHeight = 36
+      const usable = Math.max(1, trackHeight - thumbHeight)
+      const relativeY = clientY - trackRect.top - thumbHeight / 2
+      const progress = Math.min(1, Math.max(0, relativeY / usable))
+      const target = progress * maxScroll()
+
+      setThumbPosition(target)
+      window.dispatchEvent(
+        new CustomEvent('portfolio:scroll-to', {
+          detail: { target, immediate: false },
+        }),
+      )
+    }
+
+    const onPointerDown = (event: PointerEvent) => {
+      event.preventDefault()
       draggingRef.current = true
       setVisible(true)
-      scrollToPointer(e.clientY)
-
-      const onMove = (moveEvt: PointerEvent) => scrollToPointer(moveEvt.clientY)
+      clearTimeout(hideTimerRef.current)
+      scrollToPointer(event.clientY)
+      const onMove = (e: PointerEvent) => scrollToPointer(e.clientY)
       const onUp = () => {
         draggingRef.current = false
         window.removeEventListener('pointermove', onMove)
         window.removeEventListener('pointerup', onUp)
-        hideTimerRef.current = window.setTimeout(() => setVisible(false), FADE_DELAY)
+        hideTimerRef.current = window.setTimeout(
+          () => {
+            if (!nearRef.current) setVisible(false)
+          },
+          FADE_DELAY,
+        )
       }
-
-      window.addEventListener('pointermove', onMove, { passive: true })
-      window.addEventListener('pointerup', onUp, { passive: true })
+      window.addEventListener('pointermove', onMove)
+      window.addEventListener('pointerup', onUp)
     }
 
     const onResize = () => {
-      updateMaxScroll()
-      updateThumb()
+      setThumbPosition(window.scrollY || document.documentElement.scrollTop)
     }
 
-    updateMaxScroll()
-    window.addEventListener('scroll', updateThumb, { passive: true })
+    window.addEventListener('scroll', onNativeScroll, { passive: true })
+    window.addEventListener('portfolio:scroll', onSmoothScroll)
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
     window.addEventListener('resize', onResize, { passive: true })
     track.addEventListener('pointerdown', onPointerDown)
+    onNativeScroll()
 
     return () => {
-      window.removeEventListener('scroll', updateThumb)
+      window.removeEventListener('scroll', onNativeScroll)
+      window.removeEventListener('portfolio:scroll', onSmoothScroll)
+      window.removeEventListener('pointermove', onPointerMove)
       window.removeEventListener('resize', onResize)
       track.removeEventListener('pointerdown', onPointerDown)
       clearTimeout(hideTimerRef.current)

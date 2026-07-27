@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react'
 import './App.css'
-import { DebugPerformancePanel } from './components/DebugPerformancePanel.tsx'
 import { GridOverlay } from './components/GridOverlay.tsx'
 import { LazySection } from './components/LazySection.tsx'
 import { SideScrollbar } from './components/SideScrollbar.tsx'
@@ -53,7 +52,6 @@ function App() {
       </Suspense>
       <GridOverlay />
       <SideScrollbar />
-      <DebugPerformancePanel />
       <HeroSection />
 
       {/* Below-fold sections — each mounts independently as user scrolls near it */}

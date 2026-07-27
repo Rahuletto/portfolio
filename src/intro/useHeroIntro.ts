@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { animEngine } from '../engine/animEngine.ts'
 
 export type HeroIntroPhase =
   | 'loading'
@@ -33,23 +34,23 @@ export function useHeroIntro(): HeroIntroState {
 
   const reportAssetsReady = useCallback(() => setAssetsReady(true), [])
 
-  // Phase 1: animate load ref (no setState — zero re-renders per frame)
+  // Phase 1: animate load ref with central animEngine
   useEffect(() => {
     if (assetsReady) return
     const timer = window.setTimeout(() => setAssetsReady(true), 3000)
     const startedAt = performance.now()
-    let frame = 0
-    const update = (now: number) => {
+
+    const removeTask = animEngine.addTask('introLoad', (_dt, now) => {
       const next = Math.min(0.94, 1 - Math.exp(-(now - startedAt) / 780))
       displayedLoadRef.current  = Math.max(displayedLoadRef.current, next)
       loadProgressRef.current   = displayedLoadRef.current
-      frame = requestAnimationFrame(update)
-    }
-    frame = requestAnimationFrame(update)
-    return () => { clearTimeout(timer); cancelAnimationFrame(frame) }
+      return true
+    })
+
+    return () => { clearTimeout(timer); removeTask() }
   }, [assetsReady])
 
-  // Phase 2: drive intro phases after assets ready (phase changes are infrequent)
+  // Phase 2: drive intro phases after assets ready with central animEngine
   useEffect(() => {
     if (!assetsReady) return
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -57,9 +58,8 @@ export function useHeroIntro(): HeroIntroState {
     const initialLoad   = displayedLoadRef.current
     const revealDuration = reducedMotion ? REDUCED_REVEAL_MS : REVEAL_MS
     const exitDuration   = reducedMotion ? 80 : LOADER_EXIT_MS
-    let frame = 0
 
-    const update = (now: number) => {
+    const removeTask = animEngine.addTask('introReveal', (_dt, now) => {
       const elapsed = now - startedAt
       const loadT   = clamp01(elapsed / LOAD_FINISH_MS)
       displayedLoadRef.current = initialLoad + (1 - initialLoad) * loadT
@@ -77,14 +77,14 @@ export function useHeroIntro(): HeroIntroState {
         if (nextReveal >= 1) {
           setPhase('complete')
           interactionReadyRef.current = true
-          return
+          return false // auto remove when complete
         }
         setPhase('revealing')
       }
-      frame = requestAnimationFrame(update)
-    }
-    frame = requestAnimationFrame(update)
-    return () => cancelAnimationFrame(frame)
+      return true
+    })
+
+    return () => removeTask()
   }, [assetsReady])
 
   // Lock scroll during intro

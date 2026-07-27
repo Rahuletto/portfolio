@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { animEngine } from '../engine/animEngine.ts'
 
 export function Starburst({ progressRef }: { progressRef: { current: number } }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -163,7 +164,6 @@ export function Starburst({ progressRef }: { progressRef: { current: number } })
     const time = gl.getUniformLocation(program, 'time')
     const progress = gl.getUniformLocation(program, 'progress')
     const started = performance.now()
-    let frame = 0
     const draw = () => {
       const dpr = Math.min(devicePixelRatio, 1.6)
       const width = Math.round(canvas.clientWidth * dpr)
@@ -177,11 +177,15 @@ export function Starburst({ progressRef }: { progressRef: { current: number } })
       gl.uniform1f(time, (performance.now() - started) / 1000)
       gl.uniform1f(progress, progressRef.current)
       gl.drawArrays(gl.TRIANGLES, 0, 3)
-      frame = requestAnimationFrame(draw)
     }
-    draw()
+
+    const removeTask = animEngine.addTask('starburst', () => {
+      draw()
+      return true
+    })
+
     return () => {
-      cancelAnimationFrame(frame)
+      removeTask()
       gl.deleteBuffer(buffer)
       gl.deleteProgram(program)
     }
