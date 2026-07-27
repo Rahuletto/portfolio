@@ -1,10 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 
-/**
- * Defers mounting children until the user scrolls within `rootMargin` of
- * this element. Keeps the sentinel div so the outer layout doesn't shift.
- * Once mounted, stays mounted permanently.
- */
 export function LazySection({
   children,
   rootMargin = '150px',

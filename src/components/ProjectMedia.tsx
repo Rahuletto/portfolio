@@ -25,7 +25,6 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
     let roObs: ResizeObserver | null = null
     let ioGcObs: IntersectionObserver | null = null
 
-    // ── Full WebGL Resource Garbage Collector & Disposer ─────────────────
     const disposeGL = () => {
       inited = false
       loaded = 0
@@ -42,7 +41,6 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
         if (hoverTex) { gl.deleteTexture(hoverTex); hoverTex = null }
         if (buf)      { gl.deleteBuffer(buf); buf = null }
         if (prog)     { gl.deleteProgram(prog); prog = null }
-        // Force WebGL Context Loss for Auto GC
         const loseExt = gl.getExtension('WEBGL_lose_context')
         if (loseExt) loseExt.loseContext()
         gl = null
@@ -232,7 +230,6 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
       startLerpTo(0)
     }
 
-    // ── Pre-initialize GL when nearing viewport, GC when far away ─────────
     ioGcObs = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && !inited) {
         initGL()

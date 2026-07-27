@@ -47,7 +47,6 @@ export function DebugPerformancePanel() {
   const [isPausedAll, setIsPausedAll] = useState(false)
   const [lowGpuMode, setLowGpuMode] = useState(false)
 
-  // ── Recording & Profiling State ─────────────────────────────────────────────
   const [isRecording, setIsRecording] = useState(false)
   const [recordedTimeSec, setRecordedTimeSec] = useState(0)
   const [auditReport, setAuditReport] = useState<AuditReport | null>(null)
@@ -78,7 +77,6 @@ export function DebugPerformancePanel() {
         }
       }
     } catch {
-      /* ignore */
     }
   }, [])
 
@@ -95,7 +93,6 @@ export function DebugPerformancePanel() {
       const delta = now - lastTime
       lastTime = now
 
-      // Collect Profiler Recording & Log Frame Drops
       if (recordingRef.current.active && delta > 0) {
         const deltaFixed = Number(delta.toFixed(2))
         recordingRef.current.frames.push(deltaFixed)
@@ -105,11 +102,9 @@ export function DebugPerformancePanel() {
         const currentScroll = Math.round(window.scrollY)
         const currentCanvases = document.querySelectorAll('canvas').length
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const enginePrivate = animEngine as any
         const currentTaskCount = (enginePrivate.tasks?.size || 0) + (enginePrivate.lerpTasks?.size || 0)
 
-        // Log Task Count Changes
         if (currentTaskCount !== recordingRef.current.lastTaskCount) {
           recordingRef.current.lastTaskCount = currentTaskCount
           recordingRef.current.events.push({
@@ -122,7 +117,6 @@ export function DebugPerformancePanel() {
           })
         }
 
-        // Log Dropped Frames (> 16.7ms)
         if (delta > 16.7) {
           recordingRef.current.events.push({
             timeMs: recTime,
@@ -157,7 +151,6 @@ export function DebugPerformancePanel() {
         frameCount = 0
         lastFpsUpdate = now
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const perfMemory = (performance as any).memory
         if (perfMemory) {
           const usedMB = (perfMemory.usedJSHeapSize / (1024 * 1024)).toFixed(1)
@@ -168,7 +161,6 @@ export function DebugPerformancePanel() {
         setDomCount(document.querySelectorAll('*').length)
         setWebglContextCount(document.querySelectorAll('canvas').length)
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const enginePrivate = animEngine as any
         const taskCount = (enginePrivate.tasks?.size || 0) + (enginePrivate.lerpTasks?.size || 0)
         setActiveTasks(taskCount)
@@ -186,12 +178,10 @@ export function DebugPerformancePanel() {
 
       if (recordingRef.current.active) {
         const now = performance.now()
-        // Log scroll events throttled to max 1 per 200ms during recording
         if (now - recordingRef.current.lastScrollTime > 200) {
           recordingRef.current.lastScrollTime = now
           const recTime = Math.round(now - recordingRef.current.startTime)
 
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const enginePrivate = animEngine as any
           const taskCount = (enginePrivate.tasks?.size || 0) + (enginePrivate.lerpTasks?.size || 0)
 
@@ -215,7 +205,6 @@ export function DebugPerformancePanel() {
     }
   }, [])
 
-  // Render Live Canvas Graph
   useEffect(() => {
     if (!isOpen) return
     const canvas = graphCanvasRef.current
@@ -254,7 +243,6 @@ export function DebugPerformancePanel() {
     ctx.stroke()
   }, [isOpen, fps])
 
-  // ── Recording Controls ───────────────────────────────────────────────────
   const startRecording = () => {
     recordingRef.current = {
       active: true,
@@ -281,7 +269,6 @@ export function DebugPerformancePanel() {
     const avgMs = frames.reduce((a, b) => a + b, 0) / totalFrames
     const avgFps = Math.round(1000 / avgMs)
 
-    // Calculate 1% low FPS
     const sorted = [...frames].sort((a, b) => b - a)
     const low1Count = Math.max(1, Math.floor(sorted.length * 0.01))
     const low1Ms = sorted.slice(0, low1Count).reduce((a, b) => a + b, 0) / low1Count
@@ -320,7 +307,6 @@ export function DebugPerformancePanel() {
     setAuditReport(report)
   }
 
-  // Download Audit JSON file for sharing
   const downloadAuditJson = () => {
     if (!auditReport) return
     const jsonStr = JSON.stringify(auditReport, null, 2)
@@ -357,13 +343,11 @@ export function DebugPerformancePanel() {
   const triggerCpuStressTest = () => {
     const start = performance.now()
     while (performance.now() - start < 150) {
-      // Intentional 150ms synchronous CPU load test
     }
   }
 
   return (
     <>
-      {/* Floating Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-4 left-4 z-[9999] flex items-center gap-2 rounded-full border border-white/20 bg-[#141314]/90 px-3.5 py-2 font-mono text-[11px] font-bold text-white shadow-2xl backdrop-blur-md transition-all duration-200 hover:scale-105 hover:border-white/40 active:scale-95"
@@ -373,10 +357,8 @@ export function DebugPerformancePanel() {
         <span>{isRecording ? `REC (${recordedTimeSec}s)` : `PERF ${fps} FPS`}</span>
       </button>
 
-      {/* Debug Panel Overlay */}
       {isOpen && (
         <div className="fixed bottom-16 left-4 z-[9999] w-[380px] max-w-[calc(100vw-32px)] rounded-2xl border border-white/15 bg-[#0c0d0e]/95 p-4 text-xs font-mono text-zinc-200 shadow-2xl backdrop-blur-xl max-[500px]:bottom-16 max-[500px]:left-2">
-          {/* Header */}
           <div className="mb-3 flex items-center justify-between border-b border-white/10 pb-2.5">
             <div className="flex items-center gap-2">
               <span className="text-sm font-bold tracking-wider text-white">⚡ DEBUG PROFILER</span>
@@ -392,7 +374,6 @@ export function DebugPerformancePanel() {
             </button>
           </div>
 
-          {/* Real-time FPS Graph */}
           <div className="mb-3">
             <div className="mb-1 flex justify-between text-[10px] text-zinc-400">
               <span>FPS HISTORY (60s)</span>
@@ -406,7 +387,6 @@ export function DebugPerformancePanel() {
             />
           </div>
 
-          {/* Core Performance Stats */}
           <div className="mb-3 grid grid-cols-2 gap-2 text-[11px]">
             <div className="rounded-xl border border-white/5 bg-white/5 p-2.5">
               <div className="text-[10px] text-zinc-400">FRAME RATE</div>
@@ -425,7 +405,6 @@ export function DebugPerformancePanel() {
             </div>
           </div>
 
-          {/* Engine & Graphics Diagnostics */}
           <div className="mb-3 space-y-1.5 rounded-xl border border-white/5 bg-white/5 p-2.5 text-[10px]">
             <div className="flex justify-between">
               <span className="text-zinc-400">ANIM ENGINE TASKS:</span>
@@ -448,7 +427,6 @@ export function DebugPerformancePanel() {
             )}
           </div>
 
-          {/* Profiler Recorder Section */}
           <div className="mb-3 rounded-xl border border-red-500/20 bg-red-950/20 p-2.5 text-[10px]">
             <div className="mb-2 flex items-center justify-between">
               <span className="font-bold text-red-300">🔴 RECORD & AUDIT JANK</span>
@@ -506,7 +484,6 @@ export function DebugPerformancePanel() {
                   <span className="font-bold text-red-300">{auditReport.maxFrameMs} ms</span>
                 </div>
 
-                {/* Download Audit Button */}
                 <button
                   onClick={downloadAuditJson}
                   className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg border border-blue-500/40 bg-blue-600/30 py-1.5 font-bold text-blue-200 transition-all hover:bg-blue-600/50 active:scale-95"
@@ -517,7 +494,6 @@ export function DebugPerformancePanel() {
             )}
           </div>
 
-          {/* Engine Controls & Stress Tests */}
           <div className="space-y-1.5">
             <div className="grid grid-cols-2 gap-1.5 text-[10px]">
               <button
