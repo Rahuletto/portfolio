@@ -7,7 +7,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
  */
 export function LazySection({
   children,
-  rootMargin = '800px',
+  rootMargin = '150px',
 }: {
   children: ReactNode
   rootMargin?: string

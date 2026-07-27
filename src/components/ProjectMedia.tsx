@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { animEngine } from '../engine/animEngine.ts'
 
 export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage: string; effect?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -18,40 +19,48 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
     let baseTex: WebGLTexture | null    = null
     let hoverTex: WebGLTexture | null   = null
     let uProg: WebGLUniformLocation | null = null
-    let rafId     = 0
     let loaded    = 0
-    let target    = 0   // 0 = base, 1 = hover
-    let cur       = 0   // lerped current value
+    let cur       = 0
+    let lerpControl: ReturnType<typeof animEngine.addLerp> | null = null
     let roObs: ResizeObserver | null = null
+    let ioGcObs: IntersectionObserver | null = null
 
-    const dispose = () => {
-      alive = false
-      cancelAnimationFrame(rafId)
+    // ── Full WebGL Resource Garbage Collector & Disposer ─────────────────
+    const disposeGL = () => {
+      inited = false
+      loaded = 0
+      lerpControl?.stop()
+      lerpControl = null
       roObs?.disconnect()
+      roObs = null
+
+      const canvas = canvasRef.current
+      if (canvas) canvas.classList.remove('is-ready')
+
+      if (gl) {
+        if (baseTex)  { gl.deleteTexture(baseTex); baseTex = null }
+        if (hoverTex) { gl.deleteTexture(hoverTex); hoverTex = null }
+        if (buf)      { gl.deleteBuffer(buf); buf = null }
+        if (prog)     { gl.deleteProgram(prog); prog = null }
+        // Force WebGL Context Loss for Auto GC
+        const loseExt = gl.getExtension('WEBGL_lose_context')
+        if (loseExt) loseExt.loseContext()
+        gl = null
+      }
+    }
+
+    const disposeAll = () => {
+      alive = false
+      disposeGL()
+      ioGcObs?.disconnect()
       wrap.removeEventListener('pointerenter', onPointerEnter)
       wrap.removeEventListener('pointerleave', onPointerLeave)
-      if (gl) {
-        if (baseTex)  gl.deleteTexture(baseTex)
-        if (hoverTex) gl.deleteTexture(hoverTex)
-        if (buf)      gl.deleteBuffer(buf)
-        if (prog)     gl.deleteProgram(prog)
-      }
     }
 
-    const draw = () => {
+    const draw = (progressVal: number) => {
       if (!alive || loaded < 2 || !gl || !prog) return
-      gl.uniform1f(uProg, cur)
+      gl.uniform1f(uProg, progressVal)
       gl.drawArrays(gl.TRIANGLES, 0, 3)
-    }
-
-    const loop = () => {
-      cur += (target - cur) * 0.14
-      draw()
-      if (Math.abs(target - cur) < 0.003) {
-        cur = target; draw(); rafId = 0
-      } else {
-        rafId = requestAnimationFrame(loop)
-      }
     }
 
     const onResize = () => {
@@ -65,7 +74,7 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
       canvas.height = h
       gl.viewport(0, 0, w, h)
       gl.uniform2f(gl.getUniformLocation(prog, 'res'), w, h)
-      draw()
+      draw(cur)
     }
 
     const initGL = () => {
@@ -191,21 +200,48 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
       roObs.observe(canvas)
     }
 
+    const startLerpTo = (targetVal: number) => {
+      if (!lerpControl) {
+        lerpControl = animEngine.addLerp({
+          current: cur,
+          target: targetVal,
+          speed: 0.14,
+          onUpdate: (val) => {
+            cur = val
+            draw(val)
+          },
+          onComplete: () => {
+            lerpControl = null
+          },
+        })
+      } else {
+        lerpControl.setTarget(targetVal)
+      }
+    }
+
     const onPointerEnter = () => {
-      target = 1
       if (!inited) initGL()
-      if (!rafId) rafId = requestAnimationFrame(loop)
+      startLerpTo(1)
     }
 
     const onPointerLeave = () => {
-      target = 0
-      if (!rafId) rafId = requestAnimationFrame(loop)
+      startLerpTo(0)
     }
+
+    // ── Viewport Auto Garbage Collection Observer ─────────────────────────
+    // When card scrolls >800px out of viewport, dispose GPU textures/buffers
+    // to keep VRAM consumption minimal and allow browser garbage collection.
+    ioGcObs = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting && inited) {
+        disposeGL()
+      }
+    }, { rootMargin: '800px' })
+    ioGcObs.observe(wrap)
 
     wrap.addEventListener('pointerenter', onPointerEnter, { passive: true })
     wrap.addEventListener('pointerleave', onPointerLeave, { passive: true })
 
-    return dispose
+    return disposeAll
   }, [hoverImage, image])
 
   return (

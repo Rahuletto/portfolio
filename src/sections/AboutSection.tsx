@@ -17,7 +17,7 @@ export function AboutSection() {
             {/* Base Photo Image */}
             <img
               className="block size-full object-cover"
-              src="/assets/marban-photo.png"
+              src="/assets/marban-photo.webp"
               alt="Rahul Marban portrait artwork"
             />
 
@@ -25,7 +25,7 @@ export function AboutSection() {
             <div className="pointer-events-none absolute inset-0 size-full opacity-100 transition-opacity duration-500 ease-out group-hover:opacity-0">
               <img
                 className="xray-filter block size-full object-cover"
-                src="/assets/marban-photo.png"
+                src="/assets/marban-photo.webp"
                 alt=""
               />
               <div className="xray-scanline pointer-events-none absolute inset-0 size-full" />

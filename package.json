@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "webp": "bun scripts/webp.ts",
     "lint": "oxlint",
     "preview": "vite preview"
   },

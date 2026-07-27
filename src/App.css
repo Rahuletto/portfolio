@@ -591,7 +591,8 @@
 }
 
 .xray-filter {
-  filter: contrast(240%) brightness(120%) sepia(100%) hue-rotate(310deg) saturate(800%) invert(18%);
+  filter: contrast(200%) sepia(100%) hue-rotate(310deg) saturate(600%);
+  will-change: opacity;
 }
 
 .xray-scanline {

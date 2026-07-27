@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import Lenis from 'lenis'
+import { animEngine } from './engine/animEngine.ts'
 
 export function useSmoothScroll(enabled: boolean = true): void {
   useEffect(() => {
@@ -7,10 +8,10 @@ export function useSmoothScroll(enabled: boolean = true): void {
     if (reducedMotion.matches) return
 
     const lenis = new Lenis({
-      lerp: 0.075,
+      lerp: 0.12,
       smoothWheel: true,
       syncTouch: false,
-      wheelMultiplier: 0.92,
+      wheelMultiplier: 1.0,
       touchMultiplier: 1.15,
     })
 
@@ -20,6 +21,20 @@ export function useSmoothScroll(enabled: boolean = true): void {
       lenis.start()
     }
 
+    let isScrolling = false
+    let removeTask: (() => void) | null = null
+
+    const wakeLenis = () => {
+      if (removeTask) return
+      removeTask = animEngine.addTask('lenisScroll', (_dt, now) => {
+        lenis.raf(now)
+        // Keep running while Lenis is actively scrolling or animating
+        if (lenis.isScrolling || isScrolling) return true
+        removeTask = null
+        return false // auto sleep when scroll reaches target
+      })
+    }
+
     const onLenisScroll = ({ scroll }: { scroll: number }) => {
       window.dispatchEvent(new CustomEvent('portfolio:scroll', {
         detail: scroll,
@@ -27,11 +42,18 @@ export function useSmoothScroll(enabled: boolean = true): void {
     }
     lenis.on('scroll', onLenisScroll)
 
-    let frame = 0
-    const animate = (time: number) => {
-      lenis.raf(time)
-      frame = requestAnimationFrame(animate)
+    const onWheelOrTouch = () => {
+      isScrolling = true
+      wakeLenis()
+      clearTimeout(scrollTimeout)
+      scrollTimeout = window.setTimeout(() => {
+        isScrolling = false
+      }, 300)
     }
+
+    let scrollTimeout = 0
+    window.addEventListener('wheel', onWheelOrTouch, { passive: true })
+    window.addEventListener('touchmove', onWheelOrTouch, { passive: true })
 
     const onScrollTo = (event: Event) => {
       if (!enabled) return
@@ -39,6 +61,7 @@ export function useSmoothScroll(enabled: boolean = true): void {
       const target = typeof detail === 'number' ? detail : detail?.target
       const immediate = typeof detail === 'object' ? !!detail.immediate : false
       if (typeof target !== 'number' || !Number.isFinite(target)) return
+      wakeLenis()
       lenis.scrollTo(target, {
         immediate,
         duration: immediate ? 0 : 0.75,
@@ -59,6 +82,7 @@ export function useSmoothScroll(enabled: boolean = true): void {
       if (!section) return
 
       event.preventDefault()
+      wakeLenis()
       lenis.scrollTo(section, {
         offset: 0,
         duration: 1.25,
@@ -68,10 +92,12 @@ export function useSmoothScroll(enabled: boolean = true): void {
 
     document.addEventListener('click', onAnchorClick)
     window.addEventListener('portfolio:scroll-to', onScrollTo)
-    frame = requestAnimationFrame(animate)
 
     return () => {
-      cancelAnimationFrame(frame)
+      if (removeTask) removeTask()
+      clearTimeout(scrollTimeout)
+      window.removeEventListener('wheel', onWheelOrTouch)
+      window.removeEventListener('touchmove', onWheelOrTouch)
       document.removeEventListener('click', onAnchorClick)
       window.removeEventListener('portfolio:scroll-to', onScrollTo)
       lenis.off('scroll', onLenisScroll)

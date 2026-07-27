@@ -1,6 +1,6 @@
 export function GridOverlay() {
   return (
-    <div className="grid-overlay pointer-events-none fixed inset-0 z-0 size-full mix-blend-difference" aria-hidden="true">
+    <div className="grid-overlay pointer-events-none fixed inset-0 z-0 size-full opacity-60" aria-hidden="true">
       <svg className="grid-overlay__desktop" viewBox="0 0 1440 900" preserveAspectRatio="none">
         <path d="M56.5 0V288M499.5 0V288M941.5 0V288M1384.5 0V288M56.5 312V600M499.5 312V600M941.5 312V600M1384.5 312V600M56.5 624V900M499.5 624V900M941.5 624V900M1384.5 624V900" stroke="rgba(255,255,255,.1)" strokeWidth="1" fill="none" />
         <path d="M0 300H44.5M68.5 300H487.5M511.5 300H929.5M953.5 300H1372.5M1396.5 300H1440M0 612H44.5M68.5 612H487.5M511.5 612H929.5M953.5 612H1372.5M1396.5 612H1440" stroke="rgba(255,255,255,.1)" strokeWidth="1" fill="none" />

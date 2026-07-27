@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import './App.css'
+import { DebugPerformancePanel } from './components/DebugPerformancePanel.tsx'
 import { GridOverlay } from './components/GridOverlay.tsx'
 import { LazySection } from './components/LazySection.tsx'
 import { SideScrollbar } from './components/SideScrollbar.tsx'
@@ -24,10 +25,6 @@ const ProjectMedia = lazy(async () => {
   const m = await import('./components/ProjectMedia.tsx')
   return { default: m.ProjectMedia }
 })
-// const Manifesto = lazy(async () => {
-//   const m = await import('./sections/Manifesto.tsx')
-//   return { default: m.Manifesto }
-// })
 const GlobalWebGLScene = lazy(async () => {
   const module = await import('./hero/GlobalWebGLScene.tsx')
   return { default: module.GlobalWebGLScene }
@@ -56,6 +53,7 @@ function App() {
       </Suspense>
       <GridOverlay />
       <SideScrollbar />
+      <DebugPerformancePanel />
       <HeroSection />
 
       {/* Below-fold sections — each mounts independently as user scrolls near it */}

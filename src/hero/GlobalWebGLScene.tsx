@@ -626,7 +626,7 @@ export function GlobalWebGLScene({
     }
 
     const onPointerMove = (event: PointerEvent) => {
-      if (coarsePointer || targetScrollProgress >= 0.99) return
+      if (!interactionReadyRef.current) return
 
       const next = normalizePointer(
         event.clientX,
@@ -656,36 +656,30 @@ export function GlobalWebGLScene({
 
     const onVisibilityChange = () => {
       visible = !document.hidden
-      if (visible && targetScrollProgress < 0.99) {
+      if (visible) {
         interactionUntil = performance.now() + 300
         wake()
       }
     }
     const onScroll = () => {
       const heroHeight = heroElement?.clientHeight ?? window.innerHeight
-      const prevProgress = targetScrollProgress
       targetScrollProgress = Math.min(
         1,
         Math.max(0, window.scrollY / Math.max(heroHeight, 1)),
       )
-      if (targetScrollProgress < 0.99 || prevProgress < 0.99) {
-        interactionUntil = performance.now() + 600
-        wake()
-      }
+      interactionUntil = performance.now() + 900
+      wake()
     }
     const onSmoothScroll = (event: Event) => {
       const scroll = (event as CustomEvent<number>).detail
       if (!Number.isFinite(scroll)) return
       const heroHeight = heroElement?.clientHeight ?? window.innerHeight
-      const prevProgress = targetScrollProgress
       targetScrollProgress = Math.min(
         1,
         Math.max(0, scroll / Math.max(heroHeight, 1)),
       )
-      if (targetScrollProgress < 0.99 || prevProgress < 0.99) {
-        interactionUntil = performance.now() + 120
-        wake()
-      }
+      interactionUntil = performance.now() + 120
+      wake()
     }
     const onResize = () => {
       interactionUntil = performance.now() + 300
