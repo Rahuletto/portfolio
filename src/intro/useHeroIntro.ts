@@ -94,9 +94,28 @@ export function useHeroIntro(): HeroIntroState {
     const prevBody = document.body.style.overflow
     document.documentElement.style.overflow = 'hidden'
     document.body.style.overflow = 'hidden'
+
+    const preventScroll = (e: Event) => {
+      e.preventDefault()
+    }
+
+    const preventScrollKeys = (e: KeyboardEvent) => {
+      const keys = ['ArrowUp', 'ArrowDown', 'Space', 'PageUp', 'PageDown', 'Home', 'End']
+      if (keys.includes(e.code) || keys.includes(e.key)) {
+        e.preventDefault()
+      }
+    }
+
+    window.addEventListener('wheel', preventScroll, { passive: false })
+    window.addEventListener('touchmove', preventScroll, { passive: false })
+    window.addEventListener('keydown', preventScrollKeys, { passive: false })
+
     return () => {
       document.documentElement.style.overflow = prevHtml
       document.body.style.overflow = prevBody
+      window.removeEventListener('wheel', preventScroll)
+      window.removeEventListener('touchmove', preventScroll)
+      window.removeEventListener('keydown', preventScrollKeys)
     }
   }, [phase])
 

@@ -34,8 +34,8 @@ const GlobalWebGLScene = lazy(async () => {
 })
 
 function App() {
-  useSmoothScroll()
   const intro = useHeroIntro()
+  useSmoothScroll(intro.phase === 'complete')
 
   return (
     <main

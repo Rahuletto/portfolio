@@ -13,26 +13,36 @@ type ProjectsSectionProps = {
 }
 
 function projectLayout(
-  index: number,
+  _index: number,
   project: (typeof projects)[number],
 ): string {
-  if (project.compact) return 'col-start-6 col-span-3 max-[760px]:col-start-auto max-[760px]:col-span-1'
-  if (project.portrait) return 'col-start-2 col-span-4 max-[760px]:col-start-auto max-[760px]:col-span-2'
-  if (project.wide) return 'col-start-5 col-span-6 max-[760px]:col-start-auto max-[760px]:col-span-2'
-  if ((index + 1) % 4 === 0) return 'col-start-7 col-span-4 max-[760px]:col-start-auto max-[760px]:col-span-2'
-  if ((index + 1) % 3 === 0) return 'col-start-2 col-span-5 max-[760px]:col-start-auto max-[760px]:col-span-1'
-  return 'col-span-4 max-[760px]:col-span-2'
+  switch (project.name) {
+    case 'Lavalamp':
+      return 'col-start-5 col-span-6 max-[760px]:col-start-auto max-[760px]:col-span-2'
+    case 'Samsung Prism':
+      return 'col-start-1 col-span-5 max-[760px]:col-start-auto max-[760px]:col-span-2'
+    case 'NextTechLab':
+      return 'col-start-2 col-span-6 max-[760px]:col-start-auto max-[760px]:col-span-2'
+    case 'Bullet':
+      return 'col-start-6 col-span-6 max-[760px]:col-start-auto max-[760px]:col-span-2'
+    case 'Rocket':
+      return 'col-start-1 col-span-6 max-[760px]:col-start-auto max-[760px]:col-span-2'
+    case 'Manic':
+      return 'col-start-2 col-span-5 max-[760px]:col-start-auto max-[760px]:col-span-2'
+    case 'Mandy':
+      return 'col-start-4 col-span-7 max-[760px]:col-start-auto max-[760px]:col-span-2'
+    default:
+      return 'col-span-6 max-[760px]:col-span-2'
+  }
 }
 
 function projectResponsiveLayout(
   index: number,
   project: (typeof projects)[number],
 ): string {
-  if (project.compact) return 'compact'
   if (project.portrait) return 'portrait'
   if (project.wide) return 'wide'
-  if ((index + 1) % 4 === 0) return 'offset'
-  if ((index + 1) % 3 === 0) return 'half'
+  if ((index + 1) % 2 === 0) return 'offset'
   return 'default'
 }
 
@@ -65,21 +75,37 @@ function ProjectCard({
       tabIndex={href ? 0 : undefined}
       onKeyDown={href ? (e: React.KeyboardEvent) => { if (e.key === 'Enter') window.open(href, '_blank', 'noreferrer') } : undefined}
     >
-      <div className="project-media relative overflow-hidden bg-[#111]">
+      <div className="relative overflow-hidden rounded-2xl bg-[#111] max-[760px]:rounded-xl">
         <Media
           image={project.image}
           hoverImage={project.hover}
           effect={project.effect}
         />
         {!['Samsung Prism', 'NextTechLab', 'Manic'].includes(project.name) && (
-          <span className="absolute top-0 right-0 z-[2] bg-[#e05035] px-[7px] py-[5px] font-mono text-[10px]/none text-[#141314] uppercase">Selected project</span>
+          <span className="absolute top-3 right-3 z-[2] rounded-full bg-[#e05035] px-2.5 py-1 text-[9px]/none font-medium tracking-wider text-[#141314] uppercase shadow-sm">Selected project</span>
         )}
       </div>
-      <div className="project-meta flex items-center justify-between pt-3 font-mono text-[12px]/[1.2] uppercase max-[760px]:text-[9px]/[1.4]">
-        <h3 className="m-0 font-[inherit]">{project.name}</h3>
+      <div className="project-meta flex items-start justify-between gap-6 pt-4 max-[760px]:pt-3 max-[760px]:gap-3">
+        <div className="flex flex-1 flex-col gap-1.5 min-w-0">
+          <h3 className="m-0 text-[clamp(18px,1.6vw,24px)] font-bold tracking-tight text-white leading-tight max-[760px]:text-[16px]">
+            {project.title || project.name}
+          </h3>
+          {project.description && (
+            <p className="m-0 text-[clamp(14px,1.15vw,16px)] leading-relaxed text-zinc-300 font-normal break-words max-[760px]:text-[12px] max-[760px]:leading-normal">
+              {project.description}
+            </p>
+          )}
+        </div>
         {project.url && (
-          <a className="inline-flex items-center gap-1 bg-white px-2 py-0.5 text-[10px]/none no-underline" style={{ color: '#141314' }} href={project.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
-            OPEN <span className="text-[11px]">→</span>
+          <a
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white px-4 py-1.5 text-xs font-bold no-underline transition-all duration-200 group-hover:scale-105 hover:bg-white/90 self-start"
+            style={{ color: '#141314' }}
+            href={project.url}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            OPEN <span className="text-xs transition-transform duration-200 group-hover:translate-x-0.5">→</span>
           </a>
         )}
       </div>
@@ -92,7 +118,7 @@ export function ProjectsSection({ Media }: ProjectsSectionProps) {
 
   return (
     <section
-      className="projects relative z-[1] grid grid-cols-12 gap-x-4 gap-y-[clamp(38px,8vw,130px)] px-[4vw] pt-[10vh] pb-[22vh] max-[760px]:grid-cols-2 max-[760px]:gap-x-[10px] max-[760px]:gap-y-[60px] max-[760px]:px-[18px] max-[760px]:pt-[5vh] max-[760px]:pb-[18vh]"
+      className="projects relative z-[1] grid grid-cols-12 gap-x-[clamp(24px,3.5vw,56px)] gap-y-[clamp(60px,10vw,160px)] px-[5vw] pt-[10vh] pb-[22vh] max-[760px]:grid-cols-2 max-[760px]:gap-x-4 max-[760px]:gap-y-16 max-[760px]:px-[18px] max-[760px]:pt-[5vh] max-[760px]:pb-[18vh]"
       id="work"
       aria-label="Selected work"
       data-dot-transition-end

@@ -51,7 +51,8 @@ export function useScrollReveal<T extends HTMLElement>(
         active = isIntersecting
         element.dataset.revealVisible = isIntersecting ? 'true' : 'false'
         if (isIntersecting) {
-          schedule()
+          element.style.setProperty('--reveal-progress', '1')
+          element.style.setProperty('--reveal-parallax-y', '0px')
         }
       },
       {

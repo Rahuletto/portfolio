@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import Lenis from 'lenis'
 
-export function useSmoothScroll(): void {
+export function useSmoothScroll(enabled: boolean = true): void {
   useEffect(() => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     if (reducedMotion.matches) return
@@ -13,6 +13,13 @@ export function useSmoothScroll(): void {
       wheelMultiplier: 0.92,
       touchMultiplier: 1.15,
     })
+
+    if (!enabled) {
+      lenis.stop()
+    } else {
+      lenis.start()
+    }
+
     const onLenisScroll = ({ scroll }: { scroll: number }) => {
       window.dispatchEvent(new CustomEvent('portfolio:scroll', {
         detail: scroll,
@@ -27,6 +34,7 @@ export function useSmoothScroll(): void {
     }
 
     const onScrollTo = (event: Event) => {
+      if (!enabled) return
       const detail = (event as CustomEvent<number | { target: number; immediate?: boolean }>).detail
       const target = typeof detail === 'number' ? detail : detail?.target
       const immediate = typeof detail === 'object' ? !!detail.immediate : false
@@ -39,6 +47,7 @@ export function useSmoothScroll(): void {
     }
 
     const onAnchorClick = (event: MouseEvent) => {
+      if (!enabled) return
       const target = event.target
       if (!(target instanceof Element)) return
       const anchor = target.closest<HTMLAnchorElement>('a[href^="#"]')
@@ -68,5 +77,5 @@ export function useSmoothScroll(): void {
       lenis.off('scroll', onLenisScroll)
       lenis.destroy()
     }
-  }, [])
+  }, [enabled])
 }
