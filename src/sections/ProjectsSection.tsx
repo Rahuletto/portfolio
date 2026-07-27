@@ -75,15 +75,12 @@ function ProjectCard({
       tabIndex={href ? 0 : undefined}
       onKeyDown={href ? (e: React.KeyboardEvent) => { if (e.key === 'Enter') window.open(href, '_blank', 'noreferrer') } : undefined}
     >
-      <div className="relative overflow-hidden rounded-2xl bg-[#111] max-[760px]:rounded-xl">
+      <div className="project-media relative overflow-hidden rounded-2xl bg-[#111] max-[760px]:rounded-xl">
         <Media
           image={project.image}
           hoverImage={project.hover}
           effect={project.effect}
         />
-        {!['Samsung Prism', 'NextTechLab', 'Manic'].includes(project.name) && (
-          <span className="absolute top-3 right-3 z-[2] rounded-full bg-[#e05035] px-2.5 py-1 text-[9px]/none font-medium tracking-wider text-[#141314] uppercase shadow-sm">Selected project</span>
-        )}
       </div>
       <div className="project-meta flex items-start justify-between gap-6 pt-4 max-[760px]:pt-3 max-[760px]:gap-3">
         <div className="flex flex-1 flex-col gap-1.5 min-w-0">

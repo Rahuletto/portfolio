@@ -2,19 +2,57 @@
 
 @font-face {
   font-family: 'Degular Demo';
-  src:
-    local('Degular Demo Medium'),
-    local('Degular Medium'),
-    local('Degular Demo'),
-    local('Degular'),
-    local('Degular Display');
+  src: url('/fonts/fonnts.com-DegularDemo-Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Degular Demo';
+  src: url('/fonts/fonnts.com-DegularDemo-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Degular Demo';
+  src: url('/fonts/fonnts.com-DegularDemo-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Degular Demo';
+  src: url('/fonts/fonnts.com-DegularDemo-Medium.otf') format('opentype');
   font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Degular Demo';
+  src: url('/fonts/fonnts.com-DegularDemo-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Degular Demo';
+  src: url('/fonts/fonnts.com-DegularDemo-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Degular Demo';
+  src: url('/fonts/fonnts.com-DegularDemo-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
   font-display: swap;
 }
 
 :root {
-  --sans: 'Degular Demo', 'Degular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --mono: 'Degular Demo', 'Degular', 'SFMono-Regular', 'SF Mono', monospace;
+  --sans: 'Degular Demo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono: 'Degular Demo', 'SFMono-Regular', 'SF Mono', monospace;
   color: #f4f5f7;
   background: #050608;
   font-family: var(--sans);

@@ -1,10 +1,8 @@
-import {
-  useEffect,
-  useRef,
-  type RefObject,
-} from 'react'
-import { getElementScrollProgress } from './scrollProgress.ts'
+import { useEffect, useRef, type RefObject } from 'react'
 
+// Pure IntersectionObserver — zero scroll listeners, zero rAF during scroll,
+// zero getBoundingClientRect calls. Parallax removed as it was the main
+// source of continuous main-thread work during scroll.
 export function useScrollReveal<T extends HTMLElement>(
   externalRef?: RefObject<T | null>,
 ): RefObject<T | null> {
@@ -12,70 +10,36 @@ export function useScrollReveal<T extends HTMLElement>(
   const ref = externalRef ?? internalRef
 
   useEffect(() => {
-    const element = ref.current
-    if (!element) return
+    const el = ref.current
+    if (!el) return
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-    let frame = 0
-    let active = true
 
-    const update = () => {
-      frame = 0
-      if (!active && !reducedMotion.matches) return
-
-      const rect = element.getBoundingClientRect()
-      const progress = reducedMotion.matches
-        ? 1
-        : getElementScrollProgress(
-            rect.top,
-            rect.height,
-            window.innerHeight,
-          )
-      const parallax = reducedMotion.matches ? 0 : (0.5 - progress) * 22
-      element.style.setProperty('--reveal-progress', progress.toFixed(4))
-      element.style.setProperty('--reveal-parallax-y', `${parallax.toFixed(2)}px`)
-
-      if (reducedMotion.matches) {
-        element.dataset.revealVisible = 'true'
-      }
-    }
-
-    const schedule = () => {
-      if (frame !== 0) return
-      frame = requestAnimationFrame(update)
+    if (reducedMotion.matches) {
+      el.dataset.revealVisible = 'true'
+      return
     }
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        const isIntersecting = entry?.isIntersecting ?? false
-        active = isIntersecting
-        element.dataset.revealVisible = isIntersecting ? 'true' : 'false'
-        if (isIntersecting) {
-          element.style.setProperty('--reveal-progress', '1')
-          element.style.setProperty('--reveal-parallax-y', '0px')
-        }
+      ([io]) => {
+        el.dataset.revealVisible = (io?.isIntersecting ?? false) ? 'true' : 'false'
       },
-      {
-        rootMargin: '-5% 0px -5%',
-        threshold: 0.08,
-      },
+      { rootMargin: '-5% 0px -5%', threshold: 0.08 },
     )
 
-    element.dataset.revealReady = 'true'
-    observer.observe(element)
-    window.addEventListener('scroll', schedule, { passive: true })
-    window.addEventListener('portfolio:scroll', schedule)
-    window.addEventListener('resize', schedule, { passive: true })
-    reducedMotion.addEventListener('change', schedule)
-    update()
+    el.dataset.revealReady = 'true'
+    observer.observe(el)
+
+    const onMotion = () => {
+      if (!reducedMotion.matches) return
+      el.dataset.revealVisible = 'true'
+      observer.disconnect()
+    }
+    reducedMotion.addEventListener('change', onMotion)
 
     return () => {
-      cancelAnimationFrame(frame)
       observer.disconnect()
-      window.removeEventListener('scroll', schedule)
-      window.removeEventListener('portfolio:scroll', schedule)
-      window.removeEventListener('resize', schedule)
-      reducedMotion.removeEventListener('change', schedule)
+      reducedMotion.removeEventListener('change', onMotion)
     }
   }, [ref])
 
