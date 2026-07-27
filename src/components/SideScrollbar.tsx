@@ -50,9 +50,15 @@ export function SideScrollbar() {
       }
     }
 
+    let cachedTrackRect: DOMRect | null = null
+    const getTrackRect = () => {
+      if (!cachedTrackRect) cachedTrackRect = track.getBoundingClientRect()
+      return cachedTrackRect
+    }
+
     const onPointerMove = (event: PointerEvent) => {
       if (draggingRef.current) return
-      const trackRect = track.getBoundingClientRect()
+      const trackRect = getTrackRect()
       const distance = Math.abs(
         event.clientX - trackRect.left - trackRect.width / 2,
       )
@@ -108,6 +114,7 @@ export function SideScrollbar() {
     }
 
     const onResize = () => {
+      cachedTrackRect = null
       setThumbPosition(window.scrollY || document.documentElement.scrollTop)
     }
 

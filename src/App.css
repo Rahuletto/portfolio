@@ -123,69 +123,76 @@
 
 /* Scroll choreography ---------------------------------------------------- */
 
-/* ── Card reveal ──
-   data-reveal-ready: set once on mount, never removed → defines the transition
-   data-reveal-visible: toggled by IntersectionObserver → defines end-state
-   No scroll listeners. No rAF. No getBoundingClientRect during scroll.      */
-
 .project[data-reveal-ready='true'] {
-  /* Transition lives on the always-present ready rule so it fires in both
-     directions (hidden→visible and visible→hidden)                          */
+  opacity: 0;
+  transform: translate3d(var(--project-drift, 0), 42px, 0) scale(0.97);
   transition:
-    opacity  680ms cubic-bezier(.22, 1, .36, 1) var(--project-delay, 0ms),
+    opacity 680ms cubic-bezier(.22, 1, .36, 1) var(--project-delay, 0ms),
     transform 980ms cubic-bezier(.16, 1, .3, 1) var(--project-delay, 0ms);
   will-change: transform, opacity;
 }
 
-/* Hidden states (before first reveal or scrolled back past) */
-.project[data-reveal-ready='true']:not([data-reveal-visible='true']) {
-  opacity: 0;
-  transform: translate3d(var(--project-drift, 0px), 42px, 0) scale(0.97);
-}
+/* Staggered cascading reveal delays */
+.projects > .project:nth-child(1),
+.projects-grid > .project:nth-child(1) { --project-delay: 0ms; }
+.projects > .project:nth-child(2),
+.projects-grid > .project:nth-child(2) { --project-delay: 140ms; }
+.projects > .project:nth-child(3),
+.projects-grid > .project:nth-child(3) { --project-delay: 280ms; }
+.projects > .project:nth-child(4),
+.projects-grid > .project:nth-child(4) { --project-delay: 420ms; }
+.projects > .project:nth-child(5),
+.projects-grid > .project:nth-child(5) { --project-delay: 560ms; }
+.projects > .project:nth-child(6),
+.projects-grid > .project:nth-child(6) { --project-delay: 700ms; }
+.projects > .project:nth-child(7),
+.projects-grid > .project:nth-child(7) { --project-delay: 840ms; }
 
-/* Revealed */
 .project[data-reveal-visible='true'] {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
-  will-change: auto; /* release compositor layer once settled */
 }
 
-/* ── Image curtain wipe ────────────────────────────────────────────────────
-   Drives the reveal via translateY on project-shader (GPU composited).
-   project-media has overflow:hidden so the slide creates the same wipe
-   effect as clip-path, but runs entirely on the compositor thread.
-   No parallax tracking → no scroll listeners needed at all.                */
+.project[data-reveal-visible='false'] {
+  opacity: 0;
+  transform: translate3d(var(--project-drift, 0), 42px, 0) scale(0.97);
+}
 
-.project[data-reveal-ready='true'] .project-shader {
-  transition: transform 980ms cubic-bezier(.16, 1, .3, 1) var(--project-delay, 0ms);
+.project[data-reveal-ready='true'] .project-media {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 980ms cubic-bezier(.16, 1, .3, 1) var(--project-delay, 0ms);
+}
+
+.project[data-reveal-visible='true'] .project-media {
+  clip-path: inset(0 0 0 0);
+}
+
+.project[data-reveal-visible='false'] .project-media {
+  clip-path: inset(0 0 100% 0);
+}
+
+.project .project-shader {
+  transform: translate3d(0, var(--reveal-parallax-y, 0), 0) scale(1.045);
+  transition: transform 120ms linear;
   will-change: transform;
 }
 
-.project[data-reveal-ready='true']:not([data-reveal-visible='true']) .project-shader {
-  transform: translate3d(0, 101%, 0) scale(1.045);
-}
-
-.project[data-reveal-visible='true'] .project-shader {
-  transform: translate3d(0, 0, 0) scale(1);
-  will-change: auto;
-}
-
-/* ── Meta (title + description) ─────────────────────────────────────────── */
-
 .project[data-reveal-ready='true'] .project-meta {
-  transition:
-    opacity   520ms ease-out                       calc(var(--project-delay, 0ms) + 200ms),
-    transform 720ms cubic-bezier(.16, 1, .3, 1)   calc(var(--project-delay, 0ms) + 200ms);
-}
-
-.project[data-reveal-ready='true']:not([data-reveal-visible='true']) .project-meta {
   opacity: 0;
-  transform: translate3d(0, 14px, 0);
+  transform: translate3d(0, 13px, 0);
+  transition:
+    opacity 520ms ease-out calc(var(--project-delay, 0ms) + 180ms),
+    transform 720ms cubic-bezier(.16, 1, .3, 1) calc(var(--project-delay, 0ms) + 180ms);
 }
 
 .project[data-reveal-visible='true'] .project-meta {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+}
+
+.project[data-reveal-visible='false'] .project-meta {
+  opacity: 0;
+  transform: translate3d(0, 13px, 0);
 }
 
 .about[data-reveal-ready='true'] .about-art {
