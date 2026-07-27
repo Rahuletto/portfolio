@@ -6,16 +6,10 @@
   --accent: #e05035;
 }
 
-/* ── Intro overlay: signature splash — pure CSS, zero JS ─────────── */
 .hero-intro {
   transition: opacity 600ms cubic-bezier(.22, 1, .36, 1), visibility 600ms step-end;
 }
 
-/*
-  Padding gives overflow-visible SVG paths room to breathe
-  so the clip-path wipe never trims the ascenders/descenders.
-  Animation: left→right wipe on mount, ~1.8 s matching typical load.
-*/
 .hero-intro__sig-wrap {
   padding: 24px 36px;
   animation: sig-wipe 1.8s cubic-bezier(0.76, 0, 0.24, 1) both;
@@ -28,7 +22,6 @@
   to   { clip-path: inset(0 0%   0 0 round 0px); }
 }
 
-/* Gently shrink & fade signature out as 3D Hello model reveals */
 .hero-intro[data-phase="loader-exit"] .hero-intro__sig-wrap,
 .hero-intro[data-phase="revealing"] .hero-intro__sig-wrap,
 .hero-intro[data-phase="complete"]  .hero-intro__sig-wrap {
@@ -41,7 +34,6 @@
     filter 550ms cubic-bezier(.22, 1, .36, 1);
 }
 
-/* Kill the whole overlay when done */
 .hero-intro[data-phase="complete"] {
   opacity: 0;
   pointer-events: none;
@@ -124,11 +116,7 @@
   .grid-overlay__mobile { display: block !important; }
 }
 
-/* (side-progress replaced by SideScrollbar component) */
-
 .project-shader canvas.is-ready { opacity: 1; }
-
-/* Scroll choreography ---------------------------------------------------- */
 
 .project[data-reveal-ready='true'] {
   opacity: 0;
@@ -139,7 +127,6 @@
   will-change: transform, opacity;
 }
 
-/* Staggered cascading reveal delays */
 .projects > .project:nth-child(1),
 .projects-grid > .project:nth-child(1) { --project-delay: 0ms; }
 .projects > .project:nth-child(2),
@@ -277,8 +264,6 @@
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
-
-/* Responsive composition -------------------------------------------------- */
 
 .hero-meta > *,
 .about > *,
@@ -579,7 +564,6 @@
   }
 }
 
-/* Red X-Ray Thermal Cyber Scanner Effect -------------------------------- */
 @keyframes redLaserSweep {
   0% {
     top: 2%;

@@ -1,4 +1,3 @@
-{/* SkillsPlaceholderSection — commented out
 import { useScrollReveal } from '../hooks/useScrollReveal.ts'
 
 export function SkillsPlaceholderSection() {
@@ -13,4 +12,4 @@ export function SkillsPlaceholderSection() {
     />
   )
 }
-*/}
+

@@ -305,7 +305,6 @@ export function GlobalWebGLScene({
     const yieldMainThread = (ms = 40) => new Promise((r) => setTimeout(r, ms))
 
     const loadAssetsAsync = async () => {
-      // Let signature intro render for 150ms with 100% CPU capacity before WebGL model parsing
       await yieldMainThread(150)
       if (disposed) return
 
@@ -338,12 +337,6 @@ export function GlobalWebGLScene({
         await yieldMainThread(30)
         if (disposed) return
 
-        // Stickers are placed at world-space offsets from the glass model's
-        // center, scaled proportionally with the model size so they stay
-        // spread across the screen on every breakpoint. behind = sticker sits
-        // behind the glass and peeks out from an edge; front = floats above.
-        // Portrait offsets (pX/pY) spread stickers vertically on tall screens.
-        // spin = base material rotation in radians for per-sticker tilt.
         const stickerFiles = [
           { path: '/assets/stickers/sticker-pen.png',    sizeFrac: 0.12, offsetX: -1.95, offsetY:  0.82, pX: -0.72, pY:  1.3,  behind: false, spin: -0.25 },
           { path: '/assets/stickers/sticker-eyes.png',   sizeFrac: 0.11, offsetX: -2.55, offsetY: -0.85, pX:  0.78, pY:  0.6,  behind: false, spin: 0.3  },
@@ -680,7 +673,6 @@ export function GlobalWebGLScene({
 
       const lowQuality = renderQuality.name === 'low'
 
-      // Pause WebGL rendering during loading screen so signature loader gets 100% CPU/GPU frame capacity
       if (introProgressRef.current < 0.05) {
         frame = requestAnimationFrame(render)
         return
@@ -719,7 +711,6 @@ export function GlobalWebGLScene({
         const heroVisualActive = heroActive && scrollProgress < 0.985
         sprite.visible = heroVisualActive && !!hello
 
-        // Staggered spring pop-in reveal calculation (Delayed cascade after loader exit)
         const baseDelay = 0.15
         const stickerDelay = baseDelay + index * 0.16
         const windowSize = 0.25
@@ -733,10 +724,6 @@ export function GlobalWebGLScene({
             ? 1
             : Math.sin(rawProgress * Math.PI * 0.5) * (1 + 0.38 * Math.sin(rawProgress * Math.PI))
 
-        // Stickers track the glass model's live position and spread across the
-        // view frustum so they fill the screen on every breakpoint. On portrait
-        // (tall) screens, portrait offsets spread stickers vertically instead
-        // of bunching them in a horizontal band.
         const stickerLayout = getHeroLayout(camera.aspect)
         const modelCenterX = stickerLayout.helloPosition.x
         const isPortrait = camera.aspect < 0.8
@@ -744,23 +731,18 @@ export function GlobalWebGLScene({
         const targetSize = stickerLayout.helloSize * sprite.userData.sizeFrac
         sprite.scale.setScalar(targetSize * springPop)
 
-        // Subtle rotation settlement on pop
         const popRotation = (1 - rawProgress) * (index % 2 === 0 ? 0.45 : -0.45)
         if (sprite.material) {
           sprite.material.rotation = sprite.userData.phase + popRotation
         }
 
-        // Out-of-sync floating drift
         const floatSpeed = 0.42 + (index % 3) * 0.15
         const drift = reducedMotion
           ? 0
           : Math.sin(elapsed * floatSpeed + sprite.userData.phase)
 
-        // Drop-in Y position offset during spring pop
         const dropOffset = (1 - rawProgress) * 0.35
 
-        // Depth layer: behind stickers render past the glass and peek out;
-        // front stickers float above the glass.
         const baseZ = sprite.userData.behind ? -1.15 : 0.85
         sprite.position.z = (
           baseZ
@@ -768,10 +750,6 @@ export function GlobalWebGLScene({
           + THREE.MathUtils.lerp(-0.8, 0, introEase)
         )
 
-        // Compute the live view frustum at the sprite's depth, then place
-        // stickers as fractions of that frustum so the spread adapts to the
-        // actual screen size on every breakpoint. Horizontal is clamped to
-        // stay on-screen; vertical follows the model's scroll parallax.
         const viewHalfW = viewHeightAt(sprite.position.z) * camera.aspect * 0.5
         const viewHalfH = viewHeightAt(sprite.position.z) * 0.5
         const marginX = targetSize * 0.55
@@ -780,9 +758,6 @@ export function GlobalWebGLScene({
         const driftY = drift * 0.045 + (pointer.y - 0.5) * 0.045
         const spriteScrollOffset = scrollProgress * viewHeightAt(sprite.position.z)
 
-        // Reference frustum half-extents for normalizing offsets to fractions.
-        // Landscape uses the desktop reference; portrait uses a taller one so
-        // vertical offsets map to more screen space.
         const REF_HALF_W = isPortrait ? 1.05 : 3.2
         const REF_HALF_H = isPortrait ? 1.45 : 1.9
         const srcX = isPortrait ? sprite.userData.portraitX : sprite.userData.offsetX

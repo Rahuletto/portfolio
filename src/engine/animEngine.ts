@@ -1,17 +1,4 @@
-/**
- * Central Lightweight Animation Engine
- *
- * Provides a single shared requestAnimationFrame ticker that coordinates all JS/WebGL
- * animations across the application.
- *
- * Benefits:
- * 1. Single rAF loop for the entire app (prevents multiple independent rAF loops).
- * 2. Automatic Sleep: Automatically stops the rAF ticker when 0 tasks are running.
- * 3. Auto Tab Freeze: Pauses all active animations when page loses visibility/focus to free 100% CPU/GPU.
- * 4. Central Pause/Resume: Can freeze all active animations on demand.
- */
-
-export type AnimTaskCallback = (dt: number, now: number) => boolean | void // return false to auto-deregister
+export type AnimTaskCallback = (dt: number, now: number) => boolean | void
 
 export type LerpTaskConfig = {
   id?: string
@@ -45,29 +32,18 @@ class AnimEngine {
     }
   }
 
-  /**
-   * Register a custom frame callback task.
-   * Return `false` inside your callback to automatically remove the task when finished.
-   */
   public addTask(id: string, callback: AnimTaskCallback): () => void {
     this.tasks.set(id, callback)
     this.ensureTickerRunning()
     return () => this.removeTask(id)
   }
 
-  /**
-   * Remove a registered task by ID.
-   */
   public removeTask(id: string): void {
     this.tasks.delete(id)
     this.lerpTasks.delete(id)
     this.checkAutoSleep()
   }
 
-  /**
-   * Add a smooth lerp animation task.
-   * Returns a control object with `setTarget(newTarget)` and `stop()`.
-   */
   public addLerp(config: LerpTaskConfig): {
     id: string
     setTarget: (nextTarget: number) => void
@@ -97,9 +73,6 @@ class AnimEngine {
     }
   }
 
-  /**
-   * Globally pause all animation tasks (e.g. when tab loses focus or during transitions).
-   */
   public pause(): void {
     this.isPaused = true
     if (this.rafId) {
@@ -108,9 +81,6 @@ class AnimEngine {
     }
   }
 
-  /**
-   * Resume animation tasks.
-   */
   public resume(): void {
     if (this.isPaused) {
       this.isPaused = false
@@ -118,9 +88,6 @@ class AnimEngine {
     }
   }
 
-  /**
-   * Stop and clear all active animation tasks.
-   */
   public clearAll(): void {
     this.tasks.clear()
     this.lerpTasks.clear()
@@ -148,10 +115,9 @@ class AnimEngine {
     this.rafId = 0
     if (this.isPaused) return
 
-    const dt = Math.min((now - this.lastTime) / 1000, 0.1) // Clamp dt to prevent huge jumps
+    const dt = Math.min((now - this.lastTime) / 1000, 0.1)
     this.lastTime = now
 
-    // 1. Run custom tasks
     for (const [id, callback] of Array.from(this.tasks.entries())) {
       const keep = callback(dt, now)
       if (keep === false) {
@@ -159,7 +125,6 @@ class AnimEngine {
       }
     }
 
-    // 2. Run lerp tasks
     for (const [id, task] of Array.from(this.lerpTasks.entries())) {
       const speed = task.speed ?? 0.14
       const precision = task.precision ?? 0.002
@@ -175,7 +140,6 @@ class AnimEngine {
       }
     }
 
-    // Continue loop if active tasks remain, otherwise sleep
     if (this.tasks.size > 0 || this.lerpTasks.size > 0) {
       this.rafId = requestAnimationFrame(this.tick)
     }
@@ -183,3 +147,4 @@ class AnimEngine {
 }
 
 export const animEngine = new AnimEngine()
+

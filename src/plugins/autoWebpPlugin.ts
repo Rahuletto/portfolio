@@ -16,7 +16,6 @@ export function autoWebpPlugin(): Plugin {
       }
     },
     transform(code, id) {
-      // Auto-rewrite .png / .jpg / .jpeg references to .webp in source code if needed
       if (id.endsWith('.ts') || id.endsWith('.tsx')) {
         if (code.includes('.png') || code.includes('.jpg') || code.includes('.jpeg')) {
           const updated = code

@@ -28,7 +28,6 @@ export function loadModel(loader: GLTFLoader, url: string): Promise<LoadedModel>
     const naturalCenter = bounds.getCenter(new THREE.Vector3())
     const naturalSize = bounds.getSize(new THREE.Vector3())
 
-    // Shift geometry inside root group so pivot (0,0,0) is at exact center of bounding box
     rawScene.position.sub(naturalCenter)
 
     const root = new THREE.Group()

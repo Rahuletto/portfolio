@@ -22,10 +22,9 @@ export function useSmoothScroll(enabled: boolean = true): void {
       if (removeTask) return
       removeTask = animEngine.addTask('lenisScroll', (_dt, now) => {
         lenis.raf(now)
-        // Keep running while Lenis is actively scrolling or animating
         if (lenis.isScrolling || isScrolling) return true
         removeTask = null
-        return false // auto sleep when scroll reaches target
+        return false
       })
     }
 

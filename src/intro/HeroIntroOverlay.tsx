@@ -12,10 +12,6 @@ export function HeroIntroOverlay({ phase }: { phase: HeroIntroPhase }) {
       data-phase={phase}
       aria-hidden={phase === 'complete'}
     >
-      {/*
-        Generous padding so overflow-visible SVG paths have room.
-        The clip-path wipe is a pure CSS @keyframes — zero JS, zero rAF.
-      */}
       <div className="hero-intro__sig-wrap">
         <svg
           className="hero-intro__sig w-[clamp(140px,18vw,220px)] select-none overflow-visible"

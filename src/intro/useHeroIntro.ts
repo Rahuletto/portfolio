@@ -26,7 +26,6 @@ export function useHeroIntro(): HeroIntroState {
   const [assetsReady, setAssetsReady] = useState(false)
   const [phase, setPhase] = useState<HeroIntroPhase>('loading')
 
-  // All progress is kept in refs — never triggers React renders
   const loadProgressRef    = useRef(0)
   const introProgressRef   = useRef(0)
   const interactionReadyRef = useRef(false)
@@ -34,7 +33,6 @@ export function useHeroIntro(): HeroIntroState {
 
   const reportAssetsReady = useCallback(() => setAssetsReady(true), [])
 
-  // Phase 1: animate load ref with central animEngine
   useEffect(() => {
     if (assetsReady) return
     const timer = window.setTimeout(() => setAssetsReady(true), 3000)
@@ -50,7 +48,6 @@ export function useHeroIntro(): HeroIntroState {
     return () => { clearTimeout(timer); removeTask() }
   }, [assetsReady])
 
-  // Phase 2: drive intro phases after assets ready with central animEngine
   useEffect(() => {
     if (!assetsReady) return
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -77,7 +74,7 @@ export function useHeroIntro(): HeroIntroState {
         if (nextReveal >= 1) {
           setPhase('complete')
           interactionReadyRef.current = true
-          return false // auto remove when complete
+          return false
         }
         setPhase('revealing')
       }
@@ -87,11 +84,9 @@ export function useHeroIntro(): HeroIntroState {
     return () => removeTask()
   }, [assetsReady])
 
-  // Lock scroll strictly during initial loading & loader-exit phases
   useEffect(() => {
     if (phase === 'revealing' || phase === 'complete') return
 
-    // Ensure page stays at top during loader
     window.scrollTo(0, 0)
 
     const prevHtml = document.documentElement.style.overflow

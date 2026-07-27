@@ -12,16 +12,13 @@ export function AboutSection() {
     >
       <div className="about-art reveal group relative aspect-[433/388] w-full max-w-[560px] cursor-pointer justify-self-start overflow-visible max-[900px]:mx-auto max-[900px]:max-w-[420px] max-[900px]:justify-self-center max-[760px]:w-[88%]" aria-label="Rahul Marban portrait artwork">
         <div className="relative size-full overflow-visible transition-all duration-500 ease-out group-hover:scale-[1.03]">
-          {/* Photo Frame Container */}
           <div className="relative aspect-[369/368] w-[85.2%] overflow-hidden rounded-[54px] bg-[#1a1919]">
-            {/* Base Photo Image */}
             <img
               className="block size-full object-cover"
               src="/assets/marban-photo.webp"
               alt="Rahul Marban portrait artwork"
             />
 
-            {/* Red X-Ray Thermal Layer & CRT Scanlines (Photo Frame Only) */}
             <div className="pointer-events-none absolute inset-0 size-full opacity-100 transition-opacity duration-500 ease-out group-hover:opacity-0">
               <img
                 className="block size-full object-cover"
@@ -32,7 +29,6 @@ export function AboutSection() {
             </div>
           </div>
 
-          {/* Standalone White Signature Pill Badge (Bottom Right, 100% Unfiltered) */}
           <div className="pointer-events-none absolute bottom-0 right-0 z-20 w-[48.4%] aspect-[210/66] transition-transform duration-300 group-hover:scale-[1.04]">
             <img
               className="block size-full object-contain"
