@@ -339,8 +339,8 @@ export function GlobalWebGLScene({
         if (disposed) return
 
         const stickerFiles = [
-          { path: '/assets/stickers/sticker-pen.png', size: 0.52, x: -2.05, y: 1.35, z: 0.85, spin: 0 },
-          { path: '/assets/stickers/sticker-pixel-coin.png', size: 0.72, x: 0.0, y: 0.65, z: -0.65, spin: 1.4 },
+          { path: '/assets/stickers/sticker-pen.png', size: 0.52, x: -1.75, y: 1.05, z: 0.85, spin: 0 },
+          { path: '/assets/stickers/sticker-heart.png', size: 0.72, x: 0.0, y: 0.65, z: -0.65, spin: 1.4 },
           { path: '/assets/stickers/sticker-eyes.png', size: 0.46, x: -2.35, y: 0.05, z: 0.85, spin: 2.8 },
           { path: '/assets/stickers/sticker-2026.png', size: 0.46, x: 2.35, y: -0.25, z: 0.85, spin: 4.1 },
           { path: '/assets/stickers/sticker-hand.png', size: 0.28, x: 1.55, y: -1.35, z: 0.85, spin: 5.2 },
@@ -924,7 +924,7 @@ export function GlobalWebGLScene({
       swirlMaterial.uniforms.uPos.value.set(pointer.x, pointer.y)
       waveMaterial.uniforms.uTime.value = elapsed
       waveMaterial.uniforms.uMousePos.value.set(pointer.x, pointer.y)
-      voronoiMaterial.uniforms.uTime.value = elapsed
+      voronoiMaterial.uniforms.uTime.value = elapsed * 0.25
       voronoiMaterial.uniforms.uMousePos.value.set(pointer.x, pointer.y)
       bokehMaterial.uniforms.uMousePos.value.set(pointer.x, pointer.y)
 

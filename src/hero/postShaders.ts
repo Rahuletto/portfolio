@@ -156,7 +156,7 @@ export const voronoiDistortionFragmentShader = `
         vec2 neighbor = vec2(float(x), float(y));
         vec2 point = random2(cell + neighbor);
         point = 0.5 + 0.5 * sin(
-          5.0 + uTime * 0.2 + 6.2831 * point
+          5.0 + uTime * 0.012 + 6.2831 * point
         );
         float distanceToPoint = length(neighbor + point - cellUv);
         if (distanceToPoint < nearest) {

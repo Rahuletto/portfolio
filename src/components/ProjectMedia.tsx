@@ -183,6 +183,10 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
         loaded++
         if (loaded === 2) {
           onResize()
+          draw(cur)
+          if (cur > 0) {
+            startLerpTo(cur)
+          }
           requestAnimationFrame(() => {
             if (alive && canvas) canvas.classList.add('is-ready')
           })
@@ -228,14 +232,14 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
       startLerpTo(0)
     }
 
-    // ── Viewport Auto Garbage Collection Observer ─────────────────────────
-    // When card scrolls >800px out of viewport, dispose GPU textures/buffers
-    // to keep VRAM consumption minimal and allow browser garbage collection.
+    // ── Pre-initialize GL when nearing viewport, GC when far away ─────────
     ioGcObs = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting && inited) {
+      if (entry.isIntersecting && !inited) {
+        initGL()
+      } else if (!entry.isIntersecting && inited) {
         disposeGL()
       }
-    }, { rootMargin: '800px' })
+    }, { rootMargin: '400px' })
     ioGcObs.observe(wrap)
 
     wrap.addEventListener('pointerenter', onPointerEnter, { passive: true })

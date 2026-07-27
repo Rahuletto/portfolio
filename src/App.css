@@ -19,7 +19,8 @@
 .hero-intro__sig-wrap {
   padding: 24px 36px;
   animation: sig-wipe 1.8s cubic-bezier(0.76, 0, 0.24, 1) both;
-  will-change: clip-path;
+  will-change: clip-path, transform, opacity;
+  transform-origin: center center;
 }
 
 @keyframes sig-wipe {
@@ -27,11 +28,17 @@
   to   { clip-path: inset(0 0%   0 0 round 0px); }
 }
 
-/* Fade the signature out once the site is ready to show */
+/* Gently shrink & fade signature out as 3D Hello model reveals */
+.hero-intro[data-phase="loader-exit"] .hero-intro__sig-wrap,
 .hero-intro[data-phase="revealing"] .hero-intro__sig-wrap,
 .hero-intro[data-phase="complete"]  .hero-intro__sig-wrap {
   opacity: 0;
-  transition: opacity 550ms cubic-bezier(.22, 1, .36, 1);
+  transform: scale(0.86);
+  filter: blur(1px);
+  transition:
+    opacity 550ms cubic-bezier(.22, 1, .36, 1),
+    transform 550ms cubic-bezier(.22, 1, .36, 1),
+    filter 550ms cubic-bezier(.22, 1, .36, 1);
 }
 
 /* Kill the whole overlay when done */
@@ -590,10 +597,6 @@
   }
 }
 
-.xray-filter {
-  filter: contrast(240%) brightness(120%) sepia(100%) hue-rotate(310deg) saturate(800%) invert(18%);
-  will-change: opacity;
-}
 
 .xray-scanline {
   background: repeating-linear-gradient(

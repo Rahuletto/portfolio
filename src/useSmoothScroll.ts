@@ -15,12 +15,6 @@ export function useSmoothScroll(enabled: boolean = true): void {
       touchMultiplier: 1.15,
     })
 
-    if (!enabled) {
-      lenis.stop()
-    } else {
-      lenis.start()
-    }
-
     let isScrolling = false
     let removeTask: (() => void) | null = null
 
@@ -33,6 +27,13 @@ export function useSmoothScroll(enabled: boolean = true): void {
         removeTask = null
         return false // auto sleep when scroll reaches target
       })
+    }
+
+    if (!enabled) {
+      lenis.stop()
+    } else {
+      lenis.start()
+      wakeLenis()
     }
 
     const onLenisScroll = ({ scroll }: { scroll: number }) => {
