@@ -98,7 +98,7 @@ function createGlassMaterial(
       uTintEnabled: { value: 1 },
       uTintMix: { value: 1 },
       uTintThicknessMinAlpha: { value: 1 },
-      uTintThicknessMaxAlpha: { value: 0.4 },
+      uTintThicknessMaxAlpha: { value: 0.5 },
       uSceneRefractionEnabled: { value: 1 },
       uRgbRefraction: { value: 1 },
       uDark: { value: 1 },

@@ -326,7 +326,7 @@ export function GlobalWebGLScene({
         if (disposed) return
         cursor = cursorModel
         applyHeroMaterial(cursor, refractionTarget.texture)
-        updateGlassFresnelStrength(cursor.root, 0.72)
+        updateGlassFresnelStrength(cursor.root, 0.38)
         cursor.root.rotation.set(0.16, -0.34, -0.48)
         scene.add(cursor.root)
 
@@ -347,7 +347,7 @@ export function GlobalWebGLScene({
         const stickerFiles = [
           { path: '/assets/stickers/sticker-pen.png',    sizeFrac: 0.12, offsetX: -1.95, offsetY:  0.82, pX: -0.72, pY:  1.3,  behind: false, spin: -0.25 },
           { path: '/assets/stickers/sticker-eyes.png',   sizeFrac: 0.11, offsetX: -2.55, offsetY: -0.85, pX:  0.78, pY:  0.6,  behind: false, spin: 0.3  },
-          { path: '/assets/stickers/sticker-heart.png',  sizeFrac: 0.17, offsetX: -0.7,  offsetY:  0.01,  pX: -0.5,  pY:  0.8,  behind: true,  spin: 0.1  },
+          { path: '/assets/stickers/sticker-heart.png',  sizeFrac: 0.1, offsetX: -0.7,  offsetY:  0.9,  pX: -0.5,  pY:  0.8,  behind: true,  spin: 0.1  },
           { path: '/assets/stickers/sticker-star.webp',  sizeFrac: 0.15, offsetX:  0.85, offsetY:  0.75, pX:  0.42, pY:  0.8,  behind: true,  spin: 0.1  },
           { path: '/assets/stickers/sticker-2026.png',   sizeFrac: 0.11, offsetX:  2.05, offsetY: -0.38, pX:  0.92, pY: -0.95, behind: false, spin: -0.15 },
           { path: '/assets/stickers/sticker-hand.png',   sizeFrac: 0.20, offsetX:  0.85, offsetY: -2.1,  pX: -0.85, pY: -2.32, behind: false, spin: 0.4  },
@@ -712,7 +712,7 @@ export function GlobalWebGLScene({
       )
       glassLight.lerp(glassLightTarget, 0.7)
       glassMotionEnergy *= 0.92
-      const glassSpecularStrength = 1.2 + glassMotionEnergy * 0.8
+      const glassSpecularStrength = 0.55 + glassMotionEnergy * 0.35
       scrollProgress = reducedMotion ? 0 : targetScrollProgress
       const heroDepthOffset = scrollProgress * 5
       decorations.forEach((sprite, index) => {
