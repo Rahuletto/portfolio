@@ -1,15 +1,19 @@
 import { useEffect, useRef } from 'react'
+import { useReducedMotion } from 'motion/react'
 import { animEngine } from '../engine/animEngine.ts'
 
 export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage: string; effect?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const wrapRef   = useRef<HTMLDivElement>(null)
+  const reducedMotion = useReducedMotion()
 
   useEffect(() => {
     if (window.matchMedia('(pointer: coarse)').matches) return
+    if (reducedMotion) return
     if (!hoverImage || hoverImage === image) return
     const wrap = wrapRef.current
     if (!wrap) return
+    const link = wrap.closest('a')
 
     let alive     = true
     let inited    = false
@@ -67,6 +71,8 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
       ioGcObs?.disconnect()
       wrap.removeEventListener('pointerenter', onPointerEnter)
       wrap.removeEventListener('pointerleave', onPointerLeave)
+      link?.removeEventListener('focus', onPointerEnter)
+      link?.removeEventListener('blur', onPointerLeave)
     }
 
     const draw = (progressVal: number) => {
@@ -278,9 +284,11 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
 
     wrap.addEventListener('pointerenter', onPointerEnter, { passive: true })
     wrap.addEventListener('pointerleave', onPointerLeave, { passive: true })
+    link?.addEventListener('focus', onPointerEnter)
+    link?.addEventListener('blur', onPointerLeave)
 
     return disposeAll
-  }, [hoverImage, image])
+  }, [hoverImage, image, reducedMotion])
 
   return (
     <div className="project-shader relative w-full overflow-hidden" ref={wrapRef}>

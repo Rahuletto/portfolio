@@ -1,11 +1,21 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Lenis from 'lenis'
 import { animEngine } from './engine/animEngine.ts'
 
 export function useSmoothScroll(enabled: boolean = true): void {
+  const [reducedMotion, setReducedMotion] = useState(() => (
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ))
+
   useEffect(() => {
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-    if (reducedMotion.matches) return
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReducedMotion(query.matches)
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+
+  useEffect(() => {
+    if (reducedMotion) return
 
     const lenis = new Lenis({
       lerp: 0.12,
@@ -103,5 +113,5 @@ export function useSmoothScroll(enabled: boolean = true): void {
       lenis.off('scroll', onLenisScroll)
       lenis.destroy()
     }
-  }, [enabled])
+  }, [enabled, reducedMotion])
 }

@@ -567,6 +567,7 @@ export function GlobalWebGLScene({
 
     const onPointerMove = (event: PointerEvent) => {
       if (!interactionReadyRef.current) return
+      if (reducedMotion) return
 
       const next = normalizePointer(
         event.clientX,
@@ -604,6 +605,7 @@ export function GlobalWebGLScene({
       }
     }
     const onScroll = () => {
+      if (reducedMotion) return
       const heroHeight = heroElement?.clientHeight ?? window.innerHeight
       targetScrollProgress = Math.min(
         1,
@@ -613,6 +615,7 @@ export function GlobalWebGLScene({
       wake()
     }
     const onSmoothScroll = (event: Event) => {
+      if (reducedMotion) return
       const scroll = (event as CustomEvent<number>).detail
       if (!Number.isFinite(scroll)) return
       const heroHeight = heroElement?.clientHeight ?? window.innerHeight

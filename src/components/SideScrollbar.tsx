@@ -10,6 +10,7 @@ export function SideScrollbar() {
   const draggingRef = useRef(false)
   const hideTimerRef = useRef(0)
   const nearRef = useRef(false)
+  const focusedRef = useRef(false)
 
   useEffect(() => {
     const track = trackRef.current
@@ -18,10 +19,23 @@ export function SideScrollbar() {
 
     const maxScroll = () =>
       Math.max(1, document.documentElement.scrollHeight - window.innerHeight)
+    let removeDragListeners = () => undefined
+
+    const requestScroll = (target: number) => {
+      const boundedTarget = Math.min(maxScroll(), Math.max(0, target))
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        window.scrollTo({ top: boundedTarget, behavior: 'auto' })
+        return
+      }
+      window.dispatchEvent(new CustomEvent('portfolio:scroll-to', {
+        detail: { target: boundedTarget, immediate: false },
+      }))
+    }
 
     const setThumbPosition = (scrollPx: number) => {
       const maxS = maxScroll()
       const progress = Math.min(1, Math.max(0, scrollPx / maxS))
+      track.setAttribute('aria-valuenow', Math.round(progress * 100).toString())
       const trackHeight = track.clientHeight
       const thumbHeight = 36
       const maxThumbY = Math.max(0, trackHeight - thumbHeight)
@@ -33,7 +47,7 @@ export function SideScrollbar() {
       setVisible(true)
       clearTimeout(hideTimerRef.current)
       hideTimerRef.current = window.setTimeout(() => {
-        if (!draggingRef.current && !nearRef.current) setVisible(false)
+        if (!draggingRef.current && !nearRef.current && !focusedRef.current) setVisible(false)
       }, FADE_DELAY)
     }
 
@@ -63,7 +77,7 @@ export function SideScrollbar() {
       } else if (wasNear) {
         clearTimeout(hideTimerRef.current)
         hideTimerRef.current = window.setTimeout(() => {
-          if (!draggingRef.current && !nearRef.current) setVisible(false)
+          if (!draggingRef.current && !nearRef.current && !focusedRef.current) setVisible(false)
         }, FADE_DELAY)
       }
     }
@@ -78,15 +92,12 @@ export function SideScrollbar() {
       const target = progress * maxScroll()
 
       setThumbPosition(target)
-      window.dispatchEvent(
-        new CustomEvent('portfolio:scroll-to', {
-          detail: { target, immediate: false },
-        }),
-      )
+      requestScroll(target)
     }
 
     const onPointerDown = (event: PointerEvent) => {
       event.preventDefault()
+      removeDragListeners()
       draggingRef.current = true
       setVisible(true)
       clearTimeout(hideTimerRef.current)
@@ -94,21 +105,55 @@ export function SideScrollbar() {
       const onMove = (e: PointerEvent) => scrollToPointer(e.clientY)
       const onUp = () => {
         draggingRef.current = false
-        window.removeEventListener('pointermove', onMove)
-        window.removeEventListener('pointerup', onUp)
+        removeDragListeners()
         hideTimerRef.current = window.setTimeout(
           () => {
-            if (!nearRef.current) setVisible(false)
+            if (!nearRef.current && !focusedRef.current) setVisible(false)
           },
           FADE_DELAY,
         )
       }
+      removeDragListeners = () => {
+        window.removeEventListener('pointermove', onMove)
+        window.removeEventListener('pointerup', onUp)
+        window.removeEventListener('pointercancel', onUp)
+        removeDragListeners = () => undefined
+      }
       window.addEventListener('pointermove', onMove)
       window.addEventListener('pointerup', onUp)
+      window.addEventListener('pointercancel', onUp)
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      let target: number | null = null
+      const current = window.scrollY || document.documentElement.scrollTop
+      if (event.key === 'ArrowDown') target = current + 60
+      if (event.key === 'ArrowUp') target = current - 60
+      if (event.key === 'PageDown') target = current + window.innerHeight * 0.8
+      if (event.key === 'PageUp') target = current - window.innerHeight * 0.8
+      if (event.key === 'Home') target = 0
+      if (event.key === 'End') target = maxScroll()
+      if (target === null) return
+
+      event.preventDefault()
+      requestScroll(target)
     }
 
     const onResize = () => {
       setThumbPosition(window.scrollY || document.documentElement.scrollTop)
+    }
+
+    const onFocus = () => {
+      focusedRef.current = true
+      show()
+    }
+
+    const onBlur = () => {
+      focusedRef.current = false
+      clearTimeout(hideTimerRef.current)
+      hideTimerRef.current = window.setTimeout(() => {
+        if (!draggingRef.current && !nearRef.current) setVisible(false)
+      }, FADE_DELAY)
     }
 
     window.addEventListener('scroll', onNativeScroll, { passive: true })
@@ -116,6 +161,9 @@ export function SideScrollbar() {
     window.addEventListener('pointermove', onPointerMove, { passive: true })
     window.addEventListener('resize', onResize, { passive: true })
     track.addEventListener('pointerdown', onPointerDown)
+    track.addEventListener('keydown', onKeyDown)
+    track.addEventListener('focus', onFocus)
+    track.addEventListener('blur', onBlur)
     onNativeScroll()
 
     return () => {
@@ -124,6 +172,10 @@ export function SideScrollbar() {
       window.removeEventListener('pointermove', onPointerMove)
       window.removeEventListener('resize', onResize)
       track.removeEventListener('pointerdown', onPointerDown)
+      track.removeEventListener('keydown', onKeyDown)
+      track.removeEventListener('focus', onFocus)
+      track.removeEventListener('blur', onBlur)
+      removeDragListeners()
       clearTimeout(hideTimerRef.current)
     }
   }, [])
@@ -133,7 +185,14 @@ export function SideScrollbar() {
       ref={trackRef}
       className="side-scrollbar fixed right-5 top-1/2 z-50 h-[200px] w-2 -translate-y-1/2 cursor-pointer select-none rounded-full bg-white/15 backdrop-blur-xs transition-opacity duration-300 max-[760px]:hidden"
       style={{ opacity: visible ? 1 : 0 }}
-      aria-hidden="true"
+      aria-label="Page scroll position"
+      aria-controls="main-content"
+      aria-orientation="vertical"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={0}
+      role="scrollbar"
+      tabIndex={0}
     >
       <div
         ref={thumbRef}

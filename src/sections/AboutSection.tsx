@@ -6,17 +6,19 @@ export function AboutSection() {
   return (
     <section
       className="about relative z-[1] grid min-h-[110svh] grid-cols-[5fr_7fr] items-center gap-[6vw] px-[5.8vw] pt-[18vh] pb-[14vh] max-[900px]:grid-cols-1 max-[900px]:gap-[8vh] max-[760px]:min-h-0 max-[760px]:px-[18px] max-[760px]:py-[14vh]"
+      aria-labelledby="about-heading"
       data-dot-transition-start
       data-scroll-reveal
       ref={sectionRef}
     >
-      <div className="about-art reveal group relative aspect-[433/388] w-full max-w-[560px] cursor-pointer justify-self-start overflow-visible max-[900px]:mx-auto max-[900px]:max-w-[420px] max-[900px]:justify-self-center max-[760px]:w-[88%]" aria-label="Rahul Marban portrait artwork">
+      <h2 className="sr-only" id="about-heading">About Rahul Marban</h2>
+      <div className="about-art reveal group relative aspect-[433/388] w-full max-w-[560px] justify-self-start overflow-visible max-[900px]:mx-auto max-[900px]:max-w-[420px] max-[900px]:justify-self-center max-[760px]:w-[88%]">
         <div className="relative size-full overflow-visible transition-all duration-500 ease-out group-hover:scale-[1.03]">
           <div className="relative aspect-[369/368] w-[85.2%] overflow-hidden rounded-[54px] bg-[#1a1919]">
             <img
               className="block size-full object-cover"
               src="/assets/marban-photo.webp"
-              alt="Rahul Marban portrait artwork"
+              alt="Portrait of Rahul Marban"
             />
 
             <div className="pointer-events-none absolute inset-0 size-full opacity-100 transition-opacity duration-500 ease-out group-hover:opacity-0">
@@ -33,7 +35,7 @@ export function AboutSection() {
             <img
               className="block size-full object-contain"
               src="/assets/about-pill.svg"
-              alt="Rahul Marban signature"
+              alt=""
             />
           </div>
         </div>

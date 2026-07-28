@@ -10,14 +10,14 @@ export function HeroIntroOverlay({ phase }: { phase: HeroIntroPhase }) {
     <div
       className="hero-intro pointer-events-none fixed inset-0 z-[100] flex items-center justify-center"
       data-phase={phase}
-      aria-hidden={phase === 'complete'}
+      aria-hidden="true"
     >
       <div className="hero-intro__sig-wrap">
         <svg
           className="hero-intro__sig w-[clamp(140px,18vw,220px)] select-none overflow-visible"
           viewBox="0 0 144 37"
           fill="none"
-          aria-label="Marban signature"
+          focusable="false"
         >
           <path fillRule="evenodd" clipRule="evenodd" d={PATH_1} fill="#ffffff" />
           <path d={PATH_2} fill="#ffffff" />

@@ -56,6 +56,15 @@ export function useHeroIntro(): HeroIntroState {
     const revealDuration = reducedMotion ? REDUCED_REVEAL_MS : REVEAL_MS
     const exitDuration   = reducedMotion ? 80 : LOADER_EXIT_MS
 
+    if (reducedMotion) {
+      displayedLoadRef.current = 1
+      loadProgressRef.current = 1
+      introProgressRef.current = 1
+      interactionReadyRef.current = true
+      setPhase('complete')
+      return
+    }
+
     const removeTask = animEngine.addTask('introReveal', (_dt, now) => {
       const elapsed = now - startedAt
       const loadT   = clamp01(elapsed / LOAD_FINISH_MS)
@@ -98,23 +107,14 @@ export function useHeroIntro(): HeroIntroState {
       e.preventDefault()
     }
 
-    const preventScrollKeys = (e: KeyboardEvent) => {
-      const keys = ['ArrowUp', 'ArrowDown', 'Space', 'PageUp', 'PageDown', 'Home', 'End']
-      if (keys.includes(e.code) || keys.includes(e.key)) {
-        e.preventDefault()
-      }
-    }
-
     window.addEventListener('wheel', preventScroll, { passive: false })
     window.addEventListener('touchmove', preventScroll, { passive: false })
-    window.addEventListener('keydown', preventScrollKeys, { passive: false })
 
     return () => {
       document.documentElement.style.overflow = prevHtml
       document.body.style.overflow = prevBody
       window.removeEventListener('wheel', preventScroll)
       window.removeEventListener('touchmove', preventScroll)
-      window.removeEventListener('keydown', preventScrollKeys)
     }
   }, [phase])
 

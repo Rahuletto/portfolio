@@ -4,6 +4,7 @@ import {
   cubicBezier,
   motion,
   useInView,
+  useReducedMotion,
   useScroll,
   useTransform,
 } from 'motion/react'
@@ -146,8 +147,12 @@ const statsGroupMap: Record<
   },
 }
 
-const SkillItem: FC<{ item: string; isMobile: boolean }> = ({ item, isMobile }) => {
-  const ref = useRef<HTMLDivElement>(null)
+const SkillItem: FC<{
+  item: string
+  isMobile: boolean
+  reducedMotion: boolean
+}> = ({ item, isMobile, reducedMotion }) => {
+  const ref = useRef<HTMLLIElement>(null)
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -174,20 +179,21 @@ const SkillItem: FC<{ item: string; isMobile: boolean }> = ({ item, isMobile }) 
   const opacity = isMobile ? mobileOpacity : desktopOpacity
 
   return (
-    <motion.div
+    <motion.li
       ref={ref}
-      style={{ x, opacity }}
+      style={reducedMotion ? undefined : { x, opacity }}
       className="w-fit text-[clamp(22px,3vw,40px)] font-semibold leading-snug tracking-tight text-white transition-colors duration-200 hover:text-[#e05035]"
     >
       {item}
-    </motion.div>
+    </motion.li>
   )
 }
 
 export function SkillsSection() {
   const [currentSection, setCurrentSection] = useState<number>(0)
   const [isMobile, setIsMobile] = useState(false)
-  const sectionRefs = useRef<(HTMLDivElement | null)[]>([])
+  const reducedMotion = useReducedMotion() ?? false
+  const sectionRefs = useRef<(HTMLElement | null)[]>([])
   const numRef = useRef<HTMLDivElement>(null)
   const numInView = useInView(numRef, { once: false, margin: '-10% 0px -10% 0px' })
 
@@ -261,31 +267,37 @@ export function SkillsSection() {
   return (
     <section
       id="skills"
+      aria-labelledby="skills-heading"
       data-dot-transition-vanish
       className="skills-section relative z-[1] mx-auto flex min-h-[100lvh] w-full max-w-[1440px] flex-col justify-between gap-10 px-[5vw] py-[10vh] md:flex-row md:items-start md:gap-[10vw] lg:gap-[12vw] max-[760px]:px-5 max-[760px]:py-10"
     >
       {/* Sticky Left Column */}
       <div className="sticky top-20 z-30 flex min-w-[36%] flex-col justify-between bg-transparent max-md:w-full md:h-[80lvh] md:min-h-[480px]">
         <div>
-          <h2 className="mb-2 text-lg font-semibold text-[#fefefe]/60 max-[760px]:text-base">
-            Skills
-          </h2>
+          <h2 id="skills-heading" className="mb-2 text-lg font-semibold text-[#fefefe]/60 max-[760px]:text-base">Skills</h2>
 
-          <AnimatePresence mode="wait">
-            <motion.h1
-              key={currentSection}
-              initial={{ opacity: 0, filter: 'blur(10px)', y: 10 }}
-              animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-              exit={{ opacity: 0, filter: 'blur(10px)', y: -10 }}
-              transition={{
-                duration: 0.32,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="mb-4 inline-block text-[clamp(28px,3.5vw,52px)] font-bold leading-none tracking-tight text-[#fefefe] md:whitespace-nowrap"
-            >
+          {reducedMotion ? (
+            <h3 aria-hidden="true" className="mb-4 inline-block text-[clamp(28px,3.5vw,52px)] font-bold leading-none tracking-tight text-[#fefefe] md:whitespace-nowrap">
               {skillsData[currentSection]?.type || 'Skills Overview'}
-            </motion.h1>
-          </AnimatePresence>
+            </h3>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.h3
+                aria-hidden="true"
+                key={currentSection}
+                initial={{ opacity: 0, filter: 'blur(10px)', y: 10 }}
+                animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                exit={{ opacity: 0, filter: 'blur(10px)', y: -10 }}
+                transition={{
+                  duration: 0.32,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="mb-4 inline-block text-[clamp(28px,3.5vw,52px)] font-bold leading-none tracking-tight text-[#fefefe] md:whitespace-nowrap"
+              >
+                {skillsData[currentSection]?.type || 'Skills Overview'}
+              </motion.h3>
+            </AnimatePresence>
+          )}
 
           <p className="max-w-[440px] text-[clamp(15px,1.25vw,20px)] leading-relaxed text-[#fefefe]/85 max-[760px]:text-sm">
             Engineering web products, AI systems, developer tools, and high-performance infrastructure.
@@ -296,32 +308,36 @@ export function SkillsSection() {
         <div className="mt-auto pt-4 flex flex-col gap-2 max-md:mt-6" ref={numRef}>
           <div className="grid grid-cols-2 gap-4 pt-1 max-[400px]:grid-cols-1">
             <div className="min-w-0">
-              <NumberFlow
-                value={numInView ? activeGroup.m1.val : 0}
-                className="text-[clamp(44px,5vw,76px)] font-bold leading-none tracking-tight text-[#fefefe]"
-                format={
-                  activeGroup.m1.compact
-                    ? { compactDisplay: 'short', notation: 'compact' }
-                    : undefined
-                }
-                suffix={activeGroup.m1.suffix}
-              />
+              {reducedMotion ? (
+                <span className="text-[clamp(44px,5vw,76px)] font-bold leading-none tracking-tight text-[#fefefe]">
+                  {new Intl.NumberFormat('en', activeGroup.m1.compact ? { compactDisplay: 'short', notation: 'compact' } : undefined).format(activeGroup.m1.val)}{activeGroup.m1.suffix}
+                </span>
+              ) : (
+                <NumberFlow
+                  value={numInView ? activeGroup.m1.val : 0}
+                  className="text-[clamp(44px,5vw,76px)] font-bold leading-none tracking-tight text-[#fefefe]"
+                  format={activeGroup.m1.compact ? { compactDisplay: 'short', notation: 'compact' } : undefined}
+                  suffix={activeGroup.m1.suffix}
+                />
+              )}
               <p className="-mt-1 text-[clamp(14px,1.2vw,18px)] font-medium leading-tight text-[#fefefe]/85">
                 {activeGroup.m1.label}
               </p>
             </div>
 
             <div className="min-w-0">
-              <NumberFlow
-                value={numInView ? activeGroup.m2.val : 0}
-                className="text-[clamp(44px,5vw,76px)] font-bold leading-none tracking-tight text-[#fefefe]"
-                format={
-                  activeGroup.m2.compact
-                    ? { compactDisplay: 'short', notation: 'compact' }
-                    : undefined
-                }
-                suffix={activeGroup.m2.suffix}
-              />
+              {reducedMotion ? (
+                <span className="text-[clamp(44px,5vw,76px)] font-bold leading-none tracking-tight text-[#fefefe]">
+                  {new Intl.NumberFormat('en', activeGroup.m2.compact ? { compactDisplay: 'short', notation: 'compact' } : undefined).format(activeGroup.m2.val)}{activeGroup.m2.suffix}
+                </span>
+              ) : (
+                <NumberFlow
+                  value={numInView ? activeGroup.m2.val : 0}
+                  className="text-[clamp(44px,5vw,76px)] font-bold leading-none tracking-tight text-[#fefefe]"
+                  format={activeGroup.m2.compact ? { compactDisplay: 'short', notation: 'compact' } : undefined}
+                  suffix={activeGroup.m2.suffix}
+                />
+              )}
               <p className="-mt-1 text-[clamp(14px,1.2vw,18px)] font-medium leading-tight text-[#fefefe]/85">
                 {activeGroup.m2.label}
               </p>
@@ -333,8 +349,9 @@ export function SkillsSection() {
       {/* Right Column Skills Items List */}
       <div className="w-full min-w-[45%] pb-16 md:pb-40">
         {skillsData.map((section, sectionIndex) => (
-          <div
+          <section
             key={section.type}
+            aria-labelledby={`skill-group-${sectionIndex}`}
             ref={(el) => {
               sectionRefs.current[sectionIndex] = el
             }}
@@ -342,16 +359,18 @@ export function SkillsSection() {
               sectionIndex !== skillsData.length - 1 ? 'border-b border-white/10' : ''
             }`}
           >
-            <div className="flex flex-col gap-2.5 md:gap-3.5">
+            <h3 className="sr-only" id={`skill-group-${sectionIndex}`}>{section.type}</h3>
+            <ul className="m-0 flex list-none flex-col gap-2.5 p-0 md:gap-3.5">
               {section.items.map((item, itemIndex) => (
                 <SkillItem
                   key={`${sectionIndex}-${itemIndex}`}
                   item={item}
                   isMobile={isMobile}
+                  reducedMotion={reducedMotion}
                 />
               ))}
-            </div>
-          </div>
+            </ul>
+          </section>
         ))}
       </div>
     </section>

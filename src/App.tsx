@@ -39,11 +39,18 @@ function App() {
   useSmoothScroll(intro.phase === 'revealing' || intro.phase === 'complete')
 
   return (
-    <main
-      className="site relative min-h-screen isolate overflow-clip bg-transparent text-[#f4f5f7] antialiased"
-      data-intro-phase={intro.phase}
-      aria-busy={intro.phase !== 'complete'}
-    >
+    <>
+      <a className="skip-link" href="#main-content">Skip to main content</a>
+      <span className="sr-only" role="status" aria-live="polite">
+        {intro.phase === 'complete' ? 'Portfolio loaded' : 'Loading portfolio'}
+      </span>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="site relative min-h-screen isolate overflow-clip bg-transparent text-[#f4f5f7] antialiased"
+        data-intro-phase={intro.phase}
+        aria-busy={intro.phase !== 'complete'}
+      >
       <Suspense fallback={null}>
         <GlobalWebGLScene
           introProgressRef={intro.introProgressRef}
@@ -78,9 +85,9 @@ function App() {
         </Suspense>
       </LazySection>
 
-    </main>
+      </main>
+    </>
   )
 }
 
 export default App
-

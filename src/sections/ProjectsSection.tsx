@@ -80,47 +80,51 @@ function ProjectCard({
 
   return (
     <article
-      className={`project group ${projectLayout(index, project)} ${href ? 'cursor-pointer' : ''}`}
+      className={`project group ${projectLayout(index, project)}`}
       data-layout={projectResponsiveLayout(index, project)}
       data-scroll-reveal
       ref={projectRef}
       style={motionStyle}
-      onClick={href ? () => window.open(href, '_blank', 'noreferrer') : undefined}
-      role={href ? 'link' : undefined}
-      tabIndex={href ? 0 : undefined}
-      onKeyDown={href ? (e: React.KeyboardEvent) => { if (e.key === 'Enter') window.open(href, '_blank', 'noreferrer') } : undefined}
     >
-      <div className="project-media relative overflow-hidden rounded-2xl bg-[#111] max-[760px]:rounded-xl">
-        <Media
-          image={project.image}
-          hoverImage={project.hover}
-          effect={project.effect}
-        />
-      </div>
-      <div className="project-meta flex items-start justify-between gap-6 pt-4 max-[760px]:pt-3 max-[760px]:gap-3">
-        <div className="flex flex-1 flex-col gap-1.5 min-w-0">
-          <h3 className="m-0 text-[clamp(18px,1.6vw,24px)] font-bold tracking-tight text-white leading-tight max-[760px]:text-[16px]">
-            {project.title || project.name}
-          </h3>
-          {project.description && (
-            <p className="m-0 text-[clamp(14px,1.15vw,16px)] leading-relaxed text-zinc-300 font-normal break-words max-[760px]:text-[12px] max-[760px]:leading-normal">
-              <ProjectDescription description={project.description} />
-            </p>
-          )}
-        </div>
-        {project.url && (
-          <a
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white px-4 py-1.5 text-xs font-bold no-underline transition-all duration-200 group-hover:scale-105 hover:bg-white/90 self-start"
-            style={{ color: '#141314' }}
-            href={project.url}
-            target="_blank"
-            rel="noreferrer"
-            onClick={(e) => e.stopPropagation()}
-          >
-            OPEN <span className="text-xs transition-transform duration-200 group-hover:translate-x-0.5">→</span>
-          </a>
-        )}
-      </div>
+      {href ? (
+        <a className="block rounded-2xl focus-visible:outline-offset-8 max-[760px]:rounded-xl" href={href} target="_blank" rel="noreferrer">
+          <div className="project-media relative overflow-hidden rounded-2xl bg-[#111] max-[760px]:rounded-xl">
+            <Media image={project.image} hoverImage={project.hover} effect={project.effect} />
+          </div>
+          <div className="project-meta flex items-start justify-between gap-6 pt-4 max-[760px]:gap-3 max-[760px]:pt-3">
+            <div className="min-w-0 flex flex-1 flex-col gap-1.5">
+              <h3 className="m-0 text-[clamp(18px,1.6vw,24px)] font-bold leading-tight tracking-tight text-white max-[760px]:text-[16px]">
+                {project.title || project.name}
+              </h3>
+              {project.description && (
+                <p className="m-0 break-words text-[clamp(14px,1.15vw,16px)] font-normal leading-relaxed text-zinc-300 max-[760px]:text-[14px] max-[760px]:leading-normal">
+                  <ProjectDescription description={project.description} />
+                </p>
+              )}
+            </div>
+            <span aria-hidden="true" className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-full bg-white px-4 py-1.5 text-xs font-bold text-[#141314] transition-all duration-200 group-hover:scale-105 group-focus-within:scale-105">
+              OPEN <span className="text-xs transition-transform duration-200 group-hover:translate-x-0.5 group-focus-within:translate-x-0.5">→</span>
+            </span>
+            <span className="sr-only">Opens in a new tab</span>
+          </div>
+        </a>
+      ) : (
+        <>
+          <div className="project-media relative overflow-hidden rounded-2xl bg-[#111] max-[760px]:rounded-xl">
+            <Media image={project.image} hoverImage={project.hover} effect={project.effect} />
+          </div>
+          <div className="project-meta pt-4 max-[760px]:pt-3">
+            <h3 className="m-0 text-[clamp(18px,1.6vw,24px)] font-bold leading-tight tracking-tight text-white max-[760px]:text-[16px]">
+              {project.title || project.name}
+            </h3>
+            {project.description && (
+              <p className="m-0 mt-1.5 break-words text-[clamp(14px,1.15vw,16px)] font-normal leading-relaxed text-zinc-300 max-[760px]:text-[14px] max-[760px]:leading-normal">
+                <ProjectDescription description={project.description} />
+              </p>
+            )}
+          </div>
+        </>
+      )}
     </article>
   )
 }
@@ -132,11 +136,12 @@ export function ProjectsSection({ Media }: ProjectsSectionProps) {
     <section
       className="projects relative z-[1] grid grid-cols-12 gap-x-[clamp(24px,3.5vw,56px)] gap-y-[clamp(60px,10vw,160px)] px-[5vw] pt-[10vh] pb-[22vh] max-[760px]:grid-cols-2 max-[760px]:gap-x-4 max-[760px]:gap-y-16 max-[760px]:px-[18px] max-[760px]:pt-[5vh] max-[760px]:pb-[18vh]"
       id="work"
-      aria-label="Selected work"
+      aria-labelledby="projects-heading"
       data-dot-transition-end
       data-scroll-reveal
       ref={sectionRef}
     >
+      <h2 className="sr-only" id="projects-heading">Selected work</h2>
       {projects.map((project, index) => (
         <ProjectCard
           Media={Media}

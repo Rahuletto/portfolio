@@ -9,6 +9,7 @@ export function BackgroundDotTransition() {
   useEffect(() => {
     const layer = layerRef.current
     if (!layer) return
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
 
     let startAnchor: HTMLElement | null = null
     let endAnchor: HTMLElement | null = null
@@ -102,7 +103,15 @@ export function BackgroundDotTransition() {
         targetProgress = 0
       }
 
-      if (initialized) wakeAnimation()
+      if (!initialized) return
+      if (reducedMotion.matches) {
+        removeTask?.()
+        removeTask = null
+        currentProgress = targetProgress
+        renderProgress(currentProgress)
+      } else {
+        wakeAnimation()
+      }
     }
 
     const updateLayout = () => {
@@ -130,6 +139,7 @@ export function BackgroundDotTransition() {
     window.addEventListener('portfolio:scroll', onScroll)
     window.addEventListener('resize', updateLayout, { passive: true })
     window.addEventListener('load', updateLayout)
+    reducedMotion.addEventListener('change', calculateTarget)
 
     return () => {
       removeTask?.()
@@ -140,6 +150,7 @@ export function BackgroundDotTransition() {
       window.removeEventListener('portfolio:scroll', onScroll)
       window.removeEventListener('resize', updateLayout)
       window.removeEventListener('load', updateLayout)
+      reducedMotion.removeEventListener('change', calculateTarget)
     }
   }, [])
 
