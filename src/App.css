@@ -87,8 +87,8 @@
 .hero-copy__accent { transition-delay: 500ms; }
 
 .dot-transition {
-  --dot-progress: 0;
-  --dot-radius: calc(1px + var(--dot-progress) * 5px);
+  --dot-radius: .8px;
+  --dot-opacity: 0;
   background-image: radial-gradient(
     circle,
     #141314 0 var(--dot-radius),
@@ -96,7 +96,7 @@
   );
   background-position: 0 0;
   background-size: 8px 8px;
-  opacity: clamp(0, calc(var(--dot-progress) * 10), 1);
+  opacity: var(--dot-opacity);
   will-change: opacity, background-image;
 }
 
@@ -523,7 +523,7 @@
 
   .dot-transition {
     background: #141314;
-    opacity: var(--dot-progress);
+    opacity: var(--dot-opacity);
   }
 
   .hero-intro__loader {

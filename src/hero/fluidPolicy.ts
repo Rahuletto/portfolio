@@ -66,7 +66,7 @@ export function getHeroLayout(aspect: number): HeroLayout {
       helloSize: 2.08,
       helloPosition: { x: 0, y: 0.28, z: 0 },
       cursorSize: 0.38,
-      cursorPosition: { x: 0.78, y: -1.22, z: 0.45 },
+      cursorPosition: { x: 0.52, y: -0.52, z: 0.45 },
     }
   }
 

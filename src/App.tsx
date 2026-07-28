@@ -21,6 +21,10 @@ const ProjectsSection = lazy(async () => {
   const m = await import('./sections/ProjectsSection.tsx')
   return { default: m.ProjectsSection }
 })
+const SkillsSection = lazy(async () => {
+  const m = await import('./sections/SkillsSection.tsx')
+  return { default: m.SkillsSection }
+})
 const ProjectMedia = lazy(async () => {
   const m = await import('./components/ProjectMedia.tsx')
   return { default: m.ProjectMedia }
@@ -68,8 +72,15 @@ function App() {
         </Suspense>
       </LazySection>
 
+      <LazySection>
+        <Suspense fallback={null}>
+          <SkillsSection />
+        </Suspense>
+      </LazySection>
+
     </main>
   )
 }
 
 export default App
+

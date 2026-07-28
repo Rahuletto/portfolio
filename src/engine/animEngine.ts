@@ -35,12 +35,15 @@ class AnimEngine {
   public addTask(id: string, callback: AnimTaskCallback): () => void {
     this.tasks.set(id, callback)
     this.ensureTickerRunning()
-    return () => this.removeTask(id)
+    return () => {
+      if (this.tasks.get(id) !== callback) return
+      this.tasks.delete(id)
+      this.checkAutoSleep()
+    }
   }
 
   public removeTask(id: string): void {
     this.tasks.delete(id)
-    this.lerpTasks.delete(id)
     this.checkAutoSleep()
   }
 
@@ -64,12 +67,16 @@ class AnimEngine {
       id,
       setTarget: (nextTarget: number) => {
         const task = this.lerpTasks.get(id)
-        if (task) {
+        if (task === taskConfig) {
           task.target = nextTarget
           this.ensureTickerRunning()
         }
       },
-      stop: () => this.removeTask(id),
+      stop: () => {
+        if (this.lerpTasks.get(id) !== taskConfig) return
+        this.lerpTasks.delete(id)
+        this.checkAutoSleep()
+      },
     }
   }
 
@@ -120,7 +127,7 @@ class AnimEngine {
 
     for (const [id, callback] of Array.from(this.tasks.entries())) {
       const keep = callback(dt, now)
-      if (keep === false) {
+      if (keep === false && this.tasks.get(id) === callback) {
         this.tasks.delete(id)
       }
     }
@@ -136,7 +143,7 @@ class AnimEngine {
         task.current = task.target
         task.onUpdate(task.current)
         task.onComplete?.()
-        this.lerpTasks.delete(id)
+        if (this.lerpTasks.get(id) === task) this.lerpTasks.delete(id)
       }
     }
 
@@ -147,4 +154,3 @@ class AnimEngine {
 }
 
 export const animEngine = new AnimEngine()
-

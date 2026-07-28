@@ -24,8 +24,21 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
     let lerpControl: ReturnType<typeof animEngine.addLerp> | null = null
     let roObs: ResizeObserver | null = null
     let ioGcObs: IntersectionObserver | null = null
+    let initGeneration = 0
+    let readyFrame = 0
+    let disposeTimer = 0
+
+    const cancelScheduledDispose = () => {
+      if (!disposeTimer) return
+      clearTimeout(disposeTimer)
+      disposeTimer = 0
+    }
 
     const disposeGL = () => {
+      cancelScheduledDispose()
+      initGeneration += 1
+      if (readyFrame) cancelAnimationFrame(readyFrame)
+      readyFrame = 0
       inited = false
       loaded = 0
       lerpControl?.stop()
@@ -49,6 +62,7 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
 
     const disposeAll = () => {
       alive = false
+      cancelScheduledDispose()
       disposeGL()
       ioGcObs?.disconnect()
       wrap.removeEventListener('pointerenter', onPointerEnter)
@@ -78,9 +92,13 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
     const initGL = () => {
       if (inited || !alive) return
       inited = true
+      const generation = ++initGeneration
 
       const canvas = canvasRef.current
-      if (!canvas) return
+      if (!canvas) {
+        inited = false
+        return
+      }
 
       gl = canvas.getContext('webgl', {
         alpha:                 true,
@@ -90,7 +108,10 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
         preserveDrawingBuffer: false,
         powerPreference:       'high-performance',
       })
-      if (!gl) return
+      if (!gl) {
+        inited = false
+        return
+      }
 
       const vert = `
         attribute vec2 p;
@@ -142,7 +163,7 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
       gl.linkProgram(prog)
       gl.deleteShader(vs); gl.deleteShader(fs)
       if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-        gl.deleteProgram(prog); prog = null; return
+        gl.deleteProgram(prog); prog = null; inited = false; return
       }
       gl.useProgram(prog)
 
@@ -170,6 +191,9 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
 
       baseTex  = mkTex(gl.TEXTURE0)
       hoverTex = mkTex(gl.TEXTURE1)
+      const context = gl
+      const initialBaseTex = baseTex
+      const initialHoverTex = hoverTex
 
       const upload = (tex: WebGLTexture, unit: number, img: HTMLImageElement, szUniform: string) => {
         if (!gl || !prog || !alive) return
@@ -185,16 +209,23 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
           if (cur > 0) {
             startLerpTo(cur)
           }
-          requestAnimationFrame(() => {
-            if (alive && canvas) canvas.classList.add('is-ready')
+          readyFrame = requestAnimationFrame(() => {
+            readyFrame = 0
+            if (alive && generation === initGeneration) canvas.classList.add('is-ready')
           })
         }
       }
 
       const baseImg  = new Image()
       const overImg  = new Image()
-      baseImg.onload = () => upload(baseTex!,  gl!.TEXTURE0, baseImg,  'baseSz')
-      overImg.onload = () => upload(hoverTex!, gl!.TEXTURE1, overImg,  'overSz')
+      baseImg.onload = () => {
+        if (generation !== initGeneration || gl !== context) return
+        upload(initialBaseTex, context.TEXTURE0, baseImg, 'baseSz')
+      }
+      overImg.onload = () => {
+        if (generation !== initGeneration || gl !== context) return
+        upload(initialHoverTex, context.TEXTURE1, overImg, 'overSz')
+      }
       baseImg.src = `/assets/projects/${image}`
       overImg.src = `/assets/projects/${hoverImage}`
 
@@ -222,6 +253,7 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
     }
 
     const onPointerEnter = () => {
+      cancelScheduledDispose()
       if (!inited) initGL()
       startLerpTo(1)
     }
@@ -231,10 +263,15 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
     }
 
     ioGcObs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !inited) {
-        initGL()
+      if (entry.isIntersecting) {
+        cancelScheduledDispose()
+        if (!inited) initGL()
       } else if (!entry.isIntersecting && inited) {
-        disposeGL()
+        cancelScheduledDispose()
+        disposeTimer = window.setTimeout(() => {
+          disposeTimer = 0
+          if (alive) disposeGL()
+        }, 1500)
       }
     }, { rootMargin: '400px' })
     ioGcObs.observe(wrap)

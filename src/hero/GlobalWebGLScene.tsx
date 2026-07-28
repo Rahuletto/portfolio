@@ -338,12 +338,12 @@ export function GlobalWebGLScene({
         if (disposed) return
 
         const stickerFiles = [
-          { path: '/assets/stickers/sticker-pen.png',    sizeFrac: 0.12, offsetX: -1.95, offsetY:  0.82, pX: -0.72, pY:  1.3,  behind: false, spin: -0.25 },
-          { path: '/assets/stickers/sticker-eyes.png',   sizeFrac: 0.11, offsetX: -2.55, offsetY: -0.85, pX:  0.78, pY:  0.6,  behind: false, spin: 0.3  },
-          { path: '/assets/stickers/sticker-heart.png',  sizeFrac: 0.1, offsetX: -0.7,  offsetY:  0.9,  pX: -0.5,  pY:  0.8,  behind: true,  spin: 0.1  },
-          { path: '/assets/stickers/sticker-star.webp',  sizeFrac: 0.15, offsetX:  0.85, offsetY:  0.75, pX:  0.42, pY:  0.8,  behind: true,  spin: 0.1  },
-          { path: '/assets/stickers/sticker-2026.png',   sizeFrac: 0.11, offsetX:  2.05, offsetY: -0.38, pX:  0.92, pY: -0.95, behind: false, spin: -0.15 },
-          { path: '/assets/stickers/sticker-hand.png',   sizeFrac: 0.20, offsetX:  0.85, offsetY: -2.1,  pX: -0.85, pY: -2.32, behind: false, spin: 0.4  },
+          { path: '/assets/stickers/sticker-pen.png',    sizeFrac: 0.12, offsetX: -1.95, offsetY:  0.82, pX: -0.65, pY:  0.12, behind: false, spin: -0.25 },
+          { path: '/assets/stickers/sticker-eyes.png',   sizeFrac: 0.11, offsetX: -2.55, offsetY: -0.85, pX:  0.66, pY:  0.08, behind: false, spin: 0.3  },
+          { path: '/assets/stickers/sticker-heart.png',  sizeFrac: 0.1, offsetX: -0.7,  offsetY:  0.9,  pX: -0.32, pY:  0.42, behind: true,  spin: 0.1  },
+          { path: '/assets/stickers/sticker-star.webp',  sizeFrac: 0.15, offsetX:  0.85, offsetY:  0.75, pX:  0.28, pY:  0.3,  behind: true,  spin: 0.1  },
+          { path: '/assets/stickers/sticker-2026.png',   sizeFrac: 0.11, offsetX:  2.05, offsetY: -0.38, pX:  0.58, pY: -0.52, behind: false, spin: -0.15 },
+          { path: '/assets/stickers/sticker-hand.png',   sizeFrac: 0.20, offsetX:  0.85, offsetY: -2.1,  pX: -0.6,  pY: -0.48, behind: false, spin: 0.4  },
         ]
 
         for (const item of stickerFiles) {
@@ -581,16 +581,18 @@ export function GlobalWebGLScene({
       )
       pointer = next
       previousPointer = next
-      pendingDelta.x += delta.x
-      pendingDelta.y += delta.y
-      const pendingMagnitude = Math.hypot(pendingDelta.x, pendingDelta.y)
-      if (pendingMagnitude > 0.15) {
-        const scale = 0.15 / pendingMagnitude
-        pendingDelta.x *= scale
-        pendingDelta.y *= scale
+      if (shouldInjectPointer({ reducedMotion, coarsePointer, visible })) {
+        pendingDelta.x += delta.x
+        pendingDelta.y += delta.y
+        const pendingMagnitude = Math.hypot(pendingDelta.x, pendingDelta.y)
+        if (pendingMagnitude > 0.15) {
+          const scale = 0.15 / pendingMagnitude
+          pendingDelta.x *= scale
+          pendingDelta.y *= scale
+        }
+        fluidFramesRemaining = 48
       }
       interactionUntil = performance.now() + 600
-      fluidFramesRemaining = 48
       wake()
     }
 
@@ -627,10 +629,22 @@ export function GlobalWebGLScene({
     }
     const onReducedMotion = (event: MediaQueryListEvent) => {
       reducedMotion = event.matches
+      if (reducedMotion) {
+        pendingDelta.x = 0
+        pendingDelta.y = 0
+        fluidFramesRemaining = 0
+        fluid.clearVelocity()
+      }
       wake()
     }
     const onCoarsePointer = (event: MediaQueryListEvent) => {
       coarsePointer = event.matches
+      if (coarsePointer) {
+        pendingDelta.x = 0
+        pendingDelta.y = 0
+        fluidFramesRemaining = 0
+        fluid.clearVelocity()
+      }
       wake()
     }
 
@@ -707,6 +721,7 @@ export function GlobalWebGLScene({
       const glassSpecularStrength = 0.55 + glassMotionEnergy * 0.35
       scrollProgress = reducedMotion ? 0 : targetScrollProgress
       const heroDepthOffset = scrollProgress * 5
+      const layout = getHeroLayout(camera.aspect)
       decorations.forEach((sprite, index) => {
         const heroVisualActive = heroActive && scrollProgress < 0.985
         sprite.visible = heroVisualActive && !!hello
@@ -724,11 +739,10 @@ export function GlobalWebGLScene({
             ? 1
             : Math.sin(rawProgress * Math.PI * 0.5) * (1 + 0.38 * Math.sin(rawProgress * Math.PI))
 
-        const stickerLayout = getHeroLayout(camera.aspect)
-        const modelCenterX = stickerLayout.helloPosition.x
+        const modelCenterX = layout.helloPosition.x
         const isPortrait = camera.aspect < 0.8
 
-        const targetSize = stickerLayout.helloSize * sprite.userData.sizeFrac
+        const targetSize = layout.helloSize * sprite.userData.sizeFrac
         sprite.scale.setScalar(targetSize * springPop)
 
         const popRotation = (1 - rawProgress) * (index % 2 === 0 ? 0.45 : -0.45)
@@ -771,7 +785,7 @@ export function GlobalWebGLScene({
         )
 
         sprite.position.y = (
-          stickerLayout.helloPosition.y
+          layout.helloPosition.y
           + fracY * (viewHalfH - marginY)
           + dropOffset
           + driftY
@@ -791,7 +805,6 @@ export function GlobalWebGLScene({
       const idleFloatYaw = Math.cos(idlePhase * 0.6) * 0.025
 
       if (hello && cursor) {
-        const layout = getHeroLayout(camera.aspect)
         const introDepth = THREE.MathUtils.lerp(-1.15, 0, introEase)
         const helloIntroScale = THREE.MathUtils.lerp(0.68, 1, introEase)
         const cursorIntroScale = THREE.MathUtils.lerp(0.76, 1, introEase)
@@ -1029,7 +1042,7 @@ export function GlobalWebGLScene({
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 -z-10 block size-full"
+      className="pointer-events-none fixed inset-0 -z-10 block h-[100lvh] w-full"
       aria-hidden="true"
     />
   )
