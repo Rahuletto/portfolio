@@ -338,12 +338,12 @@ export function GlobalWebGLScene({
         if (disposed) return
 
         const stickerFiles = [
-          { path: '/assets/stickers/sticker-pen.png',    sizeFrac: 0.12, offsetX: -1.95, offsetY:  0.82, pX: -0.65, pY:  0.12, behind: false, spin: -0.25 },
-          { path: '/assets/stickers/sticker-eyes.png',   sizeFrac: 0.11, offsetX: -2.55, offsetY: -0.85, pX:  0.66, pY:  0.08, behind: false, spin: 0.3  },
-          { path: '/assets/stickers/sticker-heart.png',  sizeFrac: 0.1, offsetX: -0.7,  offsetY:  0.9,  pX: -0.32, pY:  0.42, behind: true,  spin: 0.1  },
+          { path: '/assets/stickers/sticker-pen.webp',    sizeFrac: 0.12, offsetX: -1.95, offsetY:  0.82, pX: -0.65, pY:  0.12, behind: false, spin: -0.25 },
+          { path: '/assets/stickers/sticker-eyes.webp',   sizeFrac: 0.11, offsetX: -2.55, offsetY: -0.85, pX:  0.66, pY:  0.08, behind: false, spin: 0.3  },
+          { path: '/assets/stickers/sticker-heart.webp',  sizeFrac: 0.1, offsetX: -0.7,  offsetY:  0.9,  pX: -0.32, pY:  0.42, behind: true,  spin: 0.1  },
           { path: '/assets/stickers/sticker-star.webp',  sizeFrac: 0.15, offsetX:  0.85, offsetY:  0.75, pX:  0.28, pY:  0.3,  behind: true,  spin: 0.1  },
-          { path: '/assets/stickers/sticker-2026.png',   sizeFrac: 0.11, offsetX:  2.05, offsetY: -0.38, pX:  0.58, pY: -0.52, behind: false, spin: -0.15 },
-          { path: '/assets/stickers/sticker-hand.png',   sizeFrac: 0.20, offsetX:  0.85, offsetY: -2.1,  pX: -0.6,  pY: -0.48, behind: false, spin: 0.4  },
+          { path: '/assets/stickers/sticker-2026.webp',   sizeFrac: 0.11, offsetX:  2.05, offsetY: -0.38, pX:  0.58, pY: -0.52, behind: false, spin: -0.15 },
+          { path: '/assets/stickers/sticker-hand.webp',   sizeFrac: 0.20, offsetX:  0.85, offsetY: -2.1,  pX: -0.6,  pY: -0.48, behind: false, spin: 0.4  },
         ]
 
         for (const item of stickerFiles) {
