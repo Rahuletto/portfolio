@@ -12,11 +12,26 @@ type ProjectsSectionProps = {
   Media: ComponentType<ProjectMediaProps>
 }
 
+const quantityPattern = /(\d+(?:\.\d+)?[KMBX]?\+?)/gi
+const quantityTokenPattern = /^\d+(?:\.\d+)?[KMBX]?\+?$/i
+
+function ProjectDescription({ description }: { description: string }) {
+  return description.split(quantityPattern).map((part, index) => (
+    quantityTokenPattern.test(part)
+      ? <strong className="font-bold text-[#e05035]" key={`${part}-${index}`}>{part}</strong>
+      : part
+  ))
+}
+
 function projectLayout(
   _index: number,
   project: (typeof projects)[number],
 ): string {
   switch (project.name) {
+    case 'ClassPro':
+      return 'col-start-7 col-span-5 max-[760px]:col-start-auto max-[760px]:col-span-2'
+    case 'SimplyDJS':
+      return 'col-start-1 col-span-7 max-[760px]:col-start-auto max-[760px]:col-span-2'
     case 'Lavalamp':
       return 'col-start-5 col-span-6 max-[760px]:col-start-auto max-[760px]:col-span-2'
     case 'Samsung Prism':
@@ -55,7 +70,7 @@ function ProjectCard({
   index: number
   project: (typeof projects)[number]
 }) {
-  const projectRef = useScrollReveal<HTMLElement>()
+  const projectRef = useScrollReveal<HTMLElement>(undefined, true)
   const motionStyle = {
     '--project-delay': `${(index % 3) * 65}ms`,
     '--project-drift': `${index % 2 === 0 ? 18 : -18}px`,
@@ -89,7 +104,7 @@ function ProjectCard({
           </h3>
           {project.description && (
             <p className="m-0 text-[clamp(14px,1.15vw,16px)] leading-relaxed text-zinc-300 font-normal break-words max-[760px]:text-[12px] max-[760px]:leading-normal">
-              {project.description}
+              <ProjectDescription description={project.description} />
             </p>
           )}
         </div>

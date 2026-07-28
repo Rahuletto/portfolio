@@ -99,6 +99,7 @@ const skillsData = [
       'API discovery',
       'Vulnerability validation',
       'Attack-chain reasoning',
+	   'BurpSuite',
       'Nuclei',
       'BBOT',
     ],

@@ -14,9 +14,29 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    name: 'ClassPro',
+    title: 'ClassPro',
+    description: 'An academic dashboard used by 30K monthly users and handling more than 2M visits each month.',
+    image: 'classpro.webp',
+    hover: 'classpro-2.webp',
+    effect: 2,
+    url: 'https://github.com/suduolabs/ClassPro',
+    portrait: true,
+  },
+  {
+    name: 'SimplyDJS',
+    title: 'SimplyDJS',
+    description: 'A Discord.js utility library maintained for three years and downloaded more than 600K times annually.',
+    image: 'simplydjs.webp',
+    hover: 'simplydjs-2.webp',
+    effect: 1,
+    url: 'https://github.com/Rahuletto/simply-djs',
+    wide: true,
+  },
+  {
     name: 'Lavalamp',
     title: 'Lavalamp',
-    description: 'A local AI coding agent with precise edits, parallel subagents, and complete control over every action it takes.',
+    description: 'A local coding agent with file editing, parallel subagents, and explicit control over its actions.',
     image: 'lavalamp.webp',
     hover: 'lavalamp-2.webp',
     effect: 1,
@@ -26,7 +46,7 @@ export const projects: Project[] = [
   {
     name: 'Samsung Prism',
     title: 'Samsung PRISM',
-    description: 'Worked with a four-member research team to develop and optimize applied AI solutions as part of Samsung’s industry-led research program.',
+    description: 'Applied AI research completed with a four-person team through Samsung’s PRISM program.',
     image: 'prism.webp',
     hover: 'prism-2.webp',
     effect: 1,
@@ -34,7 +54,7 @@ export const projects: Project[] = [
   {
     name: 'NextTechLab',
     title: 'Next Tech Lab',
-    description: 'Board member at a student-led research lab where ambitious ideas across AI, robotics, extended reality, blockchain, and human-computer interaction become research, projects, and products.',
+    description: 'Board member at a QS-certified student research lab working across AI, robotics, extended reality, blockchain, and HCI.',
     image: 'ntl.webp',
     hover: 'ntl-2.webp',
     effect: 2,
@@ -43,7 +63,7 @@ export const projects: Project[] = [
   {
     name: 'Bullet',
     title: 'Bullet',
-    description: 'A browser-native security engine that turns live web applications into ranked findings, attack surfaces, and connected attack chains.',
+    description: 'A browser-based security tool for mapping routes, APIs, findings, and attack paths in live web applications.',
     image: 'bullet.webp',
     hover: 'bullet-2.webp',
     effect: 3,
@@ -53,7 +73,7 @@ export const projects: Project[] = [
   {
     name: 'Rocket',
     title: 'Rocket',
-    description: 'A fast, lightweight native code editor with language-server intelligence and an integrated Codex agent.',
+    description: 'An agentic code editor with language-server support and an integrated Codex workflow.',
     image: 'rocket.webp',
     hover: 'rocket-2.webp',
     effect: 0,
@@ -62,7 +82,7 @@ export const projects: Project[] = [
   {
     name: 'Manic',
     title: 'Manic',
-    description: 'A Bun-native React framework built for near-instant development, compact builds, and AI-native applications.',
+    description: 'The fastest framework on the planet, reaching up to 42x the speed of Next.js.',
     image: 'manic.webp',
     hover: 'manic-2.webp',
     effect: 2,
@@ -72,7 +92,7 @@ export const projects: Project[] = [
   {
     name: 'Mandy',
     title: 'Mandy',
-    description: 'A modern API workspace that unifies testing, documentation, environments, and automated request workflows.',
+    description: 'An API client for organizing requests, environments, documentation, and automated workflows.',
     image: 'mandy.webp',
     hover: 'mandy-2.webp',
     effect: 0,

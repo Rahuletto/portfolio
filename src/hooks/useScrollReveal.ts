@@ -7,6 +7,7 @@ import { getElementScrollProgress } from './scrollProgress.ts'
 
 export function useScrollReveal<T extends HTMLElement>(
   externalRef?: RefObject<T | null>,
+  revealOnce = false,
 ): RefObject<T | null> {
   const internalRef = useRef<T>(null)
   const ref = externalRef ?? internalRef
@@ -18,6 +19,7 @@ export function useScrollReveal<T extends HTMLElement>(
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     let frame = 0
     let active = true
+    let hasRevealed = false
     let cachedTop = 0
     let cachedHeight = 0
 
@@ -68,7 +70,10 @@ export function useScrollReveal<T extends HTMLElement>(
       ([entry]) => {
         const isIntersecting = entry?.isIntersecting ?? false
         active = isIntersecting
-        element.dataset.revealVisible = isIntersecting ? 'true' : 'false'
+        if (isIntersecting) hasRevealed = true
+        element.dataset.revealVisible = (
+          isIntersecting || (revealOnce && hasRevealed)
+        ) ? 'true' : 'false'
         if (isIntersecting) {
           measure()
           schedule()
@@ -97,7 +102,7 @@ export function useScrollReveal<T extends HTMLElement>(
       window.removeEventListener('resize', onResize)
       reducedMotion.removeEventListener('change', schedule)
     }
-  }, [ref])
+  }, [ref, revealOnce])
 
   return ref
 }
