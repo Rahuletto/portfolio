@@ -1,6 +1,4 @@
 import { execSync } from 'child_process'
-import { existsSync, readdirSync, statSync, readFileSync, writeFileSync } from 'fs'
-import { join, extname } from 'path'
 
 console.log('⚡ [bun run webp] Scanning public/assets for PNG/JPG images...')
 

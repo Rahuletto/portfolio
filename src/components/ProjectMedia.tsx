@@ -31,6 +31,8 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
     let initGeneration = 0
     let readyFrame = 0
     let disposeTimer = 0
+    let pointerInside = false
+    let keyboardFocused = false
 
     const cancelScheduledDispose = () => {
       if (!disposeTimer) return
@@ -47,6 +49,7 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
       loaded = 0
       lerpControl?.stop()
       lerpControl = null
+      cur = 0
       roObs?.disconnect()
       roObs = null
 
@@ -58,8 +61,6 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
         if (hoverTex) { gl.deleteTexture(hoverTex); hoverTex = null }
         if (buf)      { gl.deleteBuffer(buf); buf = null }
         if (prog)     { gl.deleteProgram(prog); prog = null }
-        const loseExt = gl.getExtension('WEBGL_lose_context')
-        if (loseExt) loseExt.loseContext()
         gl = null
       }
     }
@@ -71,8 +72,10 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
       ioGcObs?.disconnect()
       wrap.removeEventListener('pointerenter', onPointerEnter)
       wrap.removeEventListener('pointerleave', onPointerLeave)
-      link?.removeEventListener('focus', onPointerEnter)
-      link?.removeEventListener('blur', onPointerLeave)
+      link?.removeEventListener('focus', onFocus)
+      link?.removeEventListener('blur', onBlur)
+      window.removeEventListener('focus', syncInteractionState)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
     }
 
     const draw = (progressVal: number) => {
@@ -258,14 +261,46 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
       }
     }
 
+    const updateInteraction = () => {
+      const active = pointerInside || keyboardFocused
+      if (active) cancelScheduledDispose()
+      if (!inited) {
+        if (active) initGL()
+        else return
+      }
+      startLerpTo(active ? 1 : 0)
+    }
+
     const onPointerEnter = () => {
-      cancelScheduledDispose()
-      if (!inited) initGL()
-      startLerpTo(1)
+      pointerInside = true
+      updateInteraction()
     }
 
     const onPointerLeave = () => {
-      startLerpTo(0)
+      pointerInside = false
+      updateInteraction()
+    }
+
+    const onFocus = () => {
+      keyboardFocused = Boolean(link?.matches(':focus-visible'))
+      updateInteraction()
+    }
+
+    const onBlur = () => {
+      keyboardFocused = false
+      updateInteraction()
+    }
+
+    const syncInteractionState = () => {
+      if (!alive || document.hidden) return
+      pointerInside = wrap.matches(':hover')
+      keyboardFocused = Boolean(link?.matches(':focus-visible'))
+      updateInteraction()
+      draw(cur)
+    }
+
+    const onVisibilityChange = () => {
+      if (!document.hidden) syncInteractionState()
     }
 
     ioGcObs = new IntersectionObserver(([entry]) => {
@@ -284,8 +319,10 @@ export function ProjectMedia({ image, hoverImage }: { image: string; hoverImage:
 
     wrap.addEventListener('pointerenter', onPointerEnter, { passive: true })
     wrap.addEventListener('pointerleave', onPointerLeave, { passive: true })
-    link?.addEventListener('focus', onPointerEnter)
-    link?.addEventListener('blur', onPointerLeave)
+    link?.addEventListener('focus', onFocus)
+    link?.addEventListener('blur', onBlur)
+    window.addEventListener('focus', syncInteractionState)
+    document.addEventListener('visibilitychange', onVisibilityChange)
 
     return disposeAll
   }, [hoverImage, image, reducedMotion])

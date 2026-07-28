@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react'
 import './App.css'
-// import { BgmPlayer } from './components/BgmPlayer.tsx'
 import { GridOverlay } from './components/GridOverlay.tsx'
 import { LazySection } from './components/LazySection.tsx'
 import { SideScrollbar } from './components/SideScrollbar.tsx'
@@ -64,7 +63,6 @@ function App() {
       </Suspense>
       <GridOverlay />
       <SideScrollbar />
-      {/* <BgmPlayer /> */}
       <HeroSection />
 
       <LazySection>

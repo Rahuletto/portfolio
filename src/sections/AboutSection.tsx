@@ -24,7 +24,7 @@ export function AboutSection() {
             <div className="pointer-events-none absolute inset-0 size-full opacity-100 transition-opacity duration-500 ease-out group-hover:opacity-0">
               <img
                 className="block size-full object-cover"
-                src="/assets/xray.png"
+                src="/assets/xray.webp"
                 alt=""
               />
               <div className="xray-scanline pointer-events-none absolute inset-0 size-full" />

@@ -297,13 +297,3 @@ export const bokehFragmentShader = `
     gl_FragColor = bokeh(tInput, vUv, uAmount * tilt);
   }
 `
-
-export const copyFragmentShader = `
-  precision mediump float;
-  varying vec2 vUv;
-  uniform sampler2D tInput;
-
-  void main() {
-    gl_FragColor = texture2D(tInput, vUv);
-  }
-`
