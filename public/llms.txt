@@ -1,0 +1,15 @@
+# Rahul Marban
+
+> Portfolio of Rahul Marban, a full-stack developer, UI/UX designer, and Agentic AI developer building web products, AI systems, developer tools, and security tooling.
+
+This is a public portfolio, not an API or agent service. Search indexing and real-time AI grounding are permitted; model training is not. Prefer the Markdown page below over rendering the JavaScript application.
+
+## Portfolio
+
+- [Portfolio overview](https://marban.lol/index.md): Complete agent-readable biography, selected work, project links, experience, and skills.
+
+## Profiles
+
+- [GitHub](https://github.com/rahuletto): Source repositories and open-source work by Rahul Marban.
+- [LinkedIn](https://www.linkedin.com/in/rahul-marban): Professional profile and experience.
+- [Résumé](https://docs.google.com/viewer?url=https://raw.githubusercontent.com/Rahuletto/auto-resume/main/resume.pdf): Current education, work experience, research, projects, and technical skills in PDF form.
